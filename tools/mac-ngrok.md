@@ -64,7 +64,7 @@ ALLOWED_HOSTS = ['*']
 Construct the ngrok URL by removing the "http://localhost:8000" and replacing it with the 
 ngrok-provided URL:
 
-`http://localhost:8000/polls/` to `https://be5bc9dd.ngrok.io/polls/`
+example: `http://localhost:8000/polls/` to `https://be5bc9dd.ngrok.io/polls/`
 
 ## Assignments
 Whenever you encounter an SI 664 assignment that involves an autograder do the following:
@@ -74,8 +74,10 @@ Whenever you encounter an SI 664 assignment that involves an autograder do the f
 3. Start the Django development server.
 4. Perform the exercise, making changes to your Django app instance as required.
 5. Start an ngrok tunnel. 
-6. When interacting with the autograder over HTTP replace localhost with the ngrok domain.
+6. When interacting with the autograder over HTTP replace http://localhost:8000 with the ngrok 
+domain.
 7. Make frequent use of the ngrok inspector to monitor the HTTP request/response cycle.
+8. After submitting your assignment and receiving a grade close the tunnel.
 
 ## ngrok Documentation
 
