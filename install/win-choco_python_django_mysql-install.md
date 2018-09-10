@@ -735,3 +735,6 @@ Either start or continue working on the Django Team's Polls [tutorial](https://d
 
 <a name="tagliaferri">Tagliaferri, L.</a> Digital Ocean: 
 [How to Install Python 3 and Set Up a Local Programming Environment in Windows 10](https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-windows-10). 24 October 2016.
+
+## License
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
