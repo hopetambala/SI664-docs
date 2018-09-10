@@ -2,7 +2,7 @@
 
 ## TOC
 * [Installation](install)
-  * [macOS: Python, Django, MySQL Dev Environment](install/win-brew_python_django_mysql-install.md)
+  * [macOS: Python, Django, MySQL Dev Environment](install/mac-brew_python_django_mysql-install.md)
   * [win10: Python, Django, MySQL Dev Environment](install/win-choco_python_django_mysql-install.md)
 
 ## License
