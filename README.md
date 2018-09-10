@@ -1,4 +1,5 @@
 ## UMSI SI 664 Docs
+This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664 materials.  If you spot an error or note an omission in any of the documents please file an issue or issue a pull request with a fix.
 
 ## TOC
 * [Installation](install)
