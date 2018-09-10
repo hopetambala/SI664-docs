@@ -360,7 +360,7 @@ wheel      0.31.1
 :bulb: You can also confirm that Django is installed this way:
 
 ```commandline
-(venv) PS C:\Users\arwhyte\Development\repos\github\arwhyte\django_tutorial> python -m django --version 2.1.1
+(venv) PS C:\Users\arwhyte\Development\repos\github\arwhyte\django_tutorial> python -m django --version
 ```
 
 ## <a name="djangomysite">6.0 Generate the mysite project</a>
