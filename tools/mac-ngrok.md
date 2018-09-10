@@ -81,8 +81,7 @@ domain.
 
 ## ngrok Documentation
 
-The ngrok online [documentation](https://ngrok.com/docs) is well-written and worth exploring.  
-You can also access the documentation from the terminal:
+The ngrok online [documentation](https://ngrok.com/docs) is well-written and worth exploring.  You can also access the documentation from the terminal:
  
 ```commandline
 kathrada:~ arwhyte$ ./ngrok help
