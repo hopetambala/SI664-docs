@@ -780,7 +780,7 @@ With the Django Polls app and MySQL connected you will need to (re)create the su
 in order to access the Django administration site.  Provide a username, email address, and password:
 
 ```commandline
-(venv) kathrada:django_tutorial arwhyte$
+(venv) kathrada:django_tutorial arwhyte$ python manage.py createsuperuser
 Username (leave blank to use 'arwhyte'):
 Email address: arwhyte@umich.edu
 Password:
