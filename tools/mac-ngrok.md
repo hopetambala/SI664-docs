@@ -17,7 +17,7 @@ Move the *.zip archive to your user's home folder and then open the terminal and
 kathrada:~ arwhyte$ unzip /path/to/ngrok-stable-darwin-amd64.zip
 ```
 
-## Connect Account
+## Copy Auth Token
 Copy the `authtoken` command from the ngrok "Setup & Installation" page and run it in the 
 terminal. This action will add the token to your `ngrok.yml` configuration file.
 
@@ -49,8 +49,10 @@ Connections                   ttl     opn     rt1     rt5     p50     p90
 
 Type "Control" + "C" (CTRL+C) to close the tunnel.
 
+:warning: Remember that each time you start ngrok, it will assign you a different random address.
+
 ## ngrok Inspector
-Once you have opened a tunnel visit http://localhost:4040 to review tunnel activity. You can 
+Once you have opened a tunnel open a new browser tab and visit http://localhost:4040 to review tunnel activity. You can 
 inspect HTTP headers and responses as well as replay a request.
 
 ## Tweek Django Settings
@@ -59,6 +61,9 @@ Open mysite `settings.py` and add a wildcard character ('*') to the `ALLOWED_HOS
 ```python
 ALLOWED_HOSTS = ['*']
 ``` 
+
+Otherwise you are likely to encounter a `DisallowedHost` exception when using the ngrok temporary 
+domain.
 
 ## Check ngrok Connection
 Construct the ngrok URL by removing the "http://localhost:8000" and replacing it with the 
@@ -74,8 +79,7 @@ Whenever you encounter an SI 664 assignment that involves an autograder do the f
 3. Start the Django development server.
 4. Perform the exercise, making changes to your Django app instance as required.
 5. Start an ngrok tunnel. 
-6. When interacting with the autograder over HTTP replace http://localhost:8000 with the ngrok 
-domain.
+6. When interacting with the autograder over HTTP replace http://localhost:8000 with the ngrok domain.
 7. Make frequent use of the ngrok inspector to monitor the HTTP request/response cycle.
 8. After submitting your assignment and receiving a grade close the tunnel.
 
