@@ -1,4 +1,4 @@
-# macOS: Using ngrok
+# macOS 13.x (High Sierra): Using ngrok
 SI 664 autograders rely on [ngrok](https://ngrok.com/) to provide your laptop with a temporary HTTP tunnel and a temporary internet domain in which to communicate with the web server hosting the autograder service.
 
 ## Create an account
@@ -90,3 +90,6 @@ The ngrok online [documentation](https://ngrok.com/docs) is well-written and wor
 ```commandline
 kathrada:~ arwhyte$ ./ngrok help
 ```
+
+## License
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
