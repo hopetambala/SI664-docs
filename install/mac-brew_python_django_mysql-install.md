@@ -646,7 +646,7 @@ secure-file-priv=''
 quick
 ```
 
-After pasting the MySQL options above into nano and replacing the user name value, write out the change by holding down the "control" and "o" keys (CTRL - o), then press the return key when "File Name to Write: .bash_profile" is displayed. Then exit nano by holding down the "control" and "x" keys (CTRL - x).
+After pasting the MySQL options above into nano and replacing the user name value, write out the change by holding down the "control" and "o" keys (CTRL - o), then press the return key when "File Name to Write: my.cnf" is displayed. Then exit nano by holding down the "control" and "x" keys (CTRL - x).
 
 ### 9.2 Restart MySQL Server
 With `/etc/mysql/my.cnf` created, use the Apple System Preferences MySQL Preference Pane to stop 
