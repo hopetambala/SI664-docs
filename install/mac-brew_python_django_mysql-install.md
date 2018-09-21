@@ -508,6 +508,8 @@ For additional information on adding users see the MySQL 8.0 Reference Documenta
 Next, use the `mysql_config_editor` client utility to store your user account's authentication 
 credentials in an obfuscated login path file named `.mylogin.cnf`. The file location is your home
  directory.
+ 
+:bulb: do not attempt to run the `mysql_config_editor` while logged in to MySQL shell (it will fail to execute).  Open a new terminal session or close your existing MySQL shell session before running it.
 
 :warning: Replace 'arwhyte' with the name of the user account you created above and then add the password you earlier created when prompted.
   
