@@ -749,8 +749,28 @@ kathrada:~ arwhyte$ sudo ln -s /usr/local/mysql/lib/libcrypto.1.0.0.dylib /usr/l
 kathrada:~ arwhyte$ sudo ln -s /usr/local/mysql/lib /usr/local/mysql/lib/mysql
 ```
 
-Once you have the sym links in place, return to your Django terminal session and reissue the 
-`migrate` command.
+With the sym links created your `/usr/local/mysql/lib` directory should look like this: 
+
+```commandline
+kathrada:~ arwhyte$ cd /usr/local/mysql/lib
+kathrada:~ arwhyte$ ls
+total 42208
+drwxr-xr-x  13 root  wheel       416 Aug 10 20:54 .
+drwxr-xr-x  13 root  wheel       416 Aug 10 20:55 ..
+-rw-r--r--   1 root  wheel   2065200 Jun 28 13:53 libcrypto.1.0.0.dylib
+lrwxr-xr-x   1 root  wheel        21 Aug 10 20:54 libcrypto.dylib -> libcrypto.1.0.0.dylib
+-rwxr-xr-x   1 root  wheel   5833744 Jun 28 14:24 libmysqlclient.21.dylib
+-rw-r--r--   1 root  wheel  13246088 Jun 28 14:19 libmysqlclient.a
+lrwxr-xr-x   1 root  wheel        23 Aug 10 20:54 libmysqlclient.dylib -> libmysqlclient.21.dylib
+-rw-r--r--   1 root  wheel     35824 Jun 28 14:19 libmysqlservices.a
+-rw-r--r--   1 root  wheel    421344 Jun 28 13:53 libssl.1.0.0.dylib
+lrwxr-xr-x   1 root  wheel        18 Aug 10 20:54 libssl.dylib -> libssl.1.0.0.dylib
+drwxr-xr-x   4 root  wheel       128 Jun 28 14:19 mecab
+drwxr-xr-x   3 root  wheel        96 Jun 28 14:19 pkgconfig
+drwxr-xr-x  55 root  wheel      1760 Aug 10 20:54 plugin
+```
+
+Now that the sym links in place, return to your Django terminal session and reissue the `migrate` command.
 
 ```commandline
 (venv) kathrada:django_tutorial arwhyte$ python manage.py migrate
