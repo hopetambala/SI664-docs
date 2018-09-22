@@ -118,6 +118,15 @@ Issue the following [formula](http://brewformulas.org/Python) to install Python 
 kathrada:~ arwhyte$ brew install python
 ```
 
+Next, confirm which Python location your terminal session recognizes:
+
+```commandline
+kathrada:~ arwhyte$ which python3
+```
+
+If the output is `/usr/local/bin/python3` your `PATH` variable in `~/.bash_profile` is set 
+correctly. If a different path is returned recheck your `~/.bash_profile` as described above.
+
 :bulb: The "python3" brew [formula](http://brewformulas.org/Python3) is now inactive.
 
 :warning: When you `brew install` formulae that provide Python bindings, you should not be in an active virtual environment.  See Homebrew Documentation: [Python](https://docs.brew.sh/Homebrew-and-Python.html).
