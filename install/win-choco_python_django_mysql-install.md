@@ -275,6 +275,7 @@ PS C:\Users\arwhyte> mkdir Development/repos/github/arwhyte/django_tutorial
 Next, I initialize the empty django_tutorial directory as a Git repo:
 
 ```commandline
+PS C:\Users\arwhyte> cd Development/repos/github/arwhyte/django_tutorial
 PS C:\Users\arwhyte\Development\repos\github\arwhyte\django_tutorial> git init
 Initialized empty Git repository in C:/Users/arwhyte/Development/repos/github/arwhyte/django_tutorial/.git/
 ```
