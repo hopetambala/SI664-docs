@@ -540,6 +540,13 @@ mysql> SHOW DATABASES;
 4 rows in set (0.06 sec)
 ```
 
+:warning: Also, confirm that you can see the `C:\ProgramData` directory (hidden by default) in 
+the Windows File Explorer. MySQL databases as well as the `my.ini` options file are stored in 
+`C:\ProgramData\MySQL\MySQL Server 8.0`. If `C:\ProgramData` is not visible, follow these 
+[directions](https://www.tenforums.com/tutorials/9168-show-hidden-files-folders-drives-windows-10
+-a.html) to adjust the File Explorer view settings so that otherwise hidden directories and files
+ are displayed.
+
 ### 8.1 Create User and Grant Privileges
 I prefer to use a named user (arwhyte) rather than the root user for administering the MySQL 
 server.  Using the MySQL shell issue the following three statements:
@@ -573,7 +580,8 @@ For additional information on adding users see the MySQL 8.0 Reference Documenta
 ### 8.2 Obfuscate User Password
 Next, use the `mysql_config_editor` client utility to store your user account's authentication credentials in an obfuscated login path file named `.mylogin.cnf`. The file location is the %APPDATA%\MySQL directory on Windows.
 
-:bulb: do not attempt to run the `mysql_config_editor` while logged in to MySQL shell (it will fail to execute).  Open a new terminal session or close your existing MySQL shell session before running it.
+:bulb: Do not attempt to run the `mysql_config_editor` while logged in to MySQL shell (it will 
+fail to execute).  Open a new terminal session or close your existing MySQL shell session before running it.
 
 :warning: Replace 'arwhyte' with the name of the user account you created above and then add the 
 password you earlier created when prompted.
