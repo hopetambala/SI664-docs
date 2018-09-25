@@ -242,7 +242,7 @@ running on [http://localhost:8000/](http://localhost:8000/) or [http://127.0.0.1
 :bulb: Ignore the 15 unapplied migrations warning.  You will deal with those in a later step.
 
 ```commandline
-(venv) $ python3 manage.py runserver
+(venv) $ python manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).
@@ -267,7 +267,7 @@ create a `models.py` file composed of model classes of the table entities encoun
 
 ```commandline
 
-(venv) $ python3 manage.py inspectdb > heritagesites/models.py
+(venv) $ python manage.py inspectdb > heritagesites/models.py
 ```
 
 `inspectdb` default behavior is to create unmanaged models.  The `Meta` class of each model 
@@ -571,7 +571,7 @@ class SubRegion(models.Model):
 Now you can add the Django admin site and other app tables to the `unesco_heritage_sites` database:
 
 ```commandline
-$ python3 manage.py migrate
+$ python manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions
 Running migrations:
@@ -596,7 +596,7 @@ Running migrations:
 Create a Django superuser account in order to access the Django administration site. Provide a username, email address, and password:
 
 ```commandline
-(venv) $ python3 manage.py createsuperuser
+(venv) $ python manage.py createsuperuser
 Username (leave blank to use 'arwhyte'):
 Email address: arwhyte@umich.edu
 Password:
@@ -656,7 +656,7 @@ mysql> SELECT . . . ;
 While in your Django `heritagesites` app virtual environment, start the Python interactive shell and write a query that returns a matching `QuerySet` using the database API (ORM). 
 
 ```commandline
-(venv) $ python3 manage.py shell
+(venv) $ python manage.py shell
 Python 3.7.0 (default, Jun 29 2018, 20:13:13)
 [Clang 9.1.0 (clang-902.0.39.2)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
