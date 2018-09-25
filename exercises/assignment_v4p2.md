@@ -162,7 +162,7 @@ Create the heritagesites app:
 ```
 
 ### 2.4 Update mysite settings.py
-Switch back to Django and update the mysite `settings.py` file with the following tweaks:
+Update the mysite `settings.py` file with the following tweaks:
 
 #### Allowed hosts 
 Add an ngrok-friendly, autograder-friendly, wildcard ('*') to ALLOWED_HOSTS:
