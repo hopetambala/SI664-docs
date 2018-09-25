@@ -97,6 +97,7 @@ $ mkdir heritagesites
 
 Create a Python 3.7 virtual environment and activate it:
 
+#### macOS
 ```commandline
 $ cd heritagesites
 $ virtualenv venv
@@ -104,10 +105,30 @@ $ source venv/bin/activate
 (venv) $
 ```
 
+#### Windows
+```commandline
+$ cd heritagesites
+$ virtualenv venv
+$ venv\Scripts\activate
+(venv) $
+```
+
 Install the `Django` and `mysqlclient` packages:
 
+#### macOS
 ```commandline
 (venv) $ pip3 install Django mysqlclient
+```
+
+#### Windows
+Recall that you must utilize Christoph Gohlke's collection of [Unoffical Windows Binaries for Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/) to install the `mysqlclient` package. Download the appropriate the [mysqlclient](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient) the wheel (*.whl) file.  For Python 3.7 click on "mysqlclient‑1.3.13‑cp37‑cp37m‑win_amd64.whl" and it will download to your machine.  Then perform a *manual install* of the package via `pip`:
+
+```commandline
+(venv) > pip install Django
+(venv) > pip install C:\Users\arwhyte\Downloads\mysqlclient-1.3.13-cp37-cp37m-win_amd64.whl
+Processing c:\users\arwhyte\downloads\mysqlclient-1.3.13-cp37-cp37m-win_amd64.whl
+Installing collected packages: mysqlclient
+Successfully installed mysqlclient-1.3.13
 ```
 
 Confirm installs:
@@ -583,7 +604,11 @@ Password (again):
 Superuser created successfully.
 ``` 
 
-### Exercise 1: Write a SQL statement
+## Chinese Heritage Sites
+Now that the `heritagesites` app is installed and connected to the `unesco_heritage_sites` 
+database, two tasks remain for completing the assignment.
+
+### Task 1: write a SQL statement
 Start the MySQL shell and issue a SQL SELECT statement that returns a result set of all heritage 
 sites located in the three Chinese country/area records.  This query builds on a SQL SELECT 
 statement discussed in class.
@@ -627,7 +652,7 @@ mysql> SELECT . . . ;
 
 ```
 
-### Exercise 2: Write a matching Django ORM statement
+### Task 2: create a matching Django QuerySet
 While in your Django `heritagesites` app virtual environment, start the Python interactive shell and write a query that returns a matching `QuerySet` using the database API (ORM). 
 
 ```commandline
@@ -642,8 +667,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 Utilize the following method chaining to create your `QuerySet`:
 
 `hs = Model.objects.select_related(...).filter(...).values_list(...)`
-
-Then 
 
 ```commandline
 >>> from heritagesites.models import HeritageSite . . .
