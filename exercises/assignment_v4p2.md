@@ -640,7 +640,7 @@ You must also sort the result set in the following order:
 
 Execute the query. Then cut and paste the shell output into a *.txt file named
 
-`<uniqname>-china_heritage_sites_sql.txt`
+`<uniqname>-china_heritage_sites.txt`
 
 ```commandline
 mysql> SELECT . . . ;
@@ -677,11 +677,8 @@ Utilize the following method chaining to create your `QuerySet`:
 . . .                <-- hit [enter] 
 ```
 
-Loop through the `QuerySet` and print out the tuple values.  Then paste the shell output into
- a second *.txt file named
- 
- `<uniqname>-china_heritage_sites_orm.txt`
+Loop through the `QuerySet` and print out the tuple values.  Then *append* the shell output to 
+your `<uniqname>-china_heritage_sites.txt` file 
  
 ### 3.3 Submit assignment 
-Zip up the two files as `<uniquename>-china_heritage_sites.zip` and submit to Canvas via the 
-assignment page.
+Submit `<uniqname>-china_heritage_sites.txt` to Canvas via the assignment page.
