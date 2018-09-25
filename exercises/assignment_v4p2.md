@@ -1,8 +1,8 @@
 # Meeting 4 Exercise
 
-## Back-end
+## 1.0 Back-end
 
-### Create a UNESCO/UNSD heritage sites database and load with data
+### 1.1 Create a UNESCO/UNSD heritage sites database and load with data
 Create a new database called `unesco_heritage_sites`:
 
 ```commandline
@@ -30,7 +30,7 @@ $ cd path/to/sql/dump/file
 $ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites_dump-201809241226.sql
 ```
 
-### Check import
+### 1.2 Check import
 In the MySQL shell issue the following commands:
 
 ```commandline
@@ -85,9 +85,9 @@ mysql> SELECT sr.sub_region_name AS 'sub region', ROUND(CAST(SUM(hs.area_hectare
 5 rows in set (0.01 sec)
 ```
 
-### Front-end
+### 2.0 Front-end
 
-### Development environment prep
+### 2.1 Development environment prep
 Open a new terminal session and create a `heritagesites` directory in your development directory of choice.
 
 ```commandline
@@ -145,7 +145,7 @@ setuptools  40.4.3
 wheel       0.31.1
 ```
 
-### Create mysite project
+### 2.2 Create mysite project
 From within your Django `heritagesites` project directory, create the "mysite" project by issuing the django-admin "startproject" command. Note the inclusion of a trailing dot ('.') following "mysite":
 
 ```commandline
@@ -154,14 +154,14 @@ From within your Django `heritagesites` project directory, create the "mysite" p
 
 :warning: Do not forget to include the trailing dot ('.') in the command.  If you neglect to include the dot, delete the directories and files that were created (except 'venv') and run the command again along with the trailing doc ('.').
 
-### Create heritagesites app
+### 2.3 Create heritagesites app
 Create the heritagesites app:
 
 ```commandline
 (venv) $ python manage.py startapp heritagesites
 ```
 
-### Update mysite settings.py
+### 2.4 Update mysite settings.py
 Switch back to Django and update the mysite `settings.py` file with the following tweaks:
 
 #### Allowed hosts 
@@ -235,7 +235,7 @@ Add a `STATIC_ROOT` setting:
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 ```     
 
-### Start the Django development server
+### 2.5 Start the Django development server
 Once `settings.py` is updated, start up the development server and confirm that Django is up and 
 running on [http://localhost:8000/](http://localhost:8000/) or [http://127.0.0.1:8000/](http://127.0.0.1:8000/):
 
@@ -260,7 +260,7 @@ Quit the server with CONTROL-C.
 
 Once confirmed that all is well, shut down the development server by holding down the "Control" and "c" keys (CTRL - c).
 
-### Auto-generate UNESCO/UNSD models
+### 2.6 Auto-generate UNESCO/UNSD models
 From the `heritagesites` root directory (where `manage.py` lives) run Django's `inspectdb` 
 utility. If all goes well `inspectdb` will traverse the `unesco_heritage_sites` database and 
 create a `models.py` file composed of model classes of the table entities encountered.
@@ -300,7 +300,7 @@ The utility is also likely to fail to describe compound keys in associative enti
 
 Read "[Integrating Django with a legacy database](https://docs.djangoproject.com/en/2.1/howto/legacy-databases/)" as well as the `inspectdb` [documentation](https://docs.djangoproject.com/en/2.1/ref/django-admin/#django-admin-inspectdb) to learn more more about Django database introspection and the model auto-generation process. 
 
-### Tidy up models.py
+### 2.7 Tidy up models.py
 Suspend disbelief and pretend you've just edited `models.py` as illustrated below in order to add
  a few `META` properties to each model class and, critically, add a `models.ManyToManyField()` 
  property to the `HeritageSite` class.
@@ -567,7 +567,7 @@ class SubRegion(models.Model):
 '''
 ```
 
-### Install the core Django tables
+### 2.8 Install the core Django tables
 Now you can add the Django admin site and other app tables to the `unesco_heritage_sites` database:
 
 ```commandline
@@ -592,7 +592,7 @@ Running migrations:
   Applying sessions.0001_initial... OK
 ```
  
-### Create a Django superuser account
+### 2.9 Create a Django superuser account
 Create a Django superuser account in order to access the Django administration site. Provide a username, email address, and password:
 
 ```commandline
@@ -604,11 +604,11 @@ Password (again):
 Superuser created successfully.
 ``` 
 
-## Chinese Heritage Sites
+## 3.0 Chinese heritage site queries
 Now that the `heritagesites` app is installed and connected to the `unesco_heritage_sites` 
 database, two tasks remain for completing the assignment.
 
-### Task 1: write a SQL statement
+### 3.1 Write a SQL statement
 Start the MySQL shell and issue a SQL SELECT statement that returns a result set of all heritage 
 sites located in the three Chinese country/area records.  This query builds on a SQL SELECT 
 statement discussed in class.
@@ -652,7 +652,7 @@ mysql> SELECT . . . ;
 
 ```
 
-### Task 2: create a matching Django QuerySet
+### 3.2 Create a matching Django QuerySet
 While in your Django `heritagesites` app virtual environment, start the Python interactive shell and write a query that returns a matching `QuerySet` using the database API (ORM). 
 
 ```commandline
@@ -682,5 +682,6 @@ Loop through the `QuerySet` and print out the tuple values.  Then paste the shel
  
  `<uniqname>-china_heritage_sites_orm.txt`
  
+### 3.3 Submit assignment 
 Zip up the two files as `<uniquename>-china_heritage_sites.zip` and submit to Canvas via the 
 assignment page.
