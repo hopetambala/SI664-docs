@@ -1,4 +1,4 @@
-# Meeting 4 Exercise
+# Meeting 4 Exercise (Windows)
 
 ## 1.0 Back-end
 
@@ -12,8 +12,7 @@ Query OK, 1 row affected (0.07 sec)
 
 Next, download the following *.sql dump file:  
 
-[unesco_heritage_sites_dump-201809241832.sql](https://umich.instructure
-.com/courses/245664/files/8624407/download?download_frd=1)
+[unesco_heritage_sites_dump-201809241832.sql](https://umich.instructure.com/courses/245664/files/8624407/download?download_frd=1)
 
 Start a _new_ terminal session. Change directories to where you downloaded the *.sql dump file.  
 Run the following command from the terminal in order to import the schema and data into the 
@@ -27,7 +26,7 @@ mysql -u[account_name] [database_name] < [sql_dump_file].sql
 
 ```commandline
 $ cd path/to/sql/dump/file
-$ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites_dump-201809241226.sql
+$ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites_dump-201809241832.sql
 ```
 
 ### 1.2 Check import
@@ -97,15 +96,6 @@ $ mkdir heritagesites
 
 Create a Python 3.7 virtual environment and activate it:
 
-#### macOS
-```commandline
-$ cd heritagesites
-$ virtualenv venv
-$ source venv/bin/activate
-(venv) $
-```
-
-#### Windows
 ```commandline
 $ cd heritagesites
 $ virtualenv venv
@@ -113,15 +103,8 @@ $ venv\Scripts\activate
 (venv) $
 ```
 
-Install the `Django` and `mysqlclient` packages:
-
-#### macOS
-```commandline
-(venv) $ pip3 install Django mysqlclient
-```
-
-#### Windows
-Recall that you must utilize Christoph Gohlke's collection of [Unoffical Windows Binaries for Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/) to install the `mysqlclient` package. Download the appropriate the [mysqlclient](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient) the wheel (*.whl) file.  For Python 3.7 click on "mysqlclient‑1.3.13‑cp37‑cp37m‑win_amd64.whl" and it will download to your machine.  Then perform a *manual install* of the package via `pip`:
+Install the `Django` and `mysqlclient` packages. Recall that you must utilize Christoph Gohlke's 
+collection of [Unoffical Windows Binaries for Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/) to install the `mysqlclient` package. Download the appropriate the [mysqlclient](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient) the wheel (*.whl) file.  For Python 3.7 click on "mysqlclient‑1.3.13‑cp37‑cp37m‑win_amd64.whl" and it will download to your machine.  Then perform a *manual install* of the package via `pip`:
 
 ```commandline
 (venv) > pip install Django
@@ -191,21 +174,6 @@ Point to the `unesco_heritage_sites` database.  Set the `USER` to your new "djan
 
 :warning: change `USER` value to your MySQL user account.
 
-##### macOS
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'unesco_heritage_sites',
-        'USER': 'arwhyte',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/my.cnf',
-        },
-    }
-}
-```
-
-##### Windows
 ```python
 DATABASES = {
     'default': {
@@ -571,7 +539,7 @@ class SubRegion(models.Model):
 Now you can add the Django admin site and other app tables to the `unesco_heritage_sites` database:
 
 ```commandline
-$ python manage.py migrate
+(venv) $ python manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions
 Running migrations:
@@ -613,14 +581,12 @@ Start the MySQL shell and issue a SQL SELECT statement that returns a result set
 sites located in the three Chinese country/area records.  This query builds on a SQL SELECT 
 statement discussed in class.
 
-:bulb: Remember to point the MySQL shell at the right database before issuing your SELECT statement.
+:bulb: Remember to point the MySQL shell at the unesco_heritage_sites database before issuing your 
+SELECT statement.
 
 ```commandline
 mysql> USE unesco_heritage_sites;
 Database changed
-
-mysql> SELECT . . .
-
 ``` 
 
 The result set must include the following columns displayed in the following order:
@@ -641,6 +607,8 @@ You must also sort the result set in the following order:
 Execute the query. Then cut and paste the shell output into a *.txt file named
 
 `<uniqname>-china_heritage_sites.txt`
+
+__Please include _both_ the SQL statement and the result set in the *.txt file.__
 
 ```commandline
 mysql> SELECT . . . ;
@@ -678,7 +646,9 @@ Utilize the following method chaining to create your `QuerySet`:
 ```
 
 Loop through the `QuerySet` and print out the tuple values.  Then *append* the shell output to 
-your `<uniqname>-china_heritage_sites.txt` file 
+your `<uniqname>-china_heritage_sites.txt` file. 
+
+__Please include _both_ the Python code typed into the shell and the result set in the *.txt file.__
  
 ### 3.3 Submit assignment 
 Submit `<uniqname>-china_heritage_sites.txt` to Canvas via the assignment page.
