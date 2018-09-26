@@ -117,7 +117,7 @@ Successfully installed mysqlclient-1.3.13
 Confirm installs:
 
 ```commandline
-(venv) $ pip3 list
+(venv) $ pip list
 Package     Version
 ----------- -------
 Django      2.1.1
