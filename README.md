@@ -8,6 +8,10 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
 * [Tools](tools)
   * [macOS: ngrok](tools/mac-ngrok.md)
   * [win10: ngrok](tools/win-ngrok.md)
+* [Assignments](assign)
+  * Meeting 4
+    * [Exercise 4.2](exercises/assignment_v4p2-mac.md) (macOS)
+    * [Exercise 4.2](exercises/assignment_v4p2-win.md) (Windows)
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
