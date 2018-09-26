@@ -8,7 +8,7 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
 * [Tools](tools)
   * [macOS: ngrok](tools/mac-ngrok.md)
   * [win10: ngrok](tools/win-ngrok.md)
-* [Assignments](assign)
+* [Assignments](exercises)
   * Meeting 4
     * [Exercise 4.2](exercises/assignment_v4p2_mac.md) (macOS)
     * [Exercise 4.2](exercises/assignment_v4p2_win.md) (Windows)
