@@ -25,8 +25,8 @@ mysql -u[account_name] [database_name] < [sql_dump_file].sql
 :warning: Do not attempt to execute this command while in a MySQL shell session (it will fail).  Run it in a new terminal session.
 
 ```commandline
-$ cd path/to/sql/dump/file
-$ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites_dump-201809241832.sql
+> cd path/to/sql/dump/file
+> mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites_dump-201809241832.sql
 ```
 
 ### 1.2 Check import
@@ -90,16 +90,16 @@ mysql> SELECT sr.sub_region_name AS 'sub region', ROUND(CAST(SUM(hs.area_hectare
 Open a new terminal session and create a `heritagesites` directory in your development directory of choice.
 
 ```commandline
-$ cd /Users/arwhyte/Development/repos/github/UMSI-SI664-2018Fall
-$ mkdir heritagesites
+> cd /Users/arwhyte/Development/repos/github/UMSI-SI664-2018Fall
+> mkdir heritagesites
 ```
 
 Create a Python 3.7 virtual environment and activate it:
 
 ```commandline
-$ cd heritagesites
-$ virtualenv venv
-$ venv\Scripts\activate
+> cd heritagesites
+> virtualenv venv
+> venv\Scripts\activate
 (venv) $
 ```
 
@@ -117,7 +117,7 @@ Successfully installed mysqlclient-1.3.13
 Confirm installs:
 
 ```commandline
-(venv) $ pip list
+(venv) > pip list
 Package     Version
 ----------- -------
 Django      2.1.1
@@ -132,7 +132,7 @@ wheel       0.31.1
 From within your Django `heritagesites` project directory, create the "mysite" project by issuing the django-admin "startproject" command. Note the inclusion of a trailing dot ('.') following "mysite":
 
 ```commandline
-(venv) $ django-admin startproject mysite .
+(venv) > django-admin startproject mysite .
 ```
 
 :warning: Do not forget to include the trailing dot ('.') in the command.  If you neglect to include the dot, delete the directories and files that were created (except 'venv') and run the command again along with the trailing doc ('.').
@@ -141,7 +141,7 @@ From within your Django `heritagesites` project directory, create the "mysite" p
 Create the heritagesites app:
 
 ```commandline
-(venv) $ python manage.py startapp heritagesites
+(venv) > python manage.py startapp heritagesites
 ```
 
 ### 2.4 Update mysite settings.py
@@ -210,7 +210,7 @@ running on [http://localhost:8000/](http://localhost:8000/) or [http://127.0.0.1
 :bulb: Ignore the 15 unapplied migrations warning.  You will deal with those in a later step.
 
 ```commandline
-(venv) $ python manage.py runserver
+(venv) > python manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).
@@ -235,7 +235,7 @@ create a `models.py` file composed of model classes of the table entities encoun
 
 ```commandline
 
-(venv) $ python manage.py inspectdb > heritagesites/models.py
+(venv) > python manage.py inspectdb > heritagesites/models.py
 ```
 
 `inspectdb` default behavior is to create unmanaged models.  The `Meta` class of each model 
@@ -539,7 +539,7 @@ class SubRegion(models.Model):
 Now you can add the Django admin site and other app tables to the `unesco_heritage_sites` database:
 
 ```commandline
-(venv) $ python manage.py migrate
+(venv) > python manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions
 Running migrations:
@@ -564,7 +564,7 @@ Running migrations:
 Create a Django superuser account in order to access the Django administration site. Provide a username, email address, and password:
 
 ```commandline
-(venv) $ python manage.py createsuperuser
+(venv) > python manage.py createsuperuser
 Username (leave blank to use 'arwhyte'):
 Email address: arwhyte@umich.edu
 Password:
@@ -624,7 +624,7 @@ mysql> SELECT . . . ;
 While in your Django `heritagesites` app virtual environment, start the Python interactive shell and write a query that returns a matching `QuerySet` using the database API (ORM). 
 
 ```commandline
-(venv) $ python manage.py shell
+(venv) > python manage.py shell
 Python 3.7.0 (default, Jun 29 2018, 20:13:13)
 [Clang 9.1.0 (clang-902.0.39.2)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
