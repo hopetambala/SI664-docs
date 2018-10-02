@@ -1,6 +1,4 @@
-# Meeting 4 Exercise (macOS)
-
-TODO add overview
+# Meeting 5 Exercise (macOS)
 
 ## 1.0 Back-end
 
