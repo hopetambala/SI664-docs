@@ -1,5 +1,18 @@
 # Meeting 4 Exercise (Windows)
 
+You will draw on your hard-won knowledge to perform the following tasks:
+
+* set up a Django development environment called "heritagesites"
+* create a Django `mysites` project and `heritagesites` app
+* create a MySQL `unesco_heritage_sites` database
+* import the database schema and data from a *.sql dump file (provided)
+* update `mysite/settings.py` including connecting the `heritagesites` app to the `unesco_heritage_sites` database
+* run the `inspectdb` utility to create a models.py file based on the database run migrations
+* create a "superuser" account
+* write a SQL statement that returns a list of UNESCO heritage sites located in China
+* write Python code in Django's interactive shell that uses Django's data API to return a matching result set of Chinese heritage sites
+* upload a *.txt file that includes the SQL statement + result set output and Django QuerySet code + result set output
+
 ## 1.0 Back-end
 
 ### 1.1 Create a UNESCO/UNSD heritage sites database and load with data
