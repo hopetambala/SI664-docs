@@ -1,7 +1,5 @@
 # Meeting 5 Exercise (macOS)
 
-TODO add overview
-
 ## 1.0 Back-end
 
 ### 1.1 Back up the database
