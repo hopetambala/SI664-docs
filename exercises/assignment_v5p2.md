@@ -465,9 +465,7 @@ Africa. This can be done using `MAX()`, along with a subquery. Alias each column
  * area (hectares)
 
 Print out the result set in the MySQL shell in vertical output form.  Then cut and paste the 
-shell output into a *.txt file named
- 
- `<uniqname>-heritage_sites_mtg5.txt`
+shell output into `<uniqname>-heritage_sites_mtg5.txt`.
  
  __Please include _both_ the SQL statement and the result set in the *.txt file.__
  
@@ -499,13 +497,10 @@ of "developing" countries/areas in Asia.
 {'region_name': 'Asia', 'dev_status': 'Developing', 'count': Y}
 ```
 
- Append your Python code output to the *.txt 
- file named
- 
- `<uniqname>-heritage_sites_mtg5.txt`
+Append your Python code output to `<uniqname>-heritage_sites_mtg5.txt`
  
  __Please include _both_ the Python code and the result set in the *.txt file.__
  
 ### 3.4 Submit assignment 
-Submit `<uniqname>-china_heritage_sites.txt` to Canvas via the assignment page.
+Submit `<uniqname>-heritage_sites_mtg5.txt` to Canvas via the assignment page.
   
