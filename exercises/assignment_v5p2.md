@@ -316,7 +316,100 @@ file paths as necessary:
 
 ## 2.0 Front-end
 
-### 2.1 Update heritagesites/models.py
+### 2.1 Create views and routes
+
+Open heritages/views.py and put in the following code:
+
+```
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
+def index(request):
+   return HttpResponse("Hello, world. You're at the UNESCO Heritage Sites index.")
+
+```
+To call the view, we need to map it to a URL - and for this we need a URLconf.
+To create a URLconf in the heritagesites directory, create a file called urls.py. Your app directory should now look like:
+
+```
+heritagesites/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests.py
+    urls.py
+    views.py
+```
+    
+In the heritagesites/urls.py file include the following code:
+
+```
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+   path('', views.index, name='index'),
+]
+```
+
+The next step is to point the root URLconf at the heritagesites.urls module. In mysite/urls.py, add an import for django.urls.include and insert an include() in the urlpatterns list, so you have:
+
+```
+"""mysite URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.http import HttpResponseRedirect
+from django.urls import path, include
+# from django.views.generic import RedirectView
+
+# Use static() to add url mapping to serve static files during development (only)
+
+urlpatterns = [
+    url(r'^$', lambda r: HttpResponseRedirect('heritagesites/')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^heritagesites/', include('heritagesites.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+'''
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('heritagesites/', include('heritagsites.urls')),
+]
+'''
+```
+To read more about `include()` you can refer https://docs.djangoproject.com/en/2.1/intro/tutorial01/
+
+You have now wired an index view into the URLconf. Lets verify it’s working, run the following command:
+
+```
+$ python manage.py runserver
+```
+Go to http://localhost:8000/heritagesites/  or http://127.0.0.1:8000/heritagesites/ in your browser, and you should see the text "Hello, world. You're at the UNESCO Heritage Sites index.", which you defined in the index view.
+
+### 2.2 Update heritagesites/models.py
 With the `unesco_heritage_sites` database updated you will next need to make adjustments to 
 `heritagesites/models.py` to match the changes to the `unesco_heritage_sites` database.  
 
@@ -366,7 +459,7 @@ they are now redundant:
 # intermediate_region = models.ForeignKey('IntermediateRegion', models.DO_NOTHING, blank=True, null=True)
 ```
 
-### 2.2 Update heritagesites/admin.py
+### 2.3 Update heritagesites/admin.py
 Next, turn your attention to `heritagesites/admin.py`. You need to register two new `Model`
  classes with the admin site as well as make adjustments to a couple of existing `ModelAdmin` 
  classes in order to update the Django [Admin site](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/) interface with new and adjusted views. 
@@ -403,7 +496,7 @@ list_display = [
 
 ```
 
-### 2.3 Check the heritagesites Admin site
+### 2.4 Check the heritagesites Admin site
 With the edits to `models.py` and `admin.py` in place, start up the Django development server:
 
 #### macOS
