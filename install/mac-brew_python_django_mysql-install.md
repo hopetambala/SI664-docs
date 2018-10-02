@@ -805,9 +805,8 @@ Running migrations:
   Applying sessions.0001_initial... OK
 ```
 
-### 12.3 Create a Django superuser account
-With the Django Polls app and MySQL connected you will need to (re)create the superuser account 
-in order to access the Django administration site.  Provide a username, email address, and password:
+### Create a Django superuser account
+Create a Django superuser account in order to access the Django administration site. Provide a username, email address, and password:
 
 ```commandline
 (venv) $ python manage.py createsuperuser
