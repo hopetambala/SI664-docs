@@ -1,9 +1,20 @@
 # Meeting 5 Exercise (Windows)
 
+In this assignment you will
+
+* Run `mysqldump` to back up the `unesco_heritage_sites` database
+* Create new database tables, columns and column constraints 
+* Add/edit `Model` classes in `heritagesites/models.py`
+* Add/edit `ModelAdmin` classes in `heritagesites/admin.py`
+* Write and execute a SQL query in the MySQL shell
+* Write Python code to generate a Django `QuerySet` using the Django interactive Shell
+* Submit a .txt file to complete the assignment that includes copies of new/edited `Model` classes, the 
+SQL statement and results returned, and the Python code and `QuerySet` output
+
 ## 1.0 Back-end
 
 ### 1.1 Back up the database
-Run the MySQL `mysqldump` utility to back up the unesco_heritage_sites database.  The file will 
+Run the MySQL `mysqldump` utility to back up the `unesco_heritage_sites` database.  The file will 
 be saved in the directory in which you issue the command unless you specify path (relative or 
 absolute) for placing the file elsewhere. Save the *.sql dump file in a safe place.
 
