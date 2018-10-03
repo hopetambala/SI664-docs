@@ -1,4 +1,4 @@
-# Meeting 5 Exercise (macOS)
+# Meeting 5 Exercise (Windows)
 
 ## 1.0 Back-end
 
@@ -20,18 +20,10 @@ If you are Git/Github savvy, fork the [SI664-scripts](https://github.com/UMSI-SI
 Create a virtual environment for the scripts and then run `pip` to install package dependencies 
 listed in the `requirements.txt` file.
 
-##### macOS
 ```commandline
 $ cd path/to/SI664/scripts
 $ source venv/bin/activate
 (venv) $ pip3 install -r requirements.txt
-```
-
-##### Windows
-```commandline
-> cd path/to/SI664/scripts
-> venv\Scripts\activate
-(venv) > pip install -r requirements.txt
 ```
 
 ### 1.4 Create a .yaml configuration file
@@ -93,7 +85,7 @@ The `run_mysql_script.py` takes two arguments: `-c` for the config file path and
 path to the SQL script: 
 
 ```commandline
-(venv) $ python3 run_mysql_script.py --help
+(venv) > python3 run_mysql_script.py --help
 usage: run_mysql_script.py [-h] -c CONFIG -p PATH
 
 This python script is designed to process MySQL scripts. The script requires a
@@ -112,12 +104,6 @@ optional arguments:
 
 Run as follows, tailoring the *.yaml and *.sql file paths as necessary:
 
-##### macOS
-```commandline
-(venv) $ python3 run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p ./input/sql/unesco_heritage_sites_add_location.sql
-```
-
-#### Windows
 ```commandline
 (venv) $ python run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p ./input/sql/unesco_heritage_sites_add_location.sql
 ```
@@ -243,25 +229,29 @@ new `country_area.location_id` foreign key, drop the now redundant `country_area
 `country_area.sub_region_id`, and `country_area.intermediate_region_id` columns.  
 
 However, before you can drop these columns you _must first_ drop the foreign key constraints 
-associated with each column.  To drop the foreign keys you need to know their constraint names. You can retrieve the constraint names by querying the `information_schema.key_column_usage` table.
+associated with each column.  To drop the foreign keys you need to know their constraint names. 
+You can retrieve the constraint names by querying the `information_schema.key_column_usage` table.
  
- You can perform these operations either manually by following the directions embedded in the `unesco_heritage_sites_trim_country_area.sql` file or by executing the script using `run_mysql_query.py`. 
+You will use the `run_mysql_query.py` Python script to execute the 
+`unesco_heritage_sites_trim_country_area.sql` script. 
+
+Before executing the `unesco_heritage_sites_trim_country_area.sql` script confirm that 
+the foreign key constraint names in the ALTER TABLE statement are correct.
+
+Run the following SELECT statement against the `information_schema` database to ascertain the 
+foreign key constraint names for the following `country_area` table columns:
  
-Above the expected `ALTER TABLE` statement `unesco_heritage_sites_trim_country_area.sql` 
-includes instructions for retrieving the names of foreign key constraints associated with the 
-`country_area table`.
+* `country_area.region_id`, 
+* `country_area.sub_region_id` 
+* `country_area.intermediate_region_id`
 
 ```mysql
--- WARNING: before running this script confirm that the foreign key names in the ALTER TABLE
--- statement are correct before executing this script.
---
--- Run the following SQL SELECT statement against the information_schema database to ascertain the
--- foreign key constraint names for country_area.region_id, country_area.sub_region_id, and
--- country_area.intermediate_region_id. Then adjust the names accordingly in the DROP FOREIGN KEY
--- statements below. Foreign key constraints MUST be dropped before the associated column is
--- dropped.
+SELECT table_name, column_name, constraint_name, referenced_table_name, referenced_column_name
+FROM information_schema.key_column_usage
+WHERE table_name = 'country_area';
+```
 
-/*
+```commandline
 mysql> SELECT table_name, column_name, constraint_name,
     ->        referenced_table_name, referenced_column_name
     ->  FROM information_schema.key_column_usage
@@ -279,8 +269,13 @@ mysql> SELECT table_name, column_name, constraint_name,
 | country_area | location_id            | country_area_fk_location_id | location              | location_id            |
 +--------------+------------------------+-----------------------------+-----------------------+------------------------+
 8 rows in set, 2 warnings (0.00 sec)
-*/
+```
 
+If necessary, update the DROP FOREIGN KEY constraint names listed in 
+`unesco_heritage_sites_trim_country_area.sql` so that the values match the constraint names listed
+ in the `information_schema.key_column_usage` table:
+
+```mysql
 -- Drop country_area region-related foreign keys and columns
 ALTER TABLE country_area
        DROP FOREIGN KEY country_area_ibfk_1,
@@ -291,34 +286,24 @@ ALTER TABLE country_area
        DROP COLUMN intermediate_region_id;
 ```
 
-In the example above the relevant constraint names are:
+:bulb: Foreign key constraints MUST be dropped before the associated column is dropped.
 
-* country_area_ibfk_1 (`region_id`) 
-* country_area_ibfk_2 (`sub_region_id`)
-* country_area_ibfk_3 (`intermediate_region_id`)
+Once you have confirmed that the correct constraint names are listed in 
+`unesco_heritage_sites_trim_country_area.sql` `ALTER TABLE` statement, run `run_mysql_script.py` 
+against it tailoring the *.yaml and *.sql file paths as necessary:
 
-Once you have identified the correct constraint names update the `ALTER TABLE` statement 
-appropriately.  Then either execute it manually in the MySQL shell or run `run_mysql_script.py` against 
-the updated `unesco_heritage_sites_trim_country_area.sql` script tailoring the *.yaml and *.sql 
-file paths as necessary:
-
-##### macOS
 ```commandline
-(venv) $ python3 run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p ./input/sql/unesco_heritage_sites_trim_country_area.sql
-```
-
-#### Windows
-```commandline
-(venv) $ python run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p ./input/sql/unesco_heritage_sites_trim_country_area.sql
+(venv) $ python run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p
+./input/sql/unesco_heritage_sites_trim_country_area.sql
 ```
 
 :bulb: If you encounter any SQL-related errors that you are not able to resolve, post a message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.).  Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback. 
 
 ## 2.0 Front-end
 
-### 2.1 Create views and routes
+### 2.1 Add a heritagesites app "Hello World" view
 
-Open heritages/views.py and put in the following code:
+Open `heritages/views.py` and add the following code:
 
 ```
 from django.shortcuts import render
@@ -329,23 +314,10 @@ def index(request):
    return HttpResponse("Hello, world. You're at the UNESCO Heritage Sites index.")
 
 ```
-To call the view, we need to map it to a URL - and for this we need a URLconf.
-To create a URLconf in the heritagesites directory, create a file called urls.py. Your app directory should now look like:
 
-```
-heritagesites/
-    __init__.py
-    admin.py
-    apps.py
-    migrations/
-        __init__.py
-    models.py
-    tests.py
-    urls.py
-    views.py
-```
-    
-In the heritagesites/urls.py file include the following code:
+### 2.2 Add a heritagesites app routes
+To call the view, we need to map it to a URL; and for this we need a `URLconf`. To create a 
+`URLconf` in the `heritagesites` app directory, create a file called `urls.py`. In `urls.py` add the following code:
 
 ```
 from django.urls import path
@@ -357,32 +329,31 @@ urlpatterns = [
 ]
 ```
 
-The next step is to point the root URLconf at the heritagesites.urls module. In mysite/urls.py, add an import for django.urls.include and insert an include() in the urlpatterns list, so you have:
+Your `heritagesites` app directory should now look like this:
 
 ```
-"""mysite URL Configuration
+heritagesites/
+    migrations/
+         __init__.py
+    __init__.py
+    admin.py
+    apps.py
+    models.py
+    tests.py
+    urls.py
+    views.py
+```
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+The next step is to point the root `URLconf` at the `heritagesites.urls` module. In `mysite/urls.py`, 
+add the `urlpatterns` list and supporting imports:
 
+```
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path, include
-# from django.views.generic import RedirectView
 
 # Use static() to add url mapping to serve static files during development (only)
 
@@ -392,22 +363,17 @@ urlpatterns = [
     url(r'^heritagesites/', include('heritagesites.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
-'''
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('heritagesites/', include('heritagsites.urls')),
-]
-'''
 ```
-To read more about `include()` you can refer https://docs.djangoproject.com/en/2.1/intro/tutorial01/
 
-You have now wired an index view into the URLconf. Lets verify it’s working, run the following command:
+Both the "Hello World" index view and the admin site are wired into the URLconf. Lets verify, 
+that all is well with the `heritagesites` app by starting up the Django development server: 
 
 ```
-$ python manage.py runserver
+(venv) $ python manage.py runserver
 ```
-Go to http://localhost:8000/heritagesites/  or http://127.0.0.1:8000/heritagesites/ in your browser, and you should see the text "Hello, world. You're at the UNESCO Heritage Sites index.", which you defined in the index view.
+
+Visit http://localhost:8000/heritagesites/ or http://127.0.0.1:8000/heritagesites/ in your 
+browser and the text defined in the index view "Hello, world. You're at the UNESCO Heritage Sites index" should be rendered.
 
 ### 2.2 Update heritagesites/models.py
 With the `unesco_heritage_sites` database updated you will next need to make adjustments to 
@@ -450,21 +416,24 @@ Second, add new variables and assign the proper [Field types](https://docs.djang
 match the changes made `unesco_heritage_sites.region` and `unesco_heritage_sites.country_area` 
 tables. The variable assignments should be easy to figure out based on a review of the `unesco_heritage_sites_add_location.sql` script.
 
-Don't forget to comment out the following `CountryArea` model variable assignments as 
+Don't forget to delete the following `CountryArea` model variable assignments as 
 they are now redundant:
 
 ```python
-# region = models.ForeignKey('Region', models.DO_NOTHING, blank=True, null=True)
-# sub_region = models.ForeignKey('SubRegion', models.DO_NOTHING, blank=True, null=True)
-# intermediate_region = models.ForeignKey('IntermediateRegion', models.DO_NOTHING, blank=True, null=True)
+region = models.ForeignKey('Region', models.DO_NOTHING, blank=True, null=True)
+sub_region = models.ForeignKey('SubRegion', models.DO_NOTHING, blank=True, null=True)
+intermediate_region = models.ForeignKey('IntermediateRegion', models.DO_NOTHING, blank=True, null=True)
 ```
 
 ### 2.3 Update heritagesites/admin.py
-Next, turn your attention to `heritagesites/admin.py`. You need to register two new `Model`
- classes with the admin site as well as make adjustments to a couple of existing `ModelAdmin` 
- classes in order to update the Django [Admin site](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/) interface with new and adjusted views. 
+Next, turn your attention to `heritagesites/admin.py`. The file is likely empty.  If so copy the 
+the python code in the sample [heritagesites_admin.py](../misc/heritagesites_admin.py) into the 
+`admin.py` file.
+
+You need to register two new `Model` classes with the admin site as well as make 
+adjustments to a couple of existing `ModelAdmin` classes in order to update the Django [Admin site](https://docs.djangoproject.com/en/2.1/ref/contrib/admin/) interface with new and adjusted views. 
  
-First, register your new `Model` classes created in `models.py` using the admin register decorator 
+Register your new `Model` classes created in `models.py` using the admin register decorator 
 (`@admin.register(SomeModel)`). Since `admin.py` is populated with existing `ModelAdmin` classes that serve as ready-made examples, I am again opting for the slimmest of mockups:
 
 ```
@@ -499,7 +468,6 @@ list_display = [
 ### 2.4 Check the heritagesites Admin site
 With the edits to `models.py` and `admin.py` in place, start up the Django development server:
 
-#### macOS
 ```commandline
 (venv) $ python3 manage.py runserver
 Performing system checks...
@@ -511,23 +479,10 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-#### Windows
-```commandline
-(venv) > python manage.py runserver
-Performing system checks...
-
-System check identified no issues (0 silenced).
-October 01, 2018 - 20:37:25
-Django version 2.1.1, using settings 'mysite.settings'
-Starting development server at http://127.0.0.1:8000/
-Quit the server with CONTROL-C.
-``` 
-
 Log in as the superuser and check the `heritagesites` app admin pages.  You should encounter two new pages based on the new `ModelAdmin` classes you registered.
 
 :bulb: If you encounter startup errors, recheck your work. If you find yourself stumped, post a 
-message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.).  Note your 
-operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python 
+message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.).  Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python 
 version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback.
 
 ## 3.0 Exercises
@@ -566,7 +521,7 @@ shell output into `<uniqname>-heritage_sites_mtg5.txt`.
  SELECT statement.
  
 ```commandline
-mysql> USE unesco_heritage_sites;
+mysql $ USE unesco_heritage_sites;
 Database changed
 ```
  
@@ -596,4 +551,3 @@ Append your Python code output to `<uniqname>-heritage_sites_mtg5.txt`
  
 ### 3.4 Submit assignment 
 Submit `<uniqname>-heritage_sites_mtg5.txt` to Canvas via the assignment page.
-  
