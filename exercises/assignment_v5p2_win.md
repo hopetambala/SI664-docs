@@ -46,6 +46,7 @@ collection of [Unoffical Windows Binaries for Python Extension Packages](https:/
 Processing c:\users\someuser\downloads\mysqlclient-1.3.13-cp37-cp37m-win_amd64.whl
 Installing collected packages: mysqlclient
 Successfully installed mysqlclient-1.3.13
+```
 
 After the `mysqlclient` package is installed manually run `pip install` using `requirements
 .txt` to ensure that the remaining required packages are installed.  
