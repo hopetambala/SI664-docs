@@ -114,7 +114,7 @@ The `run_mysql_script.py` takes two arguments: `-c` for the config file path and
 path to the SQL script: 
 
 ```commandline
-(venv) > python3 run_mysql_script.py --help
+(venv) > python run_mysql_script.py --help
 usage: run_mysql_script.py [-h] -c CONFIG -p PATH
 
 This python script is designed to process MySQL scripts. The script requires a
@@ -500,7 +500,7 @@ With the edits to `models.py` and `admin.py` in place, start up the Django devel
 
 #### macOS
 ```commandline
-(venv) $ python3 manage.py runserver
+(venv) $ python manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).

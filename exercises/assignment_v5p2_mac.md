@@ -116,7 +116,8 @@ optional arguments:
 Run as follows, tailoring the *.yaml and *.sql file paths as necessary:
 
 ```commandline
-(venv) $ python run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p ./input/sql/unesco_heritage_sites_add_location.sql
+(venv) $ python3 run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p 
+./input/sql/unesco_heritage_sites_add_location.sql
 ```
 
 ### 1.6 Confirm country_area/location regional affiliations 
@@ -304,7 +305,7 @@ Once you have confirmed that the correct constraint names are listed in
 against it tailoring the *.yaml and *.sql file paths as necessary:
 
 ```commandline
-(venv) $ python run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p
+(venv) $ python3 run_mysql_script.py -c ./config/unesco_heritage_sites.yaml -p
 ./input/sql/unesco_heritage_sites_trim_country_area.sql
 ```
 
@@ -380,7 +381,7 @@ Both the "Hello World" index view and the admin site are wired into the URLconf.
 that all is well with the `heritagesites` app by starting up the Django development server: 
 
 ```
-(venv) $ python manage.py runserver
+(venv) $ python3 manage.py runserver
 ```
 
 Visit http://localhost:8000/heritagesites/ or http://127.0.0.1:8000/heritagesites/ in your 
