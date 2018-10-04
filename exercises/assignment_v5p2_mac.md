@@ -1,4 +1,4 @@
-# Meeting 5 Exercise (Windows)
+# Meeting 5 Exercise (macOS)
 
 In this assignment you will
 
