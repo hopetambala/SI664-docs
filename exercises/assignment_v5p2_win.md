@@ -3,7 +3,7 @@
 In this assignment you will
 
 * Run `mysqldump` to back up the `unesco_heritage_sites` database
-* Create new database tables, columns and column constraints 
+* Create new database tables, columns and column constraints using `run_mysql_script.py`
 * Add/edit `Model` classes in `heritagesites/models.py`
 * Add/edit `ModelAdmin` classes in `heritagesites/admin.py`
 * Write and execute a SQL query in the MySQL shell
