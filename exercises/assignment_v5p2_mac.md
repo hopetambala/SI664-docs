@@ -48,7 +48,7 @@ connection settings to your `unesco_heritage_sites.yaml` file.  Make sure you se
 
 :warning: if you choose a password that is composed of integers only (e.g., 98522952) you must 
 wrap the value in single (') or double quotes in order to force YAML to treat the value as a 
-string which 
+string for MySQL to consume. 
 
 ```yaml
 ################

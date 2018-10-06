@@ -64,6 +64,10 @@ this file in order to retrieve the database connection settings. Add the followi
 connection settings to your `unesco_heritage_sites.yaml` file.  Make sure you set `user` and 
 `passwd` variables to the correct values. 
 
+:warning: if you choose a password that is composed of integers only (e.g., 98522952) you must 
+wrap the value in single (') or double quotes in order to force YAML to treat the value as a 
+string for MySQL to consume.
+
 ```yaml
 ################
 #   Database   #
