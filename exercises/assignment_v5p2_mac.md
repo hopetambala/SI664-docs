@@ -404,7 +404,7 @@ First add two new models that represent the new tables that were added to the da
 * `unesco_heritage_sites.planet` 
 * `unesco_heritage_sites.location`
 
-:bulb: Review the `CREATE TABLE` and `ALTER TABLE` statements in the 
+Review the `CREATE TABLE` and `ALTER TABLE` statements in the 
 `unesco_heritage_sites_add_location.sql` script to gather needed information about column names, 
 data types and other constraints.
 
@@ -443,6 +443,11 @@ region = models.ForeignKey('Region', models.DO_NOTHING, blank=True, null=True)
 sub_region = models.ForeignKey('SubRegion', models.DO_NOTHING, blank=True, null=True)
 intermediate_region = models.ForeignKey('IntermediateRegion', models.DO_NOTHING, blank=True, null=True)
 ```
+
+:bulb: Recall that you can use the Django utility `inspectdb` to generate a `models.py` based on 
+the revised database. If you take this approach do NOT replace your current `heritagesites/models.py` 
+with the `inspectdb` generated `models.py` file. Just locate the new/revised Model classes and 
+cherry-pick what you need out of the file.
 
 ### 2.3 Update heritagesites/admin.py
 Next, turn your attention to `heritagesites/admin.py`. The file is likely empty.  If so copy the 
