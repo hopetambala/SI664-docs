@@ -316,7 +316,30 @@ against it tailoring the *.yaml and *.sql file paths as necessary:
 ./input/sql/unesco_heritage_sites_trim_country_area.sql
 ```
 
-:bulb: If you encounter any SQL-related errors that you are not able to resolve, post a message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.).  Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback. 
+### 1.8 Starting over 
+If by chance disaster strikes and the `unesco_heritage_sites` database schema gets damaged or 
+the data corrupted do the following:
+
+Start a new terminal session. Log into the MySQL shell, drop `unesco_heritage_sites`, create a 
+new empty database with the same name:
+
+```commandline
+$ mysql -uarwhyte
+mysql> DROP DATABASE unesco_heritage_sites;
+mysql> CREATE DATABASE unesco_heritage_sites; 
+mysql> USE unesco_heritage_sites; 
+```
+ 
+Start another terminal session, change to the directory where your .sql dump file is located and 
+import the schema and data into the new unesco_heritage_sites database:
+ 
+```commandline
+$ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites.sql
+``` 
+
+Start over again at step 1.2.
+
+:bulb: If you encounter any SQL-related errors that you are not able to resolve, post a message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.). Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback.
 
 ## 2.0 Front-end
 
