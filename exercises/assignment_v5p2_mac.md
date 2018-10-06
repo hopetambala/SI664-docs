@@ -25,7 +25,10 @@ $ mysqldump -uarwhyte unesco_heritage_sites > unesco_heritage_sites.sql
 ```
 
 ### 1.2 Add new database entities
-If you are Git/Github savvy, fork the [SI664-scripts](https://github.com/UMSI-SI664-2018Fall/SI664-scripts) repo and clone it to your laptop.  Otherwise download the *.zip file of the code.  If you have already forked and cloned the repo do a `git pull` to update your local working directory.  
+If you are Git/Github savvy, fork the [SI664-scripts](https://github.com/UMSI-SI664-2018Fall/SI664-scripts) repo and clone it to your laptop.  Otherwise download the *.zip file of the code.  If you have already forked and cloned the repo do a `git pull` to update your local working directory.
+
+You will utilize a Python script named `run_mysql_script.py` to execute two *.sql scripts that will 
+modify the existing unesco_heritage_sites database. 
 
 ### 1.3 Create a virtual environment
 Create a virtual environment for the scripts and then run `pip` to install package dependencies 
@@ -42,6 +45,10 @@ Create a `unesco_heritage_sites.yaml` configuration file. The `run_mysql_script.
 this file in order to retrieve the database connection settings. Add the following database 
 connection settings to your `unesco_heritage_sites.yaml` file.  Make sure you set `user` and 
 `passwd` variables to the correct values. 
+
+:warning: if you choose a password that is composed of integers only (e.g., 98522952) you must 
+wrap the value in single (') or double quotes in order to force YAML to treat the value as a 
+string which 
 
 ```yaml
 ################
