@@ -3,7 +3,7 @@
 In this assignment you will
 
 * Run `mysqldump` to back up the `unesco_heritage_sites` database
-* Create new database tables, columns and column constraints 
+* Create new database tables, columns and column constraints using `run_mysql_script.py`
 * Add/edit `Model` classes in `heritagesites/models.py`
 * Add/edit `ModelAdmin` classes in `heritagesites/admin.py`
 * Write and execute a SQL query in the MySQL shell
@@ -25,7 +25,10 @@ $ mysqldump -uarwhyte unesco_heritage_sites > unesco_heritage_sites.sql
 ```
 
 ### 1.2 Add new database entities
-If you are Git/Github savvy, fork the [SI664-scripts](https://github.com/UMSI-SI664-2018Fall/SI664-scripts) repo and clone it to your laptop.  Otherwise download the *.zip file of the code.  If you have already forked and cloned the repo do a `git pull` to update your local working directory.  
+If you are Git/Github savvy, fork the [SI664-scripts](https://github.com/UMSI-SI664-2018Fall/SI664-scripts) repo and clone it to your laptop.  Otherwise download the *.zip file of the code.  If you have already forked and cloned the repo do a `git pull` to update your local working directory.
+
+You will utilize a Python script named `run_mysql_script.py` to execute two *.sql scripts that will 
+modify the existing unesco_heritage_sites database. 
 
 ### 1.3 Create a virtual environment
 Create a virtual environment for the scripts and then run `pip` to install package dependencies 
@@ -42,6 +45,10 @@ Create a `unesco_heritage_sites.yaml` configuration file. The `run_mysql_script.
 this file in order to retrieve the database connection settings. Add the following database 
 connection settings to your `unesco_heritage_sites.yaml` file.  Make sure you set `user` and 
 `passwd` variables to the correct values. 
+
+:warning: if you choose a password that is composed of integers only (e.g., 98522952) you must 
+wrap the value in single (') or double quotes in order to force YAML to treat the value as a 
+string which 
 
 ```yaml
 ################
@@ -309,7 +316,30 @@ against it tailoring the *.yaml and *.sql file paths as necessary:
 ./input/sql/unesco_heritage_sites_trim_country_area.sql
 ```
 
-:bulb: If you encounter any SQL-related errors that you are not able to resolve, post a message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.).  Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback. 
+### 1.8 Starting over 
+If by chance disaster strikes and the `unesco_heritage_sites` database schema gets damaged or 
+the data corrupted do the following:
+
+Start a new terminal session. Log into the MySQL shell, drop `unesco_heritage_sites`, create a 
+new empty database with the same name:
+
+```commandline
+$ mysql -uarwhyte
+mysql> DROP DATABASE unesco_heritage_sites;
+mysql> CREATE DATABASE unesco_heritage_sites; 
+mysql> USE unesco_heritage_sites; 
+```
+ 
+Start another terminal session, change to the directory where your .sql dump file is located and 
+import the schema and data into the new unesco_heritage_sites database:
+ 
+```commandline
+$ mysql -uarwhyte unesco_heritage_sites < unesco_heritage_sites.sql
+``` 
+
+Start over again at step 1.2.
+
+:bulb: If you encounter any SQL-related errors that you are not able to resolve, post a message to the class using the Canvas Discussion tool under the relevant topic ("Django", "MySQL", etc.). Note your operating system version (macOS 10.13.6 (High Sierra), Windows 10, Ubuntu 18, etc.), Python version (3.7.0, 3.6.6, etc.). Describe your problem and include the traceback.
 
 ## 2.0 Front-end
 
@@ -397,7 +427,7 @@ First add two new models that represent the new tables that were added to the da
 * `unesco_heritage_sites.planet` 
 * `unesco_heritage_sites.location`
 
-:bulb: Review the `CREATE TABLE` and `ALTER TABLE` statements in the 
+Review the `CREATE TABLE` and `ALTER TABLE` statements in the 
 `unesco_heritage_sites_add_location.sql` script to gather needed information about column names, 
 data types and other constraints.
 
@@ -436,6 +466,11 @@ region = models.ForeignKey('Region', models.DO_NOTHING, blank=True, null=True)
 sub_region = models.ForeignKey('SubRegion', models.DO_NOTHING, blank=True, null=True)
 intermediate_region = models.ForeignKey('IntermediateRegion', models.DO_NOTHING, blank=True, null=True)
 ```
+
+:bulb: Recall that you can use the Django utility `inspectdb` to generate a `models.py` based on 
+the revised database. If you take this approach do NOT replace your current `heritagesites/models.py` 
+with the `inspectdb` generated `models.py` file. Just locate the new/revised Model classes and 
+cherry-pick what you need out of the file.
 
 ### 2.3 Update heritagesites/admin.py
 Next, turn your attention to `heritagesites/admin.py`. The file is likely empty.  If so copy the 
