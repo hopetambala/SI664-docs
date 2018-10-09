@@ -88,7 +88,7 @@ repair.
 |:---- | :--------- |
 | [views\.py](../misc/views.py) | The `SiteListView()` class requires an ORM query that retrieves all HeritageSite records. `SiteDetailView()` needs its missing `template_name` value restored. |
 
-### 2.2 Append SiteListView() to assignment file
+### 2.2 Document SiteListView() fix in <uniqname>-heritage_sites_mtg6.txt
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
 its entirety and paste it into
                                                        
@@ -121,17 +121,27 @@ OK
 Destroying test database for alias 'default'...
 ```
 
-### 3.3 Append SiteModelTest and terminal output to assignment file
+### 3.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
 After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
-terminal output into
- 
- `<uniqname>-heritage_sites_mtg6.txt`
+terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
 
-## 4.0 Templates 
+## 4.0 URLS
+Next update `heritagesites/urls.py` by adding the following URL paths:
+
+```python
+urlpatterns = [
+    path('', views.HomePageView.as_view(), name='home'),
+    path('about/', views.AboutPageView.as_view(), name='about'),
+    path('sites/', views.SiteListView.as_view(), name='sites'),
+    path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
+]
+```
+
+## 5.0 Templates 
 Next, you will fix broken template files that the `heritagesites` app utilizes to display the 
 views that you repaired earlier.
 
-### 4.1 Create a templates directory
+### 5.1 Create a templates directory
 Create the following directory structure and add a set of *.html files. This is the Django default location for `heritagesites` app templates.
 
 ```
@@ -148,7 +158,7 @@ heritagesites/                  <-- project
     ...   
 ```
 
-### 4.2 Add templates
+### 5.2 Add templates
 The following files are missing bits of code that will require a bit of sleuthing on your part in 
 order to effect the necessary fixes required to render them whole again and usable. Repairing 
 these files requires a basic understanding of Django's templating language.
@@ -157,67 +167,17 @@ Add each of them to the `templates/heritagesites` directory:
 
 | File | Disposition |
 |:---- | :--------- |
-| [base\.html](../misc/base.html) | Broken in two places; add Name/email to Footer |
-| [home\.html](../misc/home.html) | Broken in two places; ignore TODO |
+| [base\.html](../misc/base.html) | Broken in two places; add Name/email to footer |
+| [home\.html](../misc/home.html) | Broken in two places |
 | [about\.html](../misc/about.html) | No missing code |
 | [site\.html](../misc/site.html) | Broken in two places |
 | [site_detail\.html](../misc/site_detail.html) | Broken in one place; HeritageSite and HeritageSiteCategory property values |
 
-### 4.3 Pagination template
-The `site.html` file includes the following code for rendering the pagination bar. Pretty cool 
-and no need to write it yourself.  
+### 5.3 Repair templates
+Fix each template.  This work involves adding missing template language to each file as well as 
+missing properties in the `site_detail.html` page.
 
-```html
-<!-- WARNING: there is no missing code between <nav>...</nav> -->
-  <nav>
-    {% if is_paginated %}
-      <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-              aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled"><span>&laquo;</span></li>
-        {% endif %}
-
-        {% for i in paginator.page_range %}
-          {% if page_obj.number == i %}
-            <li class="page-item active">
-              <span>{{ i }}
-                <span class="sr-only">(current)</span>
-              </span>
-            </li>
-          {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-          <li class="page-item">
-             <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                 <span aria-hidden="true">&raquo;</span>
-               <span class="sr-only">Next</span>
-             </a>
-          </li>
-        {% else %}
-            <li class="page-item disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </ul>
-    {% endif %}
-  </nav>
-```
-
-### 4.3 Append site_detail template to assignment file
-After repairing `site_detail.html` and adding the missing property values, copy the template code
- in its entirety and paste it into
- 
- `<uniqname>-heritage_sites_mtg6.txt`
-
-### 4.3 Start the development server
+### 5.4 Check your changes
 Start the development server and confirm that the views and templates have been repaired by 
 traversing the `heritagesites` app, checking the nav bar, site list pagination and individual 
 site entries.
@@ -226,17 +186,23 @@ site entries.
 (venv) $ python3 manage.py runserver
 ```
 
-## 5.0 URLS
-Add the following paths to `urls.py`:
+### 5.5 Document your template fixes in <uniqname>-heritage_sites_mtg6.txt
+After confirming that your `heritagesites` app is in working order, describe the changes you made
+ to fix it by adding the following section to `<uniqname>-heritage_sites_mtg6.txt`:
 
-```python
-urlpatterns = [
-    path('', views.HomePageView.as_view(), name='home'),
-    path('about/', views.AboutPageView.as_view(), name='about'),
-    path('sites/', views.SiteListView.as_view(), name='sites'),
-    path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
-]
+```txt
+Template repair work
+base.html: fixed ...
+home.html: fixed ...
+about.html: fixed ...
+site.html: fixed ...
+site_detail.html: fixed ...
 ```
+
+After describing the fixes copy the `site_detail.html` template code in its entirety and paste it
+ into
+ 
+ `<uniqname>-heritage_sites_mtg6.txt`
 
 ## 6.0 Static assets
 Bootstrap 4 CSS and Javascript will provide basic styling for the `heritagesites` app.  We will 
@@ -283,7 +249,7 @@ body {
 }
 ```
 
-### 6.4 Take screenshots and upload assignment files
+### 6.4 Document styling changes in <uniqname>-heritage_sites_mtg6.txt
 Once you have the site colors changed, take two screenshots:
 
 | Filename | View | Link |
@@ -291,7 +257,8 @@ Once you have the site colors changed, take two screenshots:
 | `<uniqname>-heritage_sites_p12_mtg6.png` | Site List, page 12 | http://localhost:8000/heritagesites/sites/?page=12 |
 |`<uniqname>-heritage_sites_site_569_mtg6.png` | Lake Turkana National Parks | http://localhost:8000/heritagesites/sites/569/ |
 
-Upload these files to Canvas along with  `<uniqname>-heritage_sites_mtg6.txt`
+### 6.5 Upload assignment files to Canvas
+Upload `<uniqname>-heritage_sites_mtg6.txt` plus the two screenshots to the SI 664 Canvas site.
 
 ### Appendix A. Custom Test Runner
 Running tests against unmanaged models requires a custom test runner that can change the Meta 
@@ -342,4 +309,52 @@ class UnManagedModelTestRunner(DiscoverRunner):
 
 		for m in self.unmanaged_models:
 			m._meta.managed = False
+```
+
+### Appendix B. Pagination template
+The `site.html` file includes the following code for rendering the pagination bar. Pretty cool 
+and leverages Bootstrap classes which simplifies styling.   
+
+```html
+<!-- WARNING: there is no missing code between <nav>...</nav> -->
+  <nav>
+    {% if is_paginated %}
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+              aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span>&laquo;</span></li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active">
+              <span>{{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+             <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                 <span aria-hidden="true">&raquo;</span>
+               <span class="sr-only">Next</span>
+             </a>
+          </li>
+        {% else %}
+            <li class="page-item disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  </nav>
 ```
