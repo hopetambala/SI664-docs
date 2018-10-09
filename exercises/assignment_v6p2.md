@@ -91,9 +91,7 @@ repair.
 
 ### 2.2 Document SiteListView() fix in <uniqname>-heritage_sites_mtg6.txt
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
-its entirety and paste it into
-                                                       
-`<uniqname>-heritage_sites_mtg6.txt`
+its entirety and paste it into `<uniqname>-heritage_sites_mtg6.txt`.
 
 ## 3.0 Tests
 Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
