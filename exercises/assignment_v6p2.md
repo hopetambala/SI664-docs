@@ -23,8 +23,7 @@ unmanaged Models to managed for the duration of the test. In order to implement 
 workaround you will need to install a new package, add some Python code, and tweak `settings.py`.
 
 ### 1.2 Install django-test-without-migrations package
-Activate your heritagesites virtualenv and install the [django-test-without-migrations]
-(https://pypi.org/project/django-test-without-migrations/) package.
+Activate your heritagesites virtualenv and install the [django-test-without-migrations](https://pypi.org/project/django-test-without-migrations/) package.
 
 ```commandline
 (venv) $ pip3 install django-test-without-migrations
@@ -59,8 +58,8 @@ TEST_RUNNER = 'heritagesites.utils.UnManagedModelTestRunner'
 
 #### 1.4 Create a custom test runner class
 Copy `utils.py` to the `heritagesites` app directory. This code implements a custom test runner that
- loops through the `heritagesite` unmanaged models and change their Meta `managed` option value from 
- False to True for the duration of the test. This file is whole and does not require fixing.
+ loops through the `heritagesite` unmanaged models and changes their Meta `managed` option value 
+ from False to True for the duration of the test. This file is whole and does not require fixing.
  
 | File | Disposition |
 |:---- | :--------- |
@@ -87,8 +86,7 @@ repair.
 
 | File | Disposition |
 |:---- | :--------- |
-| [views\.py](../misc/views.py) | The `SiteListView()` class requires an ORM query that retrieves 
-all HeritageSite records.  `SiteDetailView()` needs its missing `template_name` value restored. |
+| [views\.py](../misc/views.py) | The `SiteListView()` class requires an ORM query that retrieves all HeritageSite records. `SiteDetailView()` needs its missing `template_name` value restored. |
 
 ### 2.2 Append SiteListView() to assignment file
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
@@ -97,17 +95,14 @@ its entirety and paste it into
 `<uniqname>-heritage_sites_mtg6.txt`
 
 ## 3.0 Tests
-Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  
-However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
+Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
 
 ### 3.1 Add tests.py
 Copy the broken `tests.py` file to the `heritagesites` app directory.   
 
 | File | Disposition |
 |:---- | :--------- |
-| [tests\.py](../misc/tests.py) | Fix the `SiteModelTest` class. The `setUp()` method is broken. 
-See in particular `HeritageSite.objects.create()` method. It is missing several required 
-properties. Restore the missing properties and values. | 
+| [tests\.py](../misc/tests.py) | Fix the `SiteModelTest` class. The `setUp()` method is broken. See in particular `HeritageSite.objects.create()` method. It is missing several required properties. Restore the missing properties and values. | 
 
 ### 3.2 Run tests
 When you consider `tests.py` fixed run the tests. If test errors are encountered 
@@ -133,7 +128,7 @@ terminal output into
  `<uniqname>-heritage_sites_mtg6.txt`
 
 ## 4.0 Templates 
-Next, you will fix a broken template files that the `heritagesites` app utilizes to display the 
+Next, you will fix broken template files that the `heritagesites` app utilizes to display the 
 views that you repaired earlier.
 
 ### 4.1 Create a templates directory
@@ -166,8 +161,7 @@ Add each of them to the `templates/heritagesites` directory:
 | [home\.html](../misc/home.html) | Broken in two places; ignore TODO |
 | [about\.html](../misc/about.html) | No missing code |
 | [site\.html](../misc/site.html) | Broken in two places |
-| [site_detail\.html](../misc/site_detail.html) | Broken in one place; HeritageSite and 
-HeritageSiteCategory property values |
+| [site_detail\.html](../misc/site_detail.html) | Broken in one place; HeritageSite and HeritageSiteCategory property values |
 
 ### 4.3 Pagination template
 The `site.html` file includes the following code for rendering the pagination bar. Pretty cool 
@@ -251,10 +245,7 @@ will find CDN links to JQuery and Popper.js, and Bootstrap links in `base.html`.
  modification.
 
 ### 6.1 Choose a website color scheme
-But first, conduct a browser-based search of "website color schemes" and select a pleasing color 
-palette of 3-5 colors. I found mine by perusing Nayomi Chibana's [Color Schemes From Stunning 
-Websites](https://blog.visme.co/website-color-schemes/). The only requirement is that you select 
-a __different__ color scheme from the one [I chose](https://blog.visme.co/wp-content/uploads/2016/09/website19.jpg) for my `heritagesites` app.  
+Conduct a browser-based search of "website color schemes" and select a pleasing color palette of 3-5 colors. I found mine by perusing Nayomi Chibana's [Color Schemes From Stunning Websites](https://blog.visme.co/website-color-schemes/). The only requirement is that you select a __different__ color scheme from the one [I chose](https://blog.visme.co/wp-content/uploads/2016/09/website19.jpg) for my `heritagesites` app.  
 
 Copy the link to image of your chosen website color scheme and add it to `<uniqname>-heritage_sites_mtg6.txt`
 
@@ -297,17 +288,15 @@ Once you have the site colors changed, take two screenshots:
 
 | Filename | View | Link |
 |:---- | :------- | :--- |
-| `<uniqname>-heritage_sites_p12_mtg6.png` | Site List, page 12 | 
-http://localhost:8000/heritagesites/sites/?page=12 |
-|`<uniqname>-heritage_sites_site_569_mtg6.png` | Lake Turkana National Parks | 
-http://localhost:8000/heritagesites/sites/569/ |
+| `<uniqname>-heritage_sites_p12_mtg6.png` | Site List, page 12 | http://localhost:8000/heritagesites/sites/?page=12 |
+|`<uniqname>-heritage_sites_site_569_mtg6.png` | Lake Turkana National Parks | http://localhost:8000/heritagesites/sites/569/ |
 
 Upload these files to Canvas along with  `<uniqname>-heritage_sites_mtg6.txt`
 
 ### Appendix A. Custom Test Runner
 Running tests against unmanaged models requires a custom test runner that can change the Meta 
 unmanaged option from False to True for the duration of the tests. You will find 
-`UnManagedModelTestRunner(DiscoverRunner)` code in `heritagesites/utils.py`. 
+`UnManagedModelTestRunner()` class in `heritagesites/utils.py`. 
 
 ```python
 from django.test.runner import DiscoverRunner
