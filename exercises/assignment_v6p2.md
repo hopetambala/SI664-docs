@@ -1,4 +1,4 @@
-# Meeting 5 Exercise (macOS)
+# Meeting 6 Exercise
 
 In this assignment you will
 
@@ -170,7 +170,8 @@ Add each of them to the `templates/heritagesites` directory:
 HeritageSiteCategory property values |
 
 ### 4.3 Pagination template
-The `site.html` file includes the following code for rendering the pagination bar.  
+The `site.html` file includes the following code for rendering the pagination bar. Pretty cool 
+and no need to write it yourself.  
 
 ```html
 <!-- WARNING: there is no missing code between <nav>...</nav> -->
@@ -231,13 +232,25 @@ site entries.
 (venv) $ python3 manage.py runserver
 ```
 
-## 5.0 Static assets
+## 5.0 URLS
+Add the following paths to `urls.py`:
+
+```python
+urlpatterns = [
+    path('', views.HomePageView.as_view(), name='home'),
+    path('about/', views.AboutPageView.as_view(), name='about'),
+    path('sites/', views.SiteListView.as_view(), name='sites'),
+    path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
+]
+```
+
+## 6.0 Static assets
 Bootstrap 4 CSS and Javascript will provide basic styling for the `heritagesites` app.  We will 
 forgo a local install in favor of linking to Bootstrap via a content delivery network (CDN). You 
 will find CDN links to JQuery and Popper.js, and Bootstrap links in `base.html`.  They require no
  modification.
 
-### 5.1 Choose a website color scheme
+### 6.1 Choose a website color scheme
 But first, conduct a browser-based search of "website color schemes" and select a pleasing color 
 palette of 3-5 colors. I found mine by perusing Nayomi Chibana's [Color Schemes From Stunning 
 Websites](https://blog.visme.co/website-color-schemes/). The only requirement is that you select 
@@ -250,7 +263,7 @@ Selected Website color scheme
 https://blog.visme.co/wp-content/uploads/2016/09/website40.jpg
 ``` 
 
-### 5.2 Create a static directory 
+### 6.2 Create a static directory 
 Create the following directory structure to house static assets such as style sheets and images. 
 This is the Django default location for `heritagesites` style sheets and images.
 
@@ -264,7 +277,7 @@ heritagesites/                  <-- project
     ...   
 ```
 
-### 5.3 Add a CSS style sheet
+### 6.3 Add a CSS style sheet
 Add the ready-made style sheet `heritagesites.css` to the `css/` directory. 
 
 | File | Disposition |
@@ -279,6 +292,7 @@ body {
 }
 ```
 
+### 6.4 Take screenshots and upload assignment files
 Once you have the site colors changed, take two screenshots:
 
 | Filename | View | Link |
@@ -289,7 +303,6 @@ http://localhost:8000/heritagesites/sites/?page=12 |
 http://localhost:8000/heritagesites/sites/569/ |
 
 Upload these files to Canvas along with  `<uniqname>-heritage_sites_mtg6.txt`
-
 
 ### Appendix A. Custom Test Runner
 Running tests against unmanaged models requires a custom test runner that can change the Meta 
