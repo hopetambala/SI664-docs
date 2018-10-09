@@ -93,17 +93,49 @@ repair.
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
 its entirety and paste it into `<uniqname>-heritage_sites_mtg6.txt`.
 
-## 3.0 Tests
+## 3.0 URLS
+Replace mysite/urls.py with the following `urlpatterns`:
+
+```python
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.http import HttpResponseRedirect
+from django.urls import path, include
+
+urlpatterns = [
+    path('', lambda r: HttpResponseRedirect('heritagesites/')),
+    path('admin/', admin.site.urls),
+    path('heritagesites/', include('heritagesites.urls')),
+]
+```
+
+Next replace `heritagesites/urls.py` with the following `urlpatterns`:
+
+```python
+from django.urls import path, re_path
+from . import views
+
+urlpatterns = [
+    path('', views.HomePageView.as_view(), name='home'),
+    path('about/', views.AboutPageView.as_view(), name='about'),
+    path('sites/', views.SiteListView.as_view(), name='sites'),
+    path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
+]
+```
+
+## 4.0 Tests
 Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
 
-### 3.1 Add tests.py
+### 4.1 Add tests.py
 Copy the broken `tests.py` file to the `heritagesites` app directory.   
 
 | File | Disposition |
 |:---- | :--------- |
 | [tests\.py](../misc/tests.py) | Fix the `SiteModelTest` class. The `setUp()` method is broken. See in particular `HeritageSite.objects.create()` method. It is missing several required properties. Restore the missing properties and values. | 
 
-### 3.2 Run tests
+### 4.2 Run tests
 When you consider `tests.py` fixed run the tests. If test errors are encountered 
 recheck the test classes and methods run the tests again. Repeat until all tests execute 
 successfully.
@@ -114,27 +146,15 @@ Creating test database for alias 'default'...
 System check identified no issues (0 silenced).
 ..................
 ----------------------------------------------------------------------
-Ran 16 tests in 0.087s
+Ran 13 tests in 0.087s
 
 OK
 Destroying test database for alias 'default'...
 ```
 
-### 3.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
+### 4.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
 After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
 terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
-
-## 4.0 URLS
-Next update `heritagesites/urls.py` by adding the following URL paths:
-
-```python
-urlpatterns = [
-    path('', views.HomePageView.as_view(), name='home'),
-    path('about/', views.AboutPageView.as_view(), name='about'),
-    path('sites/', views.SiteListView.as_view(), name='sites'),
-    path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
-]
-```
 
 ## 5.0 Templates 
 Next, you will fix broken template files that the `heritagesites` app utilizes to display the 
