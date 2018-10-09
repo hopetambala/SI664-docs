@@ -16,7 +16,8 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
     * [Exercise 5.2](exercises/assignment_v5p2_mac.md) (macOS)
     * [Exercise 5.2](exercises/assignment_v5p2_win.md) (Windows)
   * Meeting 6
-    * [Exercise 6.2](exercises/assignment_v6p2.md)
+    * [Exercise 6.2](exercises/assignment_v6p2_mac.md) (macOS)
+    * [Exercise 6.2](exercises/assignment_v6p2_win.md) (Windows)
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

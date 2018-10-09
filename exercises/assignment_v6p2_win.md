@@ -1,4 +1,4 @@
-# Meeting 6 Exercise
+# Meeting 6 Exercise (Windows)
 
 In this assignment you will
 
@@ -26,7 +26,7 @@ workaround you will need to install a new package, add some Python code, and twe
 Activate your heritagesites virtualenv and install the [django-test-without-migrations](https://pypi.org/project/django-test-without-migrations/) package.
 
 ```commandline
-(venv) $ pip3 install django-test-without-migrations
+(venv) > pip install django-test-without-migrations
 ```
 
 #### 1.3 Update settings.py
@@ -109,7 +109,7 @@ recheck the test classes and methods run the tests again. Repeat until all tests
 successfully.
 
 ```commandline
-(venv) $ python3 manage.py test -n
+(venv) > python manage.py test -n
 Creating test database for alias 'default'...
 System check identified no issues (0 silenced).
 ..................
@@ -182,7 +182,7 @@ traversing the `heritagesites` app, checking the nav bar, site list pagination a
 site entries.
 
 ```commandline
-(venv) $ python3 manage.py runserver
+(venv) > python manage.py runserver
 ```
 
 ### 5.5 Document your template fixes in <uniqname>-heritage_sites_mtg6.txt
