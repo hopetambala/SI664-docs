@@ -54,9 +54,10 @@ Next, add a new TEST_RUNNER setting:
 TEST_RUNNER = 'heritagesites.utils.UnManagedModelTestRunner'
 ```
 
-:bulb: I added the TEST_RUNNER directive immediately after TEMPLATES.
-
 #### 1.4 Create a custom test runner class
+:bulb: You will find copies of all files referenced in this assignment in the SI664-docs repo in 
+the `misc/` directory.  See [https://github.com/arwhyte/SI664-docs/tree/master/misc](https://github.com/arwhyte/SI664-docs/tree/master/misc).
+
 Copy `utils.py` to the `heritagesites` app directory. This code implements a custom test runner that
  loops through the `heritagesite` unmanaged models and changes their Meta `managed` option value 
  from False to True for the duration of the test. This file is whole and does not require fixing.
