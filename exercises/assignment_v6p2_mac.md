@@ -89,7 +89,7 @@ repair.
 |:---- | :--------- |
 | [views\.py](../misc/views.py) | The `SiteListView()` class requires an ORM query that retrieves all HeritageSite records. `SiteDetailView()` needs its missing `template_name` value restored. |
 
-### 2.2 Document SiteListView() fix in \<\>-heritage_sites_mtg6.txt
+### 2.2 Document SiteListView() fix in \<uniqname\>-heritage_sites_mtg6.txt
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
 its entirety and paste it into `<uniqname>-heritage_sites_mtg6.txt`.
 
@@ -266,7 +266,7 @@ body {
 }
 ```
 
-### 6.4 Document styling changes in <uniqname>-heritage_sites_mtg6.txt
+### 6.4 Document styling changes in \<uniqname\>-heritage_sites_mtg6.txt
 Once you have the site colors changed, take two screenshots:
 
 | Filename | View | Link |
