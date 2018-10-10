@@ -125,42 +125,11 @@ urlpatterns = [
 ]
 ```
 
-## 4.0 Tests
-Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
-
-### 4.1 Add tests.py
-Copy the broken `tests.py` file to the `heritagesites` app directory.   
-
-| File | Disposition |
-|:---- | :--------- |
-| [tests\.py](../misc/tests.py) | Fix the `SiteModelTest` class. The `setUp()` method is broken. See in particular `HeritageSite.objects.create()` method. It is missing several required properties. Restore the missing properties and values. | 
-
-### 4.2 Run tests
-When you consider `tests.py` fixed run the tests. If test errors are encountered 
-recheck the test classes and methods run the tests again. Repeat until all tests execute 
-successfully.
-
-```commandline
-(venv) > python manage.py test -n
-Creating test database for alias 'default'...
-System check identified no issues (0 silenced).
-..................
-----------------------------------------------------------------------
-Ran 13 tests in 0.087s
-
-OK
-Destroying test database for alias 'default'...
-```
-
-### 4.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
-After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
-terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
-
-## 5.0 Templates 
+## 4.0 Templates 
 Next, you will fix broken template files that the `heritagesites` app utilizes to display the 
 views that you repaired earlier.
 
-### 5.1 Create a templates directory
+### 4.1 Create a templates directory
 Create the following directory structure and add a set of *.html files. This is the Django default location for `heritagesites` app templates.
 
 ```
@@ -177,7 +146,7 @@ heritagesites/                  <-- project
     ...   
 ```
 
-### 5.2 Add templates
+### 4.2 Add templates
 The following files are missing bits of code that will require a bit of sleuthing on your part in 
 order to effect the necessary fixes required to render them whole again and usable. Repairing 
 these files requires a basic understanding of Django's templating language.
@@ -192,11 +161,11 @@ Add each of them to the `templates/heritagesites` directory:
 | [site\.html](../misc/site.html) | Broken in two places |
 | [site_detail\.html](../misc/site_detail.html) | Broken in one place; HeritageSite and HeritageSiteCategory property values |
 
-### 5.3 Repair templates
+### 4.3 Repair templates
 Fix each template.  This work involves adding missing template language to each file as well as 
 missing properties in the `site_detail.html` page.
 
-### 5.4 Check your changes
+### 4.4 Check your changes
 Start the development server and confirm that the views and templates have been repaired by 
 traversing the `heritagesites` app, checking the nav bar, site list pagination and individual 
 site entries.
@@ -205,7 +174,7 @@ site entries.
 (venv) > python manage.py runserver
 ```
 
-### 5.5 Document your template fixes in <uniqname>-heritage_sites_mtg6.txt
+### 4.5 Document your template fixes in <uniqname>-heritage_sites_mtg6.txt
 After confirming that your `heritagesites` app is in working order, describe the changes you made
  to fix it by adding the following section to `<uniqname>-heritage_sites_mtg6.txt`:
 
@@ -222,6 +191,37 @@ After describing the fixes copy the `site_detail.html` template code in its enti
  into
  
  `<uniqname>-heritage_sites_mtg6.txt`
+
+## 5.0 Tests
+Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
+
+### 5.1 Add tests.py
+Copy the broken `tests.py` file to the `heritagesites` app directory.   
+
+| File | Disposition |
+|:---- | :--------- |
+| [tests\.py](../misc/tests.py) | Fix the `SiteModelTest` class. The `setUp()` method is broken. See in particular `HeritageSite.objects.create()` method. It is missing several required properties. Restore the missing properties and values. | 
+
+### 5.2 Run tests
+When you consider `tests.py` fixed run the tests. If test errors are encountered 
+recheck the test classes and methods run the tests again. Repeat until all tests execute 
+successfully.
+
+```commandline
+(venv) > python manage.py test -n
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+..................
+----------------------------------------------------------------------
+Ran 13 tests in 0.087s
+
+OK
+Destroying test database for alias 'default'...
+```
+
+### 5.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
+After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
+terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
 
 ## 6.0 Static assets
 Bootstrap 4 CSS and Javascript will provide basic styling for the `heritagesites` app.  We will 
@@ -274,10 +274,17 @@ Once you have the site colors changed, take two screenshots:
 | Filename | View | Link |
 |:---- | :------- | :--- |
 | `<uniqname>-heritage_sites_p12_mtg6.png` | Site List, page 12 | http://localhost:8000/heritagesites/sites/?page=12 |
-|`<uniqname>-heritage_sites_site_569_mtg6.png` | Lake Turkana National Parks | http://localhost:8000/heritagesites/sites/569/ |
+| `<uniqname>-heritage_sites_site_569_mtg6.png` | Lake Turkana National Parks | http://localhost:8000/heritagesites/sites/569/ |
 
-### 6.5 Upload assignment files to Canvas
-Upload `<uniqname>-heritage_sites_mtg6.txt` plus the two screenshots to the SI 664 Canvas site.
+### 6.5 Upload assignment .zip file to Canvas
+Create a .zip archive of 
+
+* `<uniqname>-heritage_sites_mtg6.txt`
+* `<uniqname>-heritage_sites_p12_mtg6.png`
+* `<uniqname>-heritage_sites_site_569_mtg6.png`
+
+called `<uniqname>-heritage_sites_mtg6.zip` and upload to the SI 664 Canvas site from the 
+assignment page.
 
 ### Appendix A. Custom Test Runner
 Running tests against unmanaged models requires a custom test runner that can change the Meta 
