@@ -187,8 +187,7 @@ site.html: fixed ...
 site_detail.html: fixed ...
 ```
 
-After describing the fixes copy the `site_detail.html` template code in its entirety and paste it
- into `<uniqname>-heritage_sites_mtg6.txt`.
+After describing the fixes copy the `site_detail.html` template code in its entirety and paste it into `<uniqname>-heritage_sites_mtg6.txt`.
 
 ## 5.0 Tests
 Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
@@ -217,7 +216,7 @@ OK
 Destroying test database for alias 'default'...
 ```
 
-### 5.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
+### 5.3 Document SiteModelTest() fix and terminal output in \<uniqname\>-heritage_sites_mtg6.txt
 After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
 terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
 
