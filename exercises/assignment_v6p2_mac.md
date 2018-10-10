@@ -9,7 +9,7 @@ In this assignment you will
 * Update URL paths
 * Choose a stylish website color scheme for your `heritagesites` app
 * Override bits of Bootstrap 4 with a custom `heritagesites` css file
-* Record your work as directed in `<uniqname>-heritage_sites_mtg6.txt`
+* Creat a `<uniqname>-heritage_sites_mtg6.zip`of your work and submit it for evaluation
 
 ## 1.0 Test setup
 
@@ -89,7 +89,7 @@ repair.
 |:---- | :--------- |
 | [views\.py](../misc/views.py) | The `SiteListView()` class requires an ORM query that retrieves all HeritageSite records. `SiteDetailView()` needs its missing `template_name` value restored. |
 
-### 2.2 Document SiteListView() fix in <uniqname>-heritage_sites_mtg6.txt
+### 2.2 Document SiteListView() fix in \<\>-heritage_sites_mtg6.txt
 Once you have added the missing `SiteListView()` ORM query copy the `SiteListView()` class in 
 its entirety and paste it into `<uniqname>-heritage_sites_mtg6.txt`.
 
@@ -174,7 +174,7 @@ site entries.
 (venv) $ python3 manage.py runserver
 ```
 
-### 4.5 Document your template fixes in <uniqname>-heritage_sites_mtg6.txt
+### 4.5 Document your template fixes in \<uniqname\>-heritage_sites_mtg6.txt
 After confirming that your `heritagesites` app is in working order, describe the changes you made
  to fix it by adding the following section to `<uniqname>-heritage_sites_mtg6.txt`:
 
@@ -188,9 +188,7 @@ site_detail.html: fixed ...
 ```
 
 After describing the fixes copy the `site_detail.html` template code in its entirety and paste it
- into
- 
- `<uniqname>-heritage_sites_mtg6.txt`
+ into `<uniqname>-heritage_sites_mtg6.txt`.
 
 ## 5.0 Tests
 Confirm that the views are fixed by running an initial set of `heritagesites` app tests.  However, before the tests can be run, the `SiteModelTest` class will need to be fixed.
@@ -219,7 +217,7 @@ OK
 Destroying test database for alias 'default'...
 ```
 
-### 5.3 Document SiteModelTest() fix and terminal output in <uniqname>-heritage_sites_mtg6.txt
+### 5.3 Document SiteModelTest() fix and terminal output in \<uniqname\>-heritage_sites_mtg6.txt
 After a successful test run, paste a copy of both the repaired `SiteModelTest` class _and_ the 
 terminal output into `<uniqname>-heritage_sites_mtg6.txt`.
 
