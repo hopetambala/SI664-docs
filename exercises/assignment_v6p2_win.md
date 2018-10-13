@@ -147,7 +147,7 @@ heritagesites/                  <-- project
 ```
 
 ### 4.2 Add templates
-The following files are missing bits of code that will require a bit of sleuthing on your part in 
+A number of template files are missing bits of code that will require a bit of sleuthing on your part in 
 order to effect the necessary fixes required to render them whole again and usable. Repairing 
 these files requires a basic understanding of Django's templating language.
 
