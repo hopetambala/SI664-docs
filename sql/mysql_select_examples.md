@@ -732,7 +732,7 @@ SELECT DATABASE();
 1 row in set (0.01 sec)
 ```
 
-#### A.2. List of database tables
+### A.2. List of database tables
 
 ```mysql
 SHOW TABLES;
