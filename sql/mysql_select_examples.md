@@ -3,9 +3,17 @@
 The following examples represent the type of SQL `SELECT` statements you may be asked to write as
  part of a weekly assignment or during the midterm examination.   
 
+
+
+
 ## TODO
 IFNULL()
 Correlated subquery
+
+
+
+
+
 
 ## MySQL Documentation
 * [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
@@ -24,7 +32,7 @@ before attempting to execute the example queries.
 USE unesco_heritage_sites;
 ``` 
 
-## Return a list of heritage sites that includes the word 'Lake' in the name
+## SQL: Return a list of heritage sites that includes the word 'Lake' in the name
 
 #### Required column names (aliased)
 * country / area
@@ -94,7 +102,7 @@ ORDER BY ca.country_area_name, hs.site_name;
 7 rows in set (0.00 sec)
 ```
 
-## Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
+## SQL: Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
 
 #### Required column names (aliased)
 * country / area
@@ -170,7 +178,7 @@ ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 26 rows in set (0.00 sec)
 ```
 
-## Return a list of heritage site counts by region and subregion
+## SQL: Return a list of heritage site counts by region and subregion
 
 #### Required column names (aliased)
 * region
@@ -230,7 +238,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 16 rows in set (0.01 sec)
 ```
 
-## Return a list of India's UNESCO heritage sites
+## SQL: Return a list of India's UNESCO heritage sites
 
 #### Required column names (aliased)
 * region
@@ -322,7 +330,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
 37 rows in set (0.00 sec)
 ```
 
-## Return a count of Indian UNESCO Heritage Sites by heritage site category, 
+## SQL: Return a count of Indian UNESCO Heritage Sites by heritage site category, 
 
 #### Required column names (aliased)
 * region
@@ -380,7 +388,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
 3 rows in set (0.00 sec)
 ```
 
-## Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
+## SQL: Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
 
 #### Required column names (aliased)
 * region
@@ -473,7 +481,8 @@ intermediateregion: Caribbean
 1 row in set (0.02 sec)
 ```
 
-## Return the total area (in hectares) per region that have been protected by the UNESCO heritage
+## SQL: Return the total area (in hectares) per region that have been protected by the UNESCO 
+heritage
  site designation
 
 #### Required column names (aliased)
@@ -533,7 +542,7 @@ SELECT r.region_name AS 'region',
 5 rows in set (0.01 sec)
 ```
 
-## Return a list of heritage sites, if any, that span regional boundaries?
+## SQL: Return a list of heritage sites, if any, that span regional boundaries?
 
 #### Required column names (aliased)
 * `heritage site`
