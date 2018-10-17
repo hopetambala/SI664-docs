@@ -16,6 +16,7 @@ Correlated subquery
 * [Cast Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html)
 
 
+## MySQL shell
 When using the MYSQL command line shell be sure to select the `unesco_heritage_sites` database 
 before attempting to execute the example queries.
 
@@ -23,7 +24,7 @@ before attempting to execute the example queries.
 USE unesco_heritage_sites;
 ``` 
 
-## Return a list of heritage sites that include the word 'Lake' in the name
+## Return a list of heritage sites that includes the word 'Lake' in the name
 
 #### Required column names (aliased)
 * country / area
@@ -41,7 +42,7 @@ This query retrieves all heritage sites that are categorized as "natural" and in
 "Lake" in their name.  The SQL statement highlights use of the following syntax:
 
 * `INNER JOIN` -- returns all records in table X that have a matching record in table Y. Replacing each `INNER JOIN` with a `LEFT JOIN` returns the same results.
-* `AND` -- operator that requires that all conditions separated by `AND` return true
+* `AND` -- an operator that requires that all conditions separated by `AND` return true
 * `INSTR(string, substring)` -- returns the first occurrence of the substring in the string value.
 
 ```mysql
@@ -73,6 +74,7 @@ WHERE hsc.category_id = 2 AND hs.site_name LIKE '%Lake%'
 ORDER BY ca.country_area_name, hs.site_name;
 ````
 
+#### Result set
 ```commandline
 +--------------------+------------------------------------------------------+----------+
 | country / area     | heritage site                                        | category |
@@ -108,9 +110,9 @@ years 2010 and 2018.  The SQL statement highlights use of the following syntax:
 
 * `REPLACE(value, replace, replace with)` -- cosmetic; substitutes the "UK" acronym for the 
 official country name.
-* `IN(value1, value2, ...)` -- operator that permits multiple values to be referenced in the 
+* `IN(value1, value2, ...)` -- an operator that permits multiple values to be referenced in the 
 `WHERE` clause.
-* `BETWEEN` -- operator that selects values within a given range, including the begin and end 
+* `BETWEEN` -- an operator that selects values within a given range, including the begin and end 
 values.
 
 ```mysql
@@ -126,6 +128,7 @@ WHERE ca.iso_alpha3_code IN ('DEU', 'FRA', 'GBR', 'NLD') AND hs.date_inscribed B
 ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 ```
 
+#### Result set
 ```commandline
 +----------------+--------------------------------------------------------------------------------------------+----------+----------------+
 | country / area | heritage site                                                                              | category | date inscribed |
@@ -194,6 +197,7 @@ GROUP BY r.region_name, sr.sub_region_name
 ORDER BY r.region_name, sr.sub_region_name;
 ```
 
+#### Result set
 ```commandline
 +----------+---------------------------------+----------------+
 | region   | subregion                       | heritage sites |
@@ -264,6 +268,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
  ORDER BY hs.site_name;
 ```
 
+#### Result set
 ```commandline
 +--------+---------------+--------------+--------------------------------------------------------------------------------------------+----------+
 | region | subregion     | country/area | heritage site                                                                              | category |
@@ -354,6 +359,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, ca.country_
  ORDER BY hsc.category_name;
 ```
 
+#### Result set
 ```commandline
 +--------+---------------+--------------+----------+-------+
 | region | subregion     | country/area | category | count |
@@ -446,6 +452,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
  ORDER BY hs.area_hectares DESC LIMIT 1;
 ```
 
+#### Result set
 ```commandline
 *************************** 1. row ***************************
             region: Americas
@@ -503,6 +510,7 @@ SELECT r.region_name AS 'region',
  ORDER BY `area (hectares)` DESC;
 ```
 
+#### Result set
 ```commandline
 +----------+---------------+
 | region   | area_hectares |
@@ -583,6 +591,7 @@ with a list of the regions associated with each site.
     ORDER BY `region count` DESC;
 ```
 
+#### Result set
 ```commandline
 +--------------------------------------------------------------------------------------------+------------------------+--------------+
 | heritage site                                                                              | regions                | region count |
