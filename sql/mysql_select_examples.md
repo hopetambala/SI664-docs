@@ -32,10 +32,12 @@ USE unesco_heritage_sites;
 * category
 
 #### Filter
-Heritage site category equals natural (i.e., `category_id` = 2) and the substring 'Lake' can be found in the heritage site name.
+* category = 'Natural' (i.e., `category_id` = 2)
+* and substring 'Lake' in the heritage site name
 
 #### Sort order 
-Alphabetically by country / area, heritage site name
+* country / area name (ASC)
+* heritage site name (ASC)
 
 #### Query
 This query retrieves all heritage sites that are categorized as "natural" and include the word 
@@ -46,7 +48,8 @@ This query retrieves all heritage sites that are categorized as "natural" and in
 * `INSTR(string, substring)` -- returns the first occurrence of the substring in the string value.
 
 ```mysql
-SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, hsc.category_name AS `category`
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
+       hsc.category_name AS `category`
   FROM heritage_site hs 
        INNER JOIN heritage_site_jurisdiction hsj 
               ON hs.heritage_site_id = hsj.heritage_site_id 
@@ -62,7 +65,8 @@ The same result set can also be obtained with a `WHERE` clause that employs the 
 and string wildcards (%):
 
 ```mysql
-SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, hsc.category_name AS `category`
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
+       hsc.category_name AS `category`
   FROM heritage_site hs 
        INNER JOIN heritage_site_jurisdiction hsj 
               ON hs.heritage_site_id = hsj.heritage_site_id 
@@ -99,10 +103,13 @@ ORDER BY ca.country_area_name, hs.site_name;
 * date inscribed
 
 #### Filter
-British, French, German and Dutch ISO Alpha 3 codes and date inscribed between 2010-2018.
+* British, French, German and Dutch ISO Alpha 3 codes
+* and year heritage site inscribed between 2010-2018.
 
 #### Sort order 
-Date inscribed descending, country / area name, heritage site name
+* date inscribed (DESC)
+* country / area name (ASC)
+* heritage site name (ASC)
 
 #### Query
 This query retrieves all British, French, German, and Dutch heritage sites inscribed between the 
@@ -171,10 +178,11 @@ ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 * heritage sites (COUNT(*))
 
 #### Filter
-Exclude Antarctica
+* exclude Antarctica
 
 #### Sort order 
-Alphabetically by region name, subregion name
+* region name (ASC)
+* subregion name (ASC)
 
 #### Query
 This query requires use of an aggregate function together with a `GROUP BY` clause in order to group the result set counts by region and subregion. The SQL statement highlights use of the following syntax:
@@ -232,10 +240,10 @@ ORDER BY r.region_name, sr.sub_region_name;
 * category
 
 #### Filter
-country / area name equals India
+* country / area name = 'India'
 
 #### Sort order 
-Alphabetically by heritage site name
+* heritage site name (ASC)
 
 #### Query
 This query requires a number of table joins in order to return country / area, subregion 
@@ -323,10 +331,10 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
 * category
 
 #### Filter
-country / area name equals India
+country / area name = 'India'
 
 #### Sort order 
-Alphabetically by category name
+* category name (ASC)
 
 #### Query
 This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
@@ -339,8 +347,9 @@ also acceptable.
 / area, and category.
 
 ```mysql
-SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, ca.country_area_name AS `country / area`,
-       hsc.category_name AS `category`, COUNT(hsc.category_id) AS `count`
+SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, 
+       ca.country_area_name AS `country / area`, hsc.category_name AS `category`, 
+       COUNT(hsc.category_id) AS `count`
   FROM heritage_site hs
        LEFT JOIN heritage_site_jurisdiction hsj 
               ON hs.heritage_site_id = hsj.heritage_site_id
@@ -382,8 +391,8 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, ca.country_
 * area (hectares)
 
 #### Filter
-Intermediate region name equals Caribbean and area in hecatares equals the largest heritage site 
-in the Caribbean in terms of area.
+* intermediate region name =  'Caribbean'
+* and area (hecatares) = largest heritage site in the Caribbean
 
 #### Query
 This query uses a subquery that employs a `Max()` aggregate function to help return a result set 
@@ -472,10 +481,10 @@ intermediateregion: Caribbean
 * area (hectares)
 
 #### Filter
-Exclude Antarctica
+* exclude Antarctica
 
 #### Sort order 
-area (hectares) descending
+* area (hectares) (DESC)
 
 #### Query
 This query requires use of a number of functions to ensure that the result set is returned in 
@@ -532,10 +541,10 @@ SELECT r.region_name AS 'region',
 * `region count`
 
 #### Filter
-region count > 1
+* region count > 1
 
 #### Sort order 
-region count descending
+* region count (DESC)
 
 #### Query
 The `heritage_site` table includes a `transboundary` property that provides a shortcut to 
