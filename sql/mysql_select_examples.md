@@ -1,21 +1,9 @@
-# MySQL SELECT Statement Examples
+# SI664: MySQL SELECT Statement Examples
 
-The following examples represent the type of SQL `SELECT` statements you may be asked to write as
- part of a weekly assignment or during the midterm examination.   
+The following examples represent the types of SQL `SELECT` statements you may be asked to write 
+as part of a weekly assignment or as part of an exam.
 
-
-
-
-## TODO
-IFNULL()
-Correlated subquery
-
-
-
-
-
-
-## MySQL Documentation
+## 1.0 MySQL Documentation
 * [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
 * [Subquery syntax](https://dev.mysql.com/doc/refman/8.0/en/subqueries.html)
 * [Operators](https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html)
@@ -24,7 +12,7 @@ Correlated subquery
 * [Cast Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html)
 
 
-## MySQL shell
+## 2.0 MySQL shell
 When using the MYSQL command line shell be sure to select the `unesco_heritage_sites` database 
 before attempting to execute the example queries.
 
@@ -32,7 +20,141 @@ before attempting to execute the example queries.
 USE unesco_heritage_sites;
 ``` 
 
-## SQL: Return a list of heritage sites that includes the word 'Lake' in the name
+## 3.0 Example SQL statements
+:warning: Actual assignment or exam questions that ask you to write a SQL statement may vary with respect to the number of `SELECT` columns required along with supporting table joins, aliases needed, `WHERE` or `HAVING` clause filter conditions, aggregate functions needed together with supporting `GROUP BY` clauses, subqueries, and sort order.
+
+### 3.1 Return a list of India's UNESCO heritage sites
+
+#### Required column names (aliased)
+* country / area
+* heritage site
+* category
+
+#### Filter
+* country / area name = 'India'
+
+#### Sort order 
+* heritage site name (ASC)
+
+#### Query
+This query requires a number of table joins in order to return the country / area name, and the 
+heritage site category name. The SQL statement highlights use of the following syntax:
+
+* `AS` -- permits the aliasing of column names.
+* `LEFT JOIN` -- returns all records in table X that have a matching record in table Y as well as
+ all records in table X that have no matching record in table Y.
+* `TRIM(value)` -- removes leading as well as trailing whitespace in a string. Ensures that string 
+comparisons are not disrupted by the presence of whitespace.
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
+       hsc.category_name AS `category`
+  FROM heritage_site hs
+       LEFT JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       LEFT JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       LEFT JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id
+ WHERE TRIM(ca.country_area_name) = 'India'
+ ORDER BY hs.site_name;
+```
+
+#### Result set
+```commandline
++----------------+--------------------------------------------------------------------------------------------+----------+
+| country / area | heritage site                                                                              | category |
++----------------+--------------------------------------------------------------------------------------------+----------+
+| India          | Agra Fort                                                                                  | Cultural |
+| India          | Ajanta Caves                                                                               | Cultural |
+| India          | Archaeological Site of Nalanda <i>Mahavihara</i> at Nalanda, Bihar                         | Cultural |
+| India          | Buddhist Monuments at Sanchi                                                               | Cultural |
+| India          | Champaner-Pavagadh Archaeological Park                                                     | Cultural |
+| India          | Chhatrapati Shivaji Terminus (formerly Victoria Terminus)                                  | Cultural |
+| India          | Churches and Convents of Goa                                                               | Cultural |
+| India          | Elephanta Caves                                                                            | Cultural |
+| India          | Ellora Caves                                                                               | Cultural |
+| India          | Fatehpur Sikri                                                                             | Cultural |
+| India          | Great Himalayan National Park Conservation Area                                            | Natural  |
+| India          | Great Living Chola Temples                                                                 | Cultural |
+| India          | Group of Monuments at Hampi                                                                | Cultural |
+| India          | Group of Monuments at Mahabalipuram                                                        | Cultural |
+| India          | Group of Monuments at Pattadakal                                                           | Cultural |
+| India          | Hill Forts of Rajasthan                                                                    | Cultural |
+| India          | Historic City of Ahmadabad                                                                 | Cultural |
+| India          | Humayun's Tomb, Delhi                                                                      | Cultural |
+| India          | Kaziranga National Park                                                                    | Natural  |
+| India          | Keoladeo National Park                                                                     | Natural  |
+| India          | Khajuraho Group of Monuments                                                               | Cultural |
+| India          | Khangchendzonga National Park                                                              | Mixed    |
+| India          | Mahabodhi Temple Complex at Bodh Gaya                                                      | Cultural |
+| India          | Manas Wildlife Sanctuary                                                                   | Natural  |
+| India          | Mountain Railways of India                                                                 | Cultural |
+| India          | Nanda Devi and Valley of Flowers National Parks                                            | Natural  |
+| India          | Qutb Minar and its Monuments, Delhi                                                        | Cultural |
+| India          | Rani-ki-Vav (the Queen’s Stepwell) at Patan, Gujarat                                       | Cultural |
+| India          | Red Fort Complex                                                                           | Cultural |
+| India          | Rock Shelters of Bhimbetka                                                                 | Cultural |
+| India          | Sun Temple, Konârak                                                                        | Cultural |
+| India          | Sundarbans National Park                                                                   | Natural  |
+| India          | Taj Mahal                                                                                  | Cultural |
+| India          | The Architectural Work of Le Corbusier, an Outstanding Contribution to the Modern Movement | Cultural |
+| India          | The Jantar Mantar, Jaipur                                                                  | Cultural |
+| India          | Victorian Gothic and Art Deco Ensembles of Mumbai                                          | Cultural |
+| India          | Western Ghats                                                                              | Natural  |
++----------------+--------------------------------------------------------------------------------------------+----------+
+37 rows in set (0.01 sec)
+```
+
+### 3.2 Return a count of Indian UNESCO Heritage Sites by heritage site category, 
+
+#### Required column names (aliased)
+* country / area
+* category
+* heritage site count (COUNT(*))
+
+#### Filter
+country / area name = 'India'
+
+#### Sort order 
+* category name (ASC)
+
+#### Query
+This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
+group the result set counts by country / area, and category. The SQL statement highlights use of the following syntax:
+
+`COUNT(*)` -- count of the number of heritage sites returned by category.
+`GROUP BY` -- follows the `WHERE` clause and groups the result set by region, subregion, country 
+/ area, and category.
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hsc.category_name AS `category`, 
+       COUNT(*) AS `heritage site count`
+  FROM heritage_site hs
+       LEFT JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       LEFT JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       LEFT JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id     
+ WHERE TRIM(ca.country_area_name) = 'India'
+ GROUP BY ca.country_area_name, hsc.category_name
+ ORDER BY hsc.category_name;
+```
+
+#### Result set
+```commandline
++----------------+----------+---------------------+
+| country / area | category | heritage site count |
++----------------+----------+---------------------+
+| India          | Cultural |                  29 |
+| India          | Mixed    |                   1 |
+| India          | Natural  |                   7 |
++----------------+----------+---------------------+
+3 rows in set (0.00 sec)
+```
+
+### 3.3 Return a list of heritage sites that includes the word 'Lake' in the name
 
 #### Required column names (aliased)
 * country / area
@@ -54,6 +176,7 @@ This query retrieves all heritage sites that are categorized as "natural" and in
 * `INNER JOIN` -- returns all records in table X that have a matching record in table Y. Replacing each `INNER JOIN` with a `LEFT JOIN` returns the same results.
 * `AND` -- an operator that requires that all conditions separated by `AND` return true
 * `INSTR(string, substring)` -- returns the first occurrence of the substring in the string value.
+* `'%\[value\]%'` -- use of wildcards in the search string (2nd query example).
 
 ```mysql
 SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
@@ -102,7 +225,128 @@ ORDER BY ca.country_area_name, hs.site_name;
 7 rows in set (0.00 sec)
 ```
 
-## SQL: Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
+### 3.4 Return list of castles, fortifications and walled cities and towns inscribed as UNESCO 
+heritage sites
+
+#### Required column names (aliased)
+* country / area
+* heritage site
+* category
+
+#### Filter
+* category = 'Cultural'
+* and heritage site name includes 'Castle', 'Citadel', 'Fort', 'Fortification', 'Fortress' or 
+'Wall' in its name
+
+#### Sort order 
+* country / area name (ASC)
+* heritage site name (ASC)
+
+#### Query
+This query retrieves all heritage sites that includes the word 'Castle', 'Citadel', 'Fort', 
+'Fortification', 'Fortress' or 'Wall' in its name. The SQL statement highlights use of the following syntax: 
+
+`AND` -- an operator that requires that all conditions separated by `AND` return true.
+`OR` -- an operator that requires that any condition separated by `OR` return true.
+`REGEXP` -- leverage regular expressions as a filter (e.g., akin to the regexp '/([a-zA-Z0-9])*Castle([a-zA-Z0-9])*/g').
+
+:bulb:Implementing Full-text search would likely increase confidence that the result set returned 
+includes all such sites.  
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
+       hsc.category_name AS `category`
+  FROM heritage_site hs
+       LEFT JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       LEFT JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       LEFT JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id
+ WHERE hsc.category_name = 'Cultural' AND (hs.site_name LIKE '%Castle%' 
+       OR hs.site_name LIKE '%Citadel%'
+       OR hs.site_name LIKE '%Fort%' 
+       OR hs.site_name LIKE '%Wall%')
+ ORDER BY ca.country_area_name, hs.site_name;
+```
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
+       hsc.category_name AS `category`
+  FROM heritage_site hs
+       LEFT JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       LEFT JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       LEFT JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id
+ WHERE hsc.category_name = 'Cultural' AND hs.site_name REGEXP 'Castle|Citadel|Fort|Wall'
+ ORDER BY ca.country_area_name, hs.site_name;
+```
+
+```commandline
++------------------------------------------------------+-------------------------------------------------------------------------------------------+----------+
+| country / area                                       | heritage site                                                                             | category |
++------------------------------------------------------+-------------------------------------------------------------------------------------------+----------+
+| NULL                                                 | Old City of Jerusalem and its Walls                                                       | Cultural |
+| Azerbaijan                                           | Walled City of Baku with the Shirvanshah's Palace and Maiden Tower                        | Cultural |
+| Belarus                                              | Mir Castle Complex                                                                        | Cultural |
+| Belgium                                              | Major Mining Sites of Wallonia                                                            | Cultural |
+| China                                                | The Great Wall                                                                            | Cultural |
+| Colombia                                             | Port, Fortresses and Group of Monuments, Cartagena                                        | Cultural |
+| Cuba                                                 | Old Havana and its Fortification System                                                   | Cultural |
+| Cuba                                                 | San Pedro de la Roca Castle, Santiago de Cuba                                             | Cultural |
+| Czechia                                              | Gardens and Castle at Kroměříž                                                            | Cultural |
+| Czechia                                              | Litomyšl Castle                                                                           | Cultural |
+| Denmark                                              | Kronborg Castle                                                                           | Cultural |
+| Ethiopia                                             | Harar Jugol, the Fortified Historic Town                                                  | Cultural |
+| Finland                                              | Fortress of Suomenlinna                                                                   | Cultural |
+| France                                               | Fortifications of Vauban                                                                  | Cultural |
+| France                                               | Historic Fortified City of Carcassonne                                                    | Cultural |
+| Germany                                              | Castles of Augustusburg and Falkenlust at Brühl                                           | Cultural |
+| Germany                                              | Collegiate Church, Castle and Old Town of Quedlinburg                                     | Cultural |
+| Germany                                              | Wartburg Castle                                                                           | Cultural |
+| Ghana                                                | Forts and Castles, Volta, Greater Accra, Central and Western Regions                      | Cultural |
+| Haiti                                                | National History Park – Citadel, Sans Souci, Ramiers                                      | Cultural |
+| Hungary                                              | Budapest, including the Banks of the Danube, the Buda Castle Quarter and Andrássy Avenue  | Cultural |
+| India                                                | Agra Fort                                                                                 | Cultural |
+| India                                                | Hill Forts of Rajasthan                                                                   | Cultural |
+| India                                                | Red Fort Complex                                                                          | Cultural |
+| Iraq                                                 | Erbil Citadel                                                                             | Cultural |
+| Kenya                                                | Fort Jesus, Mombasa                                                                       | Cultural |
+| Luxembourg                                           | City of Luxembourg: its Old Quarters and Fortifications                                   | Cultural |
+| Mexico                                               | Historic Fortified Town of Campeche                                                       | Cultural |
+| Oman                                                 | Bahla Fort                                                                                | Cultural |
+| Pakistan                                             | Fort and Shalamar Gardens in Lahore                                                       | Cultural |
+| Pakistan                                             | Rohtas Fort                                                                               | Cultural |
+| Panama                                               | Fortifications on the Caribbean Side of Panama: Portobelo-San Lorenzo                     | Cultural |
+| Poland                                               | Castle of the Teutonic Order in Malbork                                                   | Cultural |
+| Portugal                                             | Garrison Border Town of Elvas and its Fortifications                                      | Cultural |
+| Republic of Korea                                    | Hwaseong Fortress                                                                         | Cultural |
+| Romania                                              | Dacian Fortresses of the Orastie Mountains                                                | Cultural |
+| Romania                                              | Villages with Fortified Churches in Transylvania                                          | Cultural |
+| Russian Federation                                   | Citadel, Ancient City and Fortress Buildings of Derbent                                   | Cultural |
+| Saint Kitts and Nevis                                | Brimstone Hill Fortress National Park                                                     | Cultural |
+| Spain                                                | Historic Walled Town of Cuenca                                                            | Cultural |
+| Spain                                                | Roman Walls of Lugo                                                                       | Cultural |
+| Sri Lanka                                            | Old Town of Galle and its Fortifications                                                  | Cultural |
+| Switzerland                                          | Three Castles, Defensive Wall and Ramparts of the Market-Town of Bellinzona               | Cultural |
+| Turkey                                               | Diyarbakır Fortress and Hevsel Gardens Cultural Landscape                                 | Cultural |
+| Turkmenistan                                         | Parthian Fortresses of Nisa                                                               | Cultural |
+| United Kingdom of Great Britain and Northern Ireland | Castles and Town Walls of King Edward in Gwynedd                                          | Cultural |
+| United Kingdom of Great Britain and Northern Ireland | Cornwall and West Devon Mining Landscape                                                  | Cultural |
+| United Kingdom of Great Britain and Northern Ireland | Durham Castle and Cathedral                                                               | Cultural |
+| United Kingdom of Great Britain and Northern Ireland | Historic Town of St George and Related Fortifications, Bermuda                            | Cultural |
+| United Kingdom of Great Britain and Northern Ireland | The Forth Bridge                                                                          | Cultural |
+| United States of America                             | La Fortaleza and San Juan National Historic Site in Puerto Rico                           | Cultural |
+| Viet Nam                                             | Central Sector of the Imperial Citadel of Thang Long - Hanoi                              | Cultural |
+| Viet Nam                                             | Citadel of the Ho Dynasty                                                                 | Cultural |
+| Yemen                                                | Old Walled City of Shibam                                                                 | Cultural |
++------------------------------------------------------+-------------------------------------------------------------------------------------------+----------+
+54 rows in set (0.01 sec)
+```
+
+### 3.5 Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
 
 #### Required column names (aliased)
 * country / area
@@ -178,7 +422,7 @@ ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 26 rows in set (0.00 sec)
 ```
 
-## SQL: Return a list of heritage site counts by region and subregion
+### 3.6 Return a list of heritage site counts by region and subregion
 
 #### Required column names (aliased)
 * region
@@ -238,157 +482,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 16 rows in set (0.01 sec)
 ```
 
-## SQL: Return a list of India's UNESCO heritage sites
-
-#### Required column names (aliased)
-* region
-* subregion
-* country / area
-* heritage site
-* category
-
-#### Filter
-* country / area name = 'India'
-
-#### Sort order 
-* heritage site name (ASC)
-
-#### Query
-This query requires a number of table joins in order to return country / area, subregion 
-and region names. The SQL statement highlights use of the following syntax:
-
-* `AS` -- permits the aliasing of column names.
-* `LEFT JOIN` -- returns all records in table X that have a matching record in table Y as well as
- all records in table X that have no matching record in table Y.
-* `TRIM(value)` -- removes leading as well as trailing whitespace in a string. Ensures that string 
-comparisons are not disrupted by the presence of whitespace.
-
-```mysql
-SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, 
-       ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, 
-       hsc.category_name AS `category`
-  FROM heritage_site hs
-       LEFT JOIN heritage_site_jurisdiction hsj 
-              ON hs.heritage_site_id = hsj.heritage_site_id
-       LEFT JOIN country_area ca 
-              ON hsj.country_area_id = ca.country_area_id
-       LEFT JOIN location l
-              ON ca.location_id = l.location_id
-       LEFT JOIN region r
-              ON l.region_id = r.region_id
-       LEFT JOIN sub_region sr 
-              ON l.sub_region_id = sr.sub_region_id
-       LEFT JOIN heritage_site_category hsc
-              ON hs.heritage_site_category_id = hsc.category_id     
- WHERE TRIM(ca.country_area_name) = 'India'
- ORDER BY hs.site_name;
-```
-
-#### Result set
-```commandline
-+--------+---------------+--------------+--------------------------------------------------------------------------------------------+----------+
-| region | subregion     | country/area | heritage site                                                                              | category |
-+--------+---------------+--------------+--------------------------------------------------------------------------------------------+----------+
-| Asia   | Southern Asia | India        | Agra Fort                                                                                  | Cultural |
-| Asia   | Southern Asia | India        | Ajanta Caves                                                                               | Cultural |
-| Asia   | Southern Asia | India        | Archaeological Site of Nalanda <i>Mahavihara</i> at Nalanda, Bihar                         | Cultural |
-| Asia   | Southern Asia | India        | Buddhist Monuments at Sanchi                                                               | Cultural |
-| Asia   | Southern Asia | India        | Champaner-Pavagadh Archaeological Park                                                     | Cultural |
-| Asia   | Southern Asia | India        | Chhatrapati Shivaji Terminus (formerly Victoria Terminus)                                  | Cultural |
-| Asia   | Southern Asia | India        | Churches and Convents of Goa                                                               | Cultural |
-| Asia   | Southern Asia | India        | Elephanta Caves                                                                            | Cultural |
-| Asia   | Southern Asia | India        | Ellora Caves                                                                               | Cultural |
-| Asia   | Southern Asia | India        | Fatehpur Sikri                                                                             | Cultural |
-| Asia   | Southern Asia | India        | Great Himalayan National Park Conservation Area                                            | Natural  |
-| Asia   | Southern Asia | India        | Great Living Chola Temples                                                                 | Cultural |
-| Asia   | Southern Asia | India        | Group of Monuments at Hampi                                                                | Cultural |
-| Asia   | Southern Asia | India        | Group of Monuments at Mahabalipuram                                                        | Cultural |
-| Asia   | Southern Asia | India        | Group of Monuments at Pattadakal                                                           | Cultural |
-| Asia   | Southern Asia | India        | Hill Forts of Rajasthan                                                                    | Cultural |
-| Asia   | Southern Asia | India        | Historic City of Ahmadabad                                                                 | Cultural |
-| Asia   | Southern Asia | India        | Humayun's Tomb, Delhi                                                                      | Cultural |
-| Asia   | Southern Asia | India        | Kaziranga National Park                                                                    | Natural  |
-| Asia   | Southern Asia | India        | Keoladeo National Park                                                                     | Natural  |
-| Asia   | Southern Asia | India        | Khajuraho Group of Monuments                                                               | Cultural |
-| Asia   | Southern Asia | India        | Khangchendzonga National Park                                                              | Mixed    |
-| Asia   | Southern Asia | India        | Mahabodhi Temple Complex at Bodh Gaya                                                      | Cultural |
-| Asia   | Southern Asia | India        | Manas Wildlife Sanctuary                                                                   | Natural  |
-| Asia   | Southern Asia | India        | Mountain Railways of India                                                                 | Cultural |
-| Asia   | Southern Asia | India        | Nanda Devi and Valley of Flowers National Parks                                            | Natural  |
-| Asia   | Southern Asia | India        | Qutb Minar and its Monuments, Delhi                                                        | Cultural |
-| Asia   | Southern Asia | India        | Rani-ki-Vav (the Queen’s Stepwell) at Patan, Gujarat                                       | Cultural |
-| Asia   | Southern Asia | India        | Red Fort Complex                                                                           | Cultural |
-| Asia   | Southern Asia | India        | Rock Shelters of Bhimbetka                                                                 | Cultural |
-| Asia   | Southern Asia | India        | Sun Temple, Konârak                                                                        | Cultural |
-| Asia   | Southern Asia | India        | Sundarbans National Park                                                                   | Natural  |
-| Asia   | Southern Asia | India        | Taj Mahal                                                                                  | Cultural |
-| Asia   | Southern Asia | India        | The Architectural Work of Le Corbusier, an Outstanding Contribution to the Modern Movement | Cultural |
-| Asia   | Southern Asia | India        | The Jantar Mantar, Jaipur                                                                  | Cultural |
-| Asia   | Southern Asia | India        | Victorian Gothic and Art Deco Ensembles of Mumbai                                          | Cultural |
-| Asia   | Southern Asia | India        | Western Ghats                                                                              | Natural  |
-+--------+---------------+--------------+--------------------------------------------------------------------------------------------+----------+
-37 rows in set (0.00 sec)
-```
-
-## SQL: Return a count of Indian UNESCO Heritage Sites by heritage site category, 
-
-#### Required column names (aliased)
-* region
-* subregion
-* country / area
-* category
-
-#### Filter
-country / area name = 'India'
-
-#### Sort order 
-* category name (ASC)
-
-#### Query
-This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
-group the result set counts by region, subregion, country / area, and category. The SQL statement 
-highlights use of the following syntax:
-
-`COUNT(hsc.category_id)` -- count of the number of records returned by category. `COUNT(*)` is 
-also acceptable.
-`GROUP BY` -- follows the `WHERE` clause and groups the result set by region, subregion, country 
-/ area, and category.
-
-```mysql
-SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, 
-       ca.country_area_name AS `country / area`, hsc.category_name AS `category`, 
-       COUNT(hsc.category_id) AS `count`
-  FROM heritage_site hs
-       LEFT JOIN heritage_site_jurisdiction hsj 
-              ON hs.heritage_site_id = hsj.heritage_site_id
-       LEFT JOIN country_area ca 
-              ON hsj.country_area_id = ca.country_area_id
-       LEFT JOIN location l
-              ON ca.location_id = l.location_id
-       LEFT JOIN region r
-              ON l.region_id = r.region_id
-       LEFT JOIN sub_region sr 
-              ON l.sub_region_id = sr.sub_region_id
-       LEFT JOIN heritage_site_category hsc
-              ON hs.heritage_site_category_id = hsc.category_id     
- WHERE TRIM(ca.country_area_name) = 'India'
- GROUP BY r.region_name, sr.sub_region_name, ca.country_area_name, hsc.category_name
- ORDER BY hsc.category_name;
-```
-
-#### Result set
-```commandline
-+--------+---------------+--------------+----------+-------+
-| region | subregion     | country/area | category | count |
-+--------+---------------+--------------+----------+-------+
-| Asia   | Southern Asia | India        | Cultural |    29 |
-| Asia   | Southern Asia | India        | Mixed    |     1 |
-| Asia   | Southern Asia | India        | Natural  |     7 |
-+--------+---------------+--------------+----------+-------+
-3 rows in set (0.00 sec)
-```
-
-## SQL: Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
+### 3.7 Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
 
 #### Required column names (aliased)
 * region
@@ -481,7 +575,7 @@ intermediateregion: Caribbean
 1 row in set (0.02 sec)
 ```
 
-## SQL: Return the total area (in hectares) per region that have been protected by the UNESCO 
+### 3.8 Return the total area (in hectares) per region that have been protected by the UNESCO 
 heritage
  site designation
 
@@ -542,7 +636,7 @@ SELECT r.region_name AS 'region',
 5 rows in set (0.01 sec)
 ```
 
-## SQL: Return a list of heritage sites, if any, that span regional boundaries?
+## 3.9 Return a list of heritage sites, if any, that span regional boundaries?
 
 #### Required column names (aliased)
 * `heritage site`
@@ -619,4 +713,82 @@ with a list of the regions associated with each site.
 | Uvs Nuur Basin                                                                             | Asia, Europe           |            2 |
 +--------------------------------------------------------------------------------------------+------------------------+--------------+
 3 rows in set (0.01 sec)
+```
+
+## Appendix A. Retrieving database and table information
+It can prove helpful at times to retrieve information about the database, tables, and columns 
+that are the target of your queries.  MySQL provides serveral useful SQL statements for 
+retrieving such information.
+
+### A.1 Database currently selected
+
+```mysql
+SELECT DATABASE();
+```
+
+```commandline
++-----------------------+
+| DATABASE()            |
++-----------------------+
+| unesco_heritage_sites |
++-----------------------+
+1 row in set (0.01 sec)
+```
+
+#### A.2. List of database tables
+
+```mysql
+SHOW TABLES;
+```
+
+```commandline
++---------------------------------+
+| Tables_in_unesco_heritage_sites |
++---------------------------------+
+| auth_group                      |
+| auth_group_permissions          |
+| auth_permission                 |
+| auth_user                       |
+| auth_user_groups                |
+| auth_user_user_permissions      |
+| country_area                    |
+| dev_status                      |
+| django_admin_log                |
+| django_content_type             |
+| django_migrations               |
+| django_session                  |
+| heritage_site                   |
+| heritage_site_category          |
+| heritage_site_jurisdiction      |
+| intermediate_region             |
+| location                        |
+| planet                          |
+| region                          |
+| sub_region                      |
++---------------------------------+
+20 rows in set (0.02 sec)
+```
+
+### A.3. Table information
+
+```mysql
+DESCRIBE heritage_site;
+```
+
+```commandline
++---------------------------+---------------+------+-----+---------+----------------+
+| Field                     | Type          | Null | Key | Default | Extra          |
++---------------------------+---------------+------+-----+---------+----------------+
+| heritage_site_id          | int(11)       | NO   | PRI | NULL    | auto_increment |
+| site_name                 | varchar(255)  | NO   | UNI | NULL    |                |
+| description               | text          | NO   |     | NULL    |                |
+| justification             | text          | YES  |     | NULL    |                |
+| date_inscribed            | year(4)       | YES  |     | NULL    |                |
+| longitude                 | decimal(11,8) | YES  |     | NULL    |                |
+| latitude                  | decimal(10,8) | YES  |     | NULL    |                |
+| area_hectares             | double        | YES  |     | NULL    |                |
+| heritage_site_category_id | int(11)       | NO   | MUL | NULL    |                |
+| transboundary             | tinyint(4)    | NO   |     | NULL    |                |
++---------------------------+---------------+------+-----+---------+----------------+
+10 rows in set (0.02 sec)
 ```
