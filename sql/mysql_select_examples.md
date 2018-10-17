@@ -282,6 +282,7 @@ SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`
  ORDER BY ca.country_area_name, hs.site_name;
 ```
 
+#### Result set
 ```commandline
 +------------------------------------------------------+-------------------------------------------------------------------------------------------+----------+
 | country / area                                       | heritage site                                                                             | category |
