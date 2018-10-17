@@ -106,7 +106,7 @@ SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`
 37 rows in set (0.01 sec)
 ```
 
-### 3.2 Return a count of Indian UNESCO Heritage Sites by heritage site category, 
+### 3.2 Return a count of Indian UNESCO Heritage Sites by heritage site category
 
 #### Required column names (aliased)
 * country / area
@@ -481,7 +481,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 16 rows in set (0.01 sec)
 ```
 
-### 3.7 Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
+### 3.7 Return the largest UNESCO heritage site by area (hectares) in the Caribbean
 
 #### Required column names (aliased)
 * region
@@ -633,7 +633,7 @@ SELECT r.region_name AS 'region',
 5 rows in set (0.01 sec)
 ```
 
-## 3.9 Return a list of heritage sites, if any, that span regional boundaries?
+## 3.9 Return a list of heritage sites, if any, that span regional boundaries
 
 #### Required column names (aliased)
 * `heritage site`
