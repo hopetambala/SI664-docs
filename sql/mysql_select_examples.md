@@ -2,7 +2,20 @@
 
 The following examples represent the type of SQL `SELECT` statements you may be asked to write as
  part of a weekly assignment or during the midterm examination.   
- 
+
+## TODO
+IFNULL()
+Correlated subquery
+
+## MySQL Documentation
+* [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
+* [Subquery syntax](https://dev.mysql.com/doc/refman/8.0/en/subqueries.html)
+* [Operators](https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html)
+* [String functions](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+* [Numeric Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)
+* [Cast Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html)
+
+
 When using the MYSQL command line shell be sure to select the `unesco_heritage_sites` database 
 before attempting to execute the example queries.
 
@@ -10,20 +23,157 @@ before attempting to execute the example queries.
 USE unesco_heritage_sites;
 ``` 
 
-### Query: return a list of heritage site counts by region and subregion
+## Return a list of heritage sites that include the word 'Lake' in the name
+
+#### Required column names (aliased)
+* country / area
+* heritage site
+* category
+
+#### Filter
+Heritage site category equals natural (i.e., `category_id` = 2) and the substring 'Lake' can be found in the heritage site name.
+
+#### Sort order 
+Alphabetically by country / area, heritage site name
+
+#### Query
+This query retrieves all heritage sites that are categorized as "natural" and include the word 
+"Lake" in their name.  The SQL statement highlights use of the following syntax:
+
+* `INNER JOIN` -- returns all records in table X that have a matching record in table Y. Replacing each `INNER JOIN` with a `LEFT JOIN` returns the same results.
+* `AND` -- operator that requires that all conditions separated by `AND` return true
+* `INSTR(string, substring)` -- returns the first occurrence of the substring in the string value.
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, hsc.category_name AS `category`
+  FROM heritage_site hs 
+       INNER JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id 
+       INNER JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id 
+       INNER JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+WHERE hsc.category_id = 2 AND INSTR(hs.site_name, 'Lake') > 0
+ORDER BY ca.country_area_name, hs.site_name;
+```
+
+The same result set can also be obtained with a `WHERE` clause that employs the `LIKE` operator 
+and string wildcards (%):
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`, hsc.category_name AS `category`
+  FROM heritage_site hs 
+       INNER JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id 
+       INNER JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id 
+       INNER JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+WHERE hsc.category_id = 2 AND hs.site_name LIKE '%Lake%'
+ORDER BY ca.country_area_name, hs.site_name;
+````
+
+```commandline
++--------------------+------------------------------------------------------+----------+
+| country / area     | heritage site                                        | category |
++--------------------+------------------------------------------------------+----------+
+| Chad               | Lakes of Ounianga                                    | Natural  |
+| Croatia            | Plitvice Lakes National Park                         | Natural  |
+| Kazakhstan         | Saryarka – Steppe and Lakes of Northern Kazakhstan   | Natural  |
+| Kenya              | Kenya Lake System in the Great Rift Valley           | Natural  |
+| Kenya              | Lake Turkana National Parks                          | Natural  |
+| Malawi             | Lake Malawi National Park                            | Natural  |
+| Russian Federation | Lake Baikal                                          | Natural  |
++--------------------+------------------------------------------------------+----------+
+7 rows in set (0.00 sec)
+```
+
+## Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
+
+#### Required column names (aliased)
+* country / area
+* heritage site
+* category
+* date inscribed
+
+#### Filter
+British, French, German and Dutch ISO Alpha 3 codes and date inscribed between 2010-2018.
+
+#### Sort order 
+Date inscribed descending, country / area name, heritage site name
+
+#### Query
+This query retrieves all British, French, German, and Dutch heritage sites inscribed between the 
+years 2010 and 2018.  The SQL statement highlights use of the following syntax:
+
+* `REPLACE(value, replace, replace with)` -- cosmetic; substitutes the "UK" acronym for the 
+official country name.
+* `IN(value1, value2, ...)` -- operator that permits multiple values to be referenced in the 
+`WHERE` clause.
+* `BETWEEN` -- operator that selects values within a given range, including the begin and end 
+values.
+
+```mysql
+SELECT REPLACE(ca.country_area_name, 'United Kingdom of Great Britain and Northern Ireland', 'UK') AS `country / area`, hs.site_name AS `heritage site`, hsc.category_name AS `category`, hs.date_inscribed AS `date inscribed`
+  FROM heritage_site hs 
+       INNER JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id 
+       INNER JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id 
+       INNER JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+WHERE ca.iso_alpha3_code IN ('DEU', 'FRA', 'GBR', 'NLD') AND hs.date_inscribed BETWEEN 2010 AND 2018
+ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
+```
+
+```commandline
++----------------+--------------------------------------------------------------------------------------------+----------+----------------+
+| country / area | heritage site                                                                              | category | date inscribed |
++----------------+--------------------------------------------------------------------------------------------+----------+----------------+
+| France         | Chaîne des Puys - Limagne fault tectonic arena                                             | Natural  |           2018 |
+| Germany        | Archaeological Border complex of Hedeby and the Danevirke                                  | Cultural |           2018 |
+| Germany        | Naumburg Cathedral                                                                         | Cultural |           2018 |
+| France         | Taputapuātea                                                                               | Cultural |           2017 |
+| Germany        | Caves and Ice Age Art in the Swabian Jura                                                  | Cultural |           2017 |
+| UK             | The English Lake District                                                                  | Cultural |           2017 |
+| France         | The Architectural Work of Le Corbusier, an Outstanding Contribution to the Modern Movement | Cultural |           2016 |
+| Germany        | The Architectural Work of Le Corbusier, an Outstanding Contribution to the Modern Movement | Cultural |           2016 |
+| UK             | Gorham's Cave Complex                                                                      | Cultural |           2016 |
+| France         | Champagne Hillsides, Houses and Cellars                                                    | Cultural |           2015 |
+| France         | The Climats, terroirs of Burgundy                                                          | Cultural |           2015 |
+| Germany        | Speicherstadt and Kontorhaus District with Chilehaus                                       | Cultural |           2015 |
+| UK             | The Forth Bridge                                                                           | Cultural |           2015 |
+| France         | Decorated Cave of Pont d’Arc, known as Grotte Chauvet-Pont d’Arc, Ardèche                  | Cultural |           2014 |
+| Germany        | Carolingian Westwork and Civitas Corvey                                                    | Cultural |           2014 |
+| Netherlands    | Van Nellefabriek                                                                           | Cultural |           2014 |
+| Germany        | Bergpark Wilhelmshöhe                                                                      | Cultural |           2013 |
+| France         | Nord-Pas de Calais Mining Basin                                                            | Cultural |           2012 |
+| Germany        | Margravial Opera House Bayreuth                                                            | Cultural |           2012 |
+| France         | Prehistoric Pile Dwellings around the Alps                                                 | Cultural |           2011 |
+| France         | The Causses and the Cévennes, Mediterranean agro-pastoral Cultural Landscape               | Cultural |           2011 |
+| Germany        | Fagus Factory in Alfeld                                                                    | Cultural |           2011 |
+| Germany        | Prehistoric Pile Dwellings around the Alps                                                 | Cultural |           2011 |
+| France         | Episcopal City of Albi                                                                     | Cultural |           2010 |
+| France         | Pitons, cirques and remparts of Reunion Island                                             | Natural  |           2010 |
+| Netherlands    | Seventeenth-Century Canal Ring Area of Amsterdam inside the Singelgracht                   | Cultural |           2010 |
++----------------+--------------------------------------------------------------------------------------------+----------+----------------+
+26 rows in set (0.00 sec)
+```
+
+## Return a list of heritage site counts by region and subregion
 
 #### Required column names (aliased)
 * region
 * subregion
 * heritage sites (COUNT(*))
 
-### Filter
-exclude Antarctica
+#### Filter
+Exclude Antarctica
 
 #### Sort order 
-* alphabetically by region name, subregion name
+Alphabetically by region name, subregion name
 
-#### Disposition
+#### Query
 This query requires use of an aggregate function together with a `GROUP BY` clause in order to group the result set counts by region and subregion. The SQL statement highlights use of the following syntax:
 
 ```mysql
@@ -68,7 +218,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 16 rows in set (0.01 sec)
 ```
 
-### Query: return a list of India's UNESCO heritage sites
+## Return a list of India's UNESCO heritage sites
 
 #### Required column names (aliased)
 * region
@@ -77,13 +227,13 @@ ORDER BY r.region_name, sr.sub_region_name;
 * heritage site
 * category
 
-### Filter
+#### Filter
 country / area name equals India
 
 #### Sort order 
-* alphabetically by heritage site name
+Alphabetically by heritage site name
 
-#### Disposition
+#### Query
 This query requires a number of table joins in order to return country / area, subregion 
 and region names. The SQL statement highlights use of the following syntax:
 
@@ -159,7 +309,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
 37 rows in set (0.00 sec)
 ```
 
-### Query: return a count of Indian UNESCO Heritage Sites by heritage site category, 
+## Return a count of Indian UNESCO Heritage Sites by heritage site category, 
 
 #### Required column names (aliased)
 * region
@@ -167,13 +317,13 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
 * country / area
 * category
 
-### Filter
+#### Filter
 country / area name equals India
 
 #### Sort order 
-* alphabetically by category name
+Alphabetically by category name
 
-#### Disposition
+#### Query
 This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
 group the result set counts by region, subregion, country / area, and category. The SQL statement 
 highlights use of the following syntax:
@@ -215,7 +365,7 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, ca.country_
 3 rows in set (0.00 sec)
 ```
 
-### Query: return the largest UNESCO heritage site by area (hectares) in the Caribbean.
+## Return the largest UNESCO heritage site by area (hectares) in the Caribbean.
 
 #### Required column names (aliased)
 * region
@@ -225,11 +375,11 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, ca.country_
 * heritage site
 * area (hectares)
 
-### Filter
+#### Filter
 Intermediate region name equals Caribbean and area in hecatares equals the largest heritage site 
 in the Caribbean in terms of area.
 
-#### Disposition
+#### Query
 This query uses a subquery that employs a `Max()` aggregate function to help return a result set 
 containing the largest heritage site in the Caribbean. The SQL statement highlights use of the following syntax:
 
@@ -270,17 +420,6 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
                                 WHERE TRIM(ir1.intermediate_region_name) = 'Caribbean')\G
 ```
 
-```commandline
-*************************** 1. row ***************************
-            region: Americas
-         subregion: Latin America and the Caribbean
-intermediateregion: Caribbean
-    country / area: Cuba
-     heritage site: Archaeological Landscape of the First Coffee Plantations in the South-East of Cuba
-   area (hectares): 81475
-1 row in set (0.02 sec)
-```
-
 The following query also returns the same Cuban record.  It chooses a sort strategy that imposes 
 a row count limit of 1 after sorting the area values in descending order.  This query is slower 
 than using the `MAX()` subquery to filter on area. 
@@ -307,19 +446,31 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
  ORDER BY hs.area_hectares DESC LIMIT 1;
 ```
 
-### Query: return the total area (in hectares) per region that have been protected by the UNESCO heritage site designation
+```commandline
+*************************** 1. row ***************************
+            region: Americas
+         subregion: Latin America and the Caribbean
+intermediateregion: Caribbean
+    country / area: Cuba
+     heritage site: Archaeological Landscape of the First Coffee Plantations in the South-East of Cuba
+   area (hectares): 81475
+1 row in set (0.02 sec)
+```
+
+## Return the total area (in hectares) per region that have been protected by the UNESCO heritage
+ site designation
 
 #### Required column names (aliased)
 * region
 * area (hectares)
 
-### Filter
-exclude Antarctica
+#### Filter
+Exclude Antarctica
 
 #### Sort order 
-* area (hectares) descending
+area (hectares) descending
 
-#### Disposition
+#### Query
 This query requires use of a number of functions to ensure that the result set is returned in 
 the proper order.  The SQL statement highlights use of the following syntax:
 
@@ -365,20 +516,20 @@ SELECT r.region_name AS 'region',
 5 rows in set (0.01 sec)
 ```
 
-### Query: return a list of heritage sites, if any, that span regional boundaries?
+## Return a list of heritage sites, if any, that span regional boundaries?
 
 #### Required column names (aliased)
 * `heritage site`
 * `regions` (`GROUP_CONCAT()`)
 * `region count`
 
-### Filter
-* region count > 1
+#### Filter
+region count > 1
 
 #### Sort order 
-* region count descending
+region count descending
 
-#### Disposition
+#### Query
 The `heritage_site` table includes a `transboundary` property that provides a shortcut to 
 determining the number of UNESCO heritage sites that cross national boundaries.
 
@@ -405,8 +556,7 @@ If heritage sites can span national boundaries do any heritage sites also span r
 in more than a single country / area. Le Corbusier's architectural works (`heritage_site_id` = 
 1064), which are situated in many countries across Asia, Europe and the Americas is one such 
 example.
-* `INNER JOIN` -- returns all records in table X that have a matching record in table Y.  
-Replacing each `INNER JOIN` with a `LEFT JOIN` returns the same results.  Replacement with a 
+* `INNER JOIN` -- returns all records in table X that have a matching record in table Y. Replacing each `INNER JOIN` with a `LEFT JOIN` returns the same results.  Replacement with a 
 `RIGHT JOIN` does not.
 * `GROUP BY` -- required in order to group `hs.site_name` by the results of the aggregate 
 function employed in the `SELECT` clause.
