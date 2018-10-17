@@ -123,9 +123,8 @@ country / area name = 'India'
 This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
 group the result set counts by country / area, and category. The SQL statement highlights use of the following syntax:
 
-`COUNT(*)` -- count of the number of heritage sites returned by category.
-`GROUP BY` -- follows the `WHERE` clause and groups the result set by region, subregion, country 
-/ area, and category.
+* `COUNT(*)` -- count of the number of heritage sites returned by category.
+* `GROUP BY` -- follows the `WHERE` clause and groups the result set by region, subregion, country / area, and category.
 
 ```mysql
 SELECT ca.country_area_name AS `country / area`, hsc.category_name AS `category`, 
@@ -225,8 +224,7 @@ ORDER BY ca.country_area_name, hs.site_name;
 7 rows in set (0.00 sec)
 ```
 
-### 3.4 Return list of castles, fortifications and walled cities and towns inscribed as UNESCO 
-heritage sites
+### 3.4 Return list of castles, fortifications and walled cities and towns inscribed as UNESCO heritage sites
 
 #### Required column names (aliased)
 * country / area
@@ -575,9 +573,7 @@ intermediateregion: Caribbean
 1 row in set (0.02 sec)
 ```
 
-### 3.8 Return the total area (in hectares) per region that have been protected by the UNESCO 
-heritage
- site designation
+### 3.8 Return the total area (in hectares) per region that have been protected by the UNESCO heritage site designation
 
 #### Required column names (aliased)
 * region
@@ -717,7 +713,7 @@ with a list of the regions associated with each site.
 
 ## Appendix A. Retrieving database and table information
 It can prove helpful at times to retrieve information about the database, tables, and columns 
-that are the target of your queries.  MySQL provides serveral useful SQL statements for 
+that are the target of your queries.  MySQL provides several useful SQL statements for 
 retrieving such information.
 
 ### A.1 Database currently selected
