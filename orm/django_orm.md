@@ -26,7 +26,7 @@ Python shell.
 
 ### 3.1 All objects
 You can retrieve a `QuerySet` that contains all objects associated with a model by calling the 
-`all()` method on it.
+`.all()` method on it.
 
 Consider the following example. Invoking `HeritageSite.objects.all()` will return a `QuerySet` 
 containing 1092 `HeritageSite` objects.
@@ -88,10 +88,7 @@ Recall that the `HeritageSite` model includes a `ManyToManyField` assignment:
 country_area = models.ManyToManyField(CountryArea, through='HeritageSiteJurisdiction')
 ```
 
-`HeritageSite.country_area` is an iterable object that contains other model objects linked to 
-`HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like a [Matryoshka 
-doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these related model objects 
-using a `for` loop to iterate over `country_area.all()`.
+`HeritageSite.country_area` is an iterable object that contains other model objects linked to `HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like the dolls inside a [Matryoshka doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these related model objects using a `for` loop to iterate over `country_area.all()`.
 
 ```commandline
 >>> for site in HeritageSite.objects.all():
@@ -128,9 +125,7 @@ Cultural
 ```
 
 ### 3.2 Select related objects
-You can minimize database calls by optimizing `QuerySet` creation using the `.select_related
-(*fields)` method to load in additional object data available via direct foreign-key 
-relationships.  
+You can minimize database calls by optimizing `QuerySet` creation using the `.select_related(*fields)` method to load additional object data available via direct foreign-key relationships.  
 
 The following represents two calls to the database, one for the `ca` assignment and a second for 
 the `dev_status` assignment:
@@ -147,7 +142,7 @@ name: Ireland
 dev status: Developed
 ```
 
-Using `.select_related()` to pre-populate the QuerySet with the `Dev_Status` object, we reduce 
+Using `.select_related(*fields)` to pre-populate the QuerySet with the `Dev_Status` object, we reduce 
 the number of database hits to a *single* call:
 
 ```commandline
@@ -157,7 +152,7 @@ the number of database hits to a *single* call:
 >>> dev_status = ca.dev_status.dev_status_name                                     <-- pre-populated 
 ```
  
-`.select_related()` can take multiple arguments:
+`.select_related(*fields)` can take multiple arguments:
  
 ```commandline
 >>> from heritagesites.models import CountryArea
@@ -191,7 +186,9 @@ Retrieve one or more objects using the `filter(**kwargs)` method:
 
 ```commandline
 >>> from heritagesites.models import HeritageSite
->>> hs = HeritageSite.objects.select_related('heritage_site_category').filter(site_name__contains='Castle').order_by('site_name')
+>>> hs = HeritageSite.objects\
+... .select_related('heritage_site_category')\
+... .filter(site_name__contains='Castle').order_by('site_name')
 >>> for s in hs:
 ...     print(s.site_name)
 ...
@@ -219,7 +216,10 @@ Use `Q` objects to encapsulate a collection of keyword arguments. This permits t
 ```commandline
 >>> from heritagesites.models import CountryArea
 >>> from django.db.models import Q
->>> ca = CountryArea.objects.select_related('dev_status', 'location').filter(Q(iso_alpha3_code = 'CHN')|Q(iso_alpha3_code = 'HKG')|Q(iso_alpha3_code = 'MAC')).order_by('country_area_name')
+>>> ca = CountryArea.objects\
+... .select_related('dev_status', 'location')\
+... .filter(Q(iso_alpha3_code = 'CHN')|Q(iso_alpha3_code = 'HKG')|Q(iso_alpha3_code = 'MAC'))\
+... .order_by('country_area_name')
 >>> for c in ca:
 ...     name = c.country_area_name
 ...     region = c.location.region.region_name
@@ -255,7 +255,10 @@ A `Q` object can be negated with the `~` operator:
 ```commandline
 >>> from heritagesites.models import CountryArea
 >>> from django.db.models import Q
->>> ca = CountryArea.objects.select_related('dev_status', 'location').filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica')).order_by('country_area_name')
+>>> ca = CountryArea.objects\
+... .select_related('dev_status', 'location')\
+... .filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'))\
+... .order_by('country_area_name')
 >>> for c in ca:
 ...     print(c)
 ...
@@ -281,7 +284,10 @@ You can mix `Q` objects and keyword arguements in `.filter(**kwargs)` so long as
 are listed first:
 
 ```commandline
->>> ca = CountryArea.objects.select_related('dev_status', 'location').filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'), dev_status__dev_status_name = 'Developed').order_by('country_area_name')
+>>> ca = CountryArea.objects\
+... .select_related('dev_status', 'location')\
+... .filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'), dev_status__dev_status_name = 'Developed')\
+... .order_by('country_area_name')
 >>> for c in ca:
 ...     print(c)
 ...
