@@ -31,7 +31,7 @@ You can retrieve a `QuerySet` that contains all objects associated with a model 
 Consider the following example. Invoking `HeritageSite.objects.all()` will return a `QuerySet` 
 containing 1092 `HeritageSite` objects.
 
-```python
+```commandline
 >>> from heritagesites.models import HeritageSite
 >>> len(HeritageSite.objects.all())
 1092
@@ -47,7 +47,7 @@ The `QuerySet` is *iterable*, in other words, it is an object that has an `__ite
  foreign key relationship.  The values are then joined together and printed out (only the last 
  item is displayed).
 
-```python
+```commandline
 >>> hs = HeritageSite.objects.all()
 >>> hs.count()
 1092
@@ -84,13 +84,13 @@ Cultural
 
 Recall that the `HeritageSite` model includes a `ManyToManyField` assignment: 
 
-```python
+```commandline
 country_area = models.ManyToManyField(CountryArea, through='HeritageSiteJurisdiction')
 ```
 
 `HeritageSite.country_area` is an iterable object that contains other model objects linked to `HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like the dolls inside a [Matryoshka doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these related model objects using a `for` loop to iterate over `country_area.all()`.
 
-```python
+```commandline
 >>> for site in HeritageSite.objects.all():
 ...     name = site.site_name
 ...     for ca in site.country_area.all():
@@ -130,7 +130,7 @@ You can minimize database calls by optimizing `QuerySet` creation using the `.se
 The following represents two calls to the database, one for the `ca` assignment and a second for 
 the `dev_status` assignment:
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> ca = CountryArea.objects.get(country_area_id=111)                              <-- database call
 >>> name = ca.country_area_name
@@ -145,7 +145,7 @@ dev status: Developed
 Using `.select_related(*fields)` to pre-populate the QuerySet with the `Dev_Status` object, we reduce 
 the number of database hits to a *single* call:
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> ca = CountryArea.objects.select_related('dev_status').get(country_area_id=111) <-- database call
 >>> name = ca.country_area_name
@@ -154,7 +154,7 @@ the number of database hits to a *single* call:
  
 `.select_related(*fields)` can take multiple arguments:
  
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> ca = CountryArea.objects.select_related('dev_status', 'location').get(country_area_id=111)
 >>> name = ca.country_area_name
@@ -174,7 +174,7 @@ dev_status: Developed
 ### 3.2 Filter objects
 Retrieve a single object with the `.get(**kwargs)` method:
 
-```python
+```commandline
 >>> from heritagesites.models import HeritageSite
 >>> hs = HeritageSite.objects.select_related('heritage_site_category').get(heritage_site_id=375)
 >>> name = hs.site_name
@@ -184,11 +184,11 @@ Acropolis, Athens
 
 Retrieve one or more objects using the `filter(**kwargs)` method:
 
-```python
+```commandline
 >>> from heritagesites.models import HeritageSite
 >>> hs = HeritageSite.objects\
 ... .select_related('heritage_site_category')\
-... .filter(site_name__contains='Castle')\
+... .filter(site_name__contains = 'Castle')\
 ... .order_by('site_name')
 >>> for s in hs:
 ...     print(s.site_name)
@@ -214,7 +214,7 @@ Wartburg Castle
 Use `Q` objects to encapsulate a collection of keyword arguments. This permits the construction of
  complex database queries using | (OR) and & (AND) operators:
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> from django.db.models import Q
 >>> ca = CountryArea.objects\
@@ -253,7 +253,7 @@ dev_status: Developing
 
 A `Q` object can be negated with the `~` operator:
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> from django.db.models import Q
 >>> ca = CountryArea.objects\
@@ -284,7 +284,7 @@ Azerbaijan
 You can mix `Q` objects and keyword arguements in `.filter(**kwargs)` so long as the `Q` objects 
 are listed first:
 
-```python
+```commandline
 >>> ca = CountryArea.objects\
 ... .select_related('dev_status', 'location')\
 ... .filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'), dev_status__dev_status_name = 'Developed')\
@@ -318,7 +318,7 @@ _______________________________________
 
 ### Limit number of fields returned with .values()
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea
 >>> ca = CountryArea.objects.filter(country_area_name__startswith = 'China').values('country_area_name', 'iso_alpha3_code')
 >>> for c in ca:
@@ -332,7 +332,7 @@ _______________________________________
 
 ### Limit number of fields returned with .only()
 
-```python
+```commandline
 >>> from heritagesites.models import HeritageSite
 >>> hs = HeritageSite.objects.filter(site_name__startswith ='A').only('site_name', 'area_hectares')
 >>> for s in hs:
@@ -351,7 +351,7 @@ Acropolis, Athens 3.04
 ```
 
 ### Subquery
-```python
+```commandline
 >>> from heritagesites.models import CountryArea, SubRegion
 >>> from django.db.models import Subquery
 >>> sr = SubRegion.objects.filter(sub_region_name = 'Eastern Asia')
@@ -373,7 +373,7 @@ Republic of Korea
 
 ### JOIN across multiple tables
 
-```python
+```commandline
 >>> from heritagesites.models import CountryArea, Region, SubRegion, IntermediateRegion, DevStatus
 >>> ca8 = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__intermediate_region__intermediate_region_name = 'Southern Africa')
 >>> for c in ca8:
@@ -402,7 +402,7 @@ Vredefort Dome
 
 ### Add a values_list()
 
-```python
+```commandline
 >>> hs = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__country_area_name__startswith = 'China').values_list('country_area__region__region_name', 'country_area__sub_region__sub_region_name', 'country_area__country_area_name', 'site_name', 'heritage_site_category__category_name')
 >>> for s in hs:
 ...     print(s)
@@ -468,7 +468,7 @@ Vredefort Dome
 ```
 
 ### Add a values_list() and extract values from tuples
-```python
+```commandline
 >>> hs = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__country_area_name__startswith = 'China').values_list('country_area__region__region_name', 'country_area__sub_region__sub_region_name', 'country_area__country_area_name', 'site_name', 'heritage_site_category__category_name')
 >>> hs.count()
 53
