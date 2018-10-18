@@ -24,7 +24,7 @@ Python shell.
 
 ## 3.0 Example Django ORM QuerySets
 
-### 3.1 All objects
+### 3.1 Retrieve all objects
 You can retrieve a `QuerySet` that contains all objects associated with a model by calling the 
 `.all()` method on it.
 
@@ -48,6 +48,7 @@ The `QuerySet` is *iterable*, in other words, it is an object that has an `__ite
  item is displayed).
 
 ```commandline
+>>> from heritagesites.models import HeritageSite
 >>> hs = HeritageSite.objects.all()
 >>> hs.count()
 1092
@@ -82,6 +83,7 @@ Cultural
 0
 ```
 
+### 3.2 Working with Many-to-Many relationships
 Recall that the `HeritageSite` model includes a `ManyToManyField` assignment: 
 
 ```commandline
@@ -91,6 +93,7 @@ country_area = models.ManyToManyField(CountryArea, through='HeritageSiteJurisdic
 `HeritageSite.country_area` is an iterable object that contains other model objects linked to `HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like the dolls inside a [Matryoshka doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these related model objects using a `for` loop to iterate over `country_area.all()`.
 
 ```commandline
+>>> from heritagesites.models import HeritageSite
 >>> for site in HeritageSite.objects.all():
 ...     name = site.site_name
 ...     for ca in site.country_area.all():
@@ -124,7 +127,7 @@ South Africa
 Cultural
 ```
 
-### 3.2 Select related objects
+### 3.3 Select related objects
 You can minimize database calls by optimizing `QuerySet` creation using the `.select_related(*fields)` method to load additional object data available via direct foreign-key relationships.  
 
 The following represents two calls to the database, one for the `ca` assignment and a second for 
@@ -171,7 +174,7 @@ name: Ireland
 dev_status: Developed
 ```
 
-### 3.2 Filter objects
+### 3.4 Filter with keyword arguments
 Retrieve a single object with the `.get(**kwargs)` method:
 
 ```commandline
@@ -211,6 +214,7 @@ Wartburg Castle
 14
 ```
 
+### 3.5 Filter with Q objects
 Use `Q` objects to encapsulate a collection of keyword arguments. This permits the construction of
  complex database queries using | (OR) and & (AND) operators:
 
