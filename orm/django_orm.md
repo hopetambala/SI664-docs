@@ -225,9 +225,9 @@ backend is MySQL.  Use `distinct()` only. Attempting to include field references
 django.db.utils.NotSupportedError: DISTINCT ON fields is not supported by this database backend
 ``` 
 
-:warning: Django will add all fields referenced in an `order_by()` clause to those fields 
-purposely included in the `distinct()` clause. This can lead to duplication of rows in the 
-`QuerySet`.
+:warning: Django will add all fields referenced in an `order_by()` to its SQL SELECT clause. This
+ can cause unexpected results when using the `distinct()` clause.  See the Django `QuerySet` API 
+ [distinct()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#distinct) documentation for more details.
 
 The following two examples illustrate how use of `distinct()` can impact the number of results 
 returned:
@@ -292,7 +292,7 @@ Acropolis, Athens
 ```
 
 Retrieve one or more objects using the `filter(**kwargs)` clause. Note too the use of the `
-.order_by(*fields)` clause to sort the each object returned:
+.order_by(*fields)` clause to sort each object returned:
 
 ##### Applying a filter()
 ```commandline
@@ -367,7 +367,7 @@ ISO code: MAC
 dev_status: Developing
 ```
 
-A `Q` object can be negated with the `~` operator:
+A `Q()` object can be negated with the `~` operator:
 
 ##### Negating a Q() object
 ```commandline
@@ -399,7 +399,7 @@ Azerbaijan
 14
 ```
 
-You can mix `Q` objects and keyword arguments in `filter(**kwargs)` so long as the `Q` objects 
+You can mix `Q()` objects and keyword arguments in `filter(**kwargs)` so long as the `Q()` objects 
 are listed first:
 
 ##### Mixing keyword arguments with Q() objects
@@ -434,7 +434,7 @@ You can declare which fields to be included in a `QuerySet` by using the `values
 **expressions)` clause.  This is akin to referencing a specific set of columns in a SQL `SELECT` 
 statement.  
 
-:warning: If you choose to use `values(*fields, **expressions)` note that the `QuerySet` returned
+:warning: If you choose to use `values()` note that the `QuerySet` returned
  is composed of [dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) rather than Django model instances.
 
 ##### Returning dictionaries with values()
@@ -461,9 +461,9 @@ statement.
 
 #### 3.6.2 Calling values_list()
 Similarly, the `values_list(*fields, flat=False, named=False)` clause also allows one to specify 
-which fields to include in a `QuerySet`. However, unlike `values()` which returns dictionaries, 
-the `values_list()` returns [tuples](https://docs.python.org/3/tutorial/datastructures
-.html#tuples-and-sequences).
+which fields to include in a `QuerySet`. 
+
+:warning: If you choose to use `values_list()` note that the `QuerySet` returned is composed of [tuples](https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences).
 
 ##### Returning tuples with values_list()
 ```commandline
@@ -490,8 +490,8 @@ Namibia NAM
 South Africa ZAF
 ```
 
-:bulb: If your `values_list()` is limited to a single field you can add the "Flat" parameter set 
-to True in order to return the results as single values rather than one-tuples:
+:bulb: If your `values_list()` is limited to a single field you can set the `flat` parameter 
+to `True` in order to return the results as single values rather than one-tuples:
 
 ##### Returning single value tuples with values_list()
 ```commandline
@@ -513,7 +513,7 @@ to True in order to return the results as single values rather than one-tuples:
 <QuerySet ['BWA', 'LSO', 'NAM', 'SWZ', 'ZAF']>
 ```
 
-:bulb: You can set the "named" parameter to True to have the results returned as a [namedtuple()](https://docs.python.org/3/library/collections.html#collections.namedtuple).
+:bulb: You can set the `named` parameter to `True` to have the results returned as a [namedtuple()](https://docs.python.org/3/library/collections.html#collections.namedtuple).
 
 ##### Returning named tuples with values_list()
 ```commandline
@@ -528,7 +528,7 @@ to True in order to return the results as single values rather than one-tuples:
 
 ### 3.7 Using F() expressions
 You can use an `F()` object to represent a model field or annotated column value. `F` 
-expressions allows one to refer to model field values and utilize them when querying the database.
+expressions allows one to "alias" model field values and utilize them when querying the database.
 
 :bulb: Once you declare a `F()` object you can use it in subsequent clauses chained to the 
 `QuerySet` as is illustrated in the `.filter()` clause below:
@@ -626,7 +626,7 @@ The `aggregate()` clause can also accept multiple arguments:
 ```
 
 #### 3.9.2 Calling annotation()
-If you need to generate summary values for each `QuerySet` item use the `annotate()` clause. The 
+If you need to generate summary values for *each* `QuerySet` item use the `annotate()` clause. The 
 `annotate()` clause is the equivalent of a SQL `GROUP BY` clause.
 
 Recall that a previous assignment involved using the `values(*fields, **expressions)` and 
