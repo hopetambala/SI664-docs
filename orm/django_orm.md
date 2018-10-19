@@ -4,9 +4,16 @@ The following examples represent the types of Django ORM queries you may be aske
 write as part of a weekly assignment or as part of an exam.
 
 ## 1.0 Django documentation
-[QuerySet API](https://docs.djangoproject.com/en/2.1/ref/models/querysets/)
-[Making Queries](https://docs.djangoproject.com/en/2.1/topics/db/queries/)
-[Complex Lookups with Q objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#complex-lookups-with-q-objects)
+* [QuerySet API](https://docs.djangoproject.com/en/2.1/ref/models/querysets/)
+  - [order_by()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#order-by)
+  - [values()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values)
+  - [values_list()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values-list)
+* [Making Queries](https://docs.djangoproject.com/en/2.1/topics/db/queries/)
+  - [Complex Lookups with Q objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#complex-lookups-with-q-objects)
+  - [Limiting QuerySets](https://docs.djangoproject.com/en/2.1/topics/db/queries/#limiting-querysets)
+* [Query Expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/)
+  - [F expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/#f-expressions)
+* [Aggregation](https://docs.djangoproject.com/en/2.1/topics/db/aggregation/)  
 
 ## 2.0 Django Python shell
 Make sure you activate the heritagesites project virtual environment before running the Django 
@@ -25,8 +32,8 @@ Python shell.
 ## 3.0 Example Django ORM QuerySets
 
 ### 3.1 Retrieve all objects
-You can retrieve a `QuerySet` that contains all objects associated with a model by calling the 
-`.all()` method on it.
+You can retrieve a `QuerySet` that contains all objects associated with a model instance by 
+appending the `all()` clause to it.
 
 Consider the following example. Invoking `HeritageSite.objects.all()` will return a `QuerySet` 
 containing 1092 `HeritageSite` objects.
@@ -66,7 +73,7 @@ The `QuerySet` is *iterable*, in other words, it is an object that has an `__ite
 ...     category = s.heritage_site_category.category_name
 ...     transboundary = s.transboundary
 
-...     site = ''.join([name, '\n', description, '\n', justify, '\n', str(date_inscribed), '\n', str(long), '\n', str(lat), '\n', str(area), '\n', category, '\n', str(transboundary)])
+...     site = ''.join([name, '\n', description, '\n', justify, '\n', str(date_inscribed), '\n', str(long), '\n', str(lat), '\n', str(area), '\n', category, '\n', str(transboundary), '\n'])
 
 ...     print(site)
 
@@ -90,7 +97,10 @@ Recall that the `HeritageSite` model includes a `ManyToManyField` assignment:
 country_area = models.ManyToManyField(CountryArea, through='HeritageSiteJurisdiction')
 ```
 
-`HeritageSite.country_area` is an iterable object that contains other model objects linked to `HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like the dolls inside a [Matryoshka doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these related model objects using a `for` loop to iterate over `country_area.all()`.
+`HeritageSite.country_area` is an iterable object that contains other model instances linked to 
+`HeritageSite` via the intermediary model `HeritageSiteJurisdiction`.  Rather like the dolls 
+inside a [Matryoshka doll](https://en.wikipedia.org/wiki/Matryoshka_doll) we can access these 
+related model instances using a `for` loop to iterate over `country_area.all()`.
 
 ```commandline
 >>> from heritagesites.models import HeritageSite
@@ -102,7 +112,7 @@ country_area = models.ManyToManyField(CountryArea, through='HeritageSiteJurisdic
 ...         region = ca.location.region.region_name
 ...     category = site.heritage_site_category.category_name
 
-...     site = ''.join([region, '\n', sub_region, '\n', country_area, '\n', name, '\n', category])
+...     site = ''.join([region, '\n', sub_region, '\n', country_area, '\n', name, '\n', category, '\n'])
 
 ...     print(site)
 
@@ -128,7 +138,8 @@ Cultural
 ```
 
 ### 3.3 Select related objects
-You can minimize database calls by optimizing `QuerySet` creation using the `.select_related(*fields)` method to load additional object data available via direct foreign-key relationships.  
+You can minimize database calls by optimizing `QuerySet` creation using the `select_related
+(*fields)` clause to load additional object data available via direct foreign-key relationships.  
 
 The following represents two calls to the database, one for the `ca` assignment and a second for 
 the `dev_status` assignment:
@@ -145,7 +156,7 @@ name: Ireland
 dev status: Developed
 ```
 
-Using `.select_related(*fields)` to pre-populate the QuerySet with the `Dev_Status` object, we reduce 
+Using `select_related(*fields)` to pre-populate the QuerySet with the `Dev_Status` object, we reduce 
 the number of database hits to a *single* call:
 
 ```commandline
@@ -155,7 +166,7 @@ the number of database hits to a *single* call:
 >>> dev_status = ca.dev_status.dev_status_name                                     <-- pre-populated 
 ```
  
-`.select_related(*fields)` can take multiple arguments:
+`select_related(*fields)` can take multiple arguments:
  
 ```commandline
 >>> from heritagesites.models import CountryArea
@@ -174,18 +185,22 @@ name: Ireland
 dev_status: Developed
 ```
 
-### 3.4 Filter with keyword arguments
-Retrieve a single object with the `.get(**kwargs)` method:
+### 3.4 Filtering
+
+#### 3.4.1 Filter with keyword arguments
+Retrieve a single object with the `get(**kwargs)` clause:
 
 ```commandline
 >>> from heritagesites.models import HeritageSite
 >>> hs = HeritageSite.objects.select_related('heritage_site_category').get(heritage_site_id=375)
 >>> name = hs.site_name
+
 >>> print(name)
 Acropolis, Athens
 ```
 
-Retrieve one or more objects using the `filter(**kwargs)` method:
+Retrieve one or more objects using the `filter(**kwargs)` clause  Note too the use of the `
+.order_by(*fields)` clause to sort the each object returned:
 
 ```commandline
 >>> from heritagesites.models import HeritageSite
@@ -193,6 +208,7 @@ Retrieve one or more objects using the `filter(**kwargs)` method:
 ... .select_related('heritage_site_category')\
 ... .filter(site_name__contains = 'Castle')\
 ... .order_by('site_name')
+
 >>> for s in hs:
 ...     print(s.site_name)
 ...
@@ -210,13 +226,14 @@ Mir Castle Complex
 San Pedro de la Roca Castle, Santiago de Cuba
 Three Castles, Defensive Wall and Ramparts of the Market-Town of Bellinzona
 Wartburg Castle
->>> hs1.count()
+
+>>> hs.count()
 14
 ```
 
-### 3.5 Filter with Q objects
-Use `Q` objects to encapsulate a collection of keyword arguments. This permits the construction of
- complex database queries using | (OR) and & (AND) operators:
+#### 3.4.2 Filter with Q() objects
+Use `Q()` objects to encapsulate a collection of keyword arguments. This simplifies defining 
+filters using OR ('|') and AND ('&') operators:
 
 ```commandline
 >>> from heritagesites.models import CountryArea
@@ -225,6 +242,7 @@ Use `Q` objects to encapsulate a collection of keyword arguments. This permits t
 ... .select_related('dev_status', 'location')\
 ... .filter(Q(iso_alpha3_code = 'CHN')|Q(iso_alpha3_code = 'HKG')|Q(iso_alpha3_code = 'MAC'))\
 ... .order_by('country_area_name')
+
 >>> for c in ca:
 ...     name = c.country_area_name
 ...     region = c.location.region.region_name
@@ -232,7 +250,7 @@ Use `Q` objects to encapsulate a collection of keyword arguments. This permits t
 ...     dev_status = c.dev_status.dev_status_name
 ...     iso_code = c.iso_alpha3_code
 
-...     place = ''.join(['region: ', region, '\n', 'subregion: ', sub_region, '\n', 'name: ', name, '\n', 'ISO code: ', iso_code, '\n', 'dev_status: ', dev_status])
+...     place = ''.join(['region: ', region, '\n', 'subregion: ', sub_region, '\n', 'name: ', name, '\n', 'ISO code: ', iso_code, '\n', 'dev_status: ', dev_status, '\n'])
 
 ...     print(place)
 ...
@@ -285,7 +303,7 @@ Azerbaijan
 14
 ```
 
-You can mix `Q` objects and keyword arguements in `.filter(**kwargs)` so long as the `Q` objects 
+You can mix `Q` objects and keyword arguments in `filter(**kwargs)` so long as the `Q` objects 
 are listed first:
 
 ```commandline
@@ -304,35 +322,293 @@ Austria
 4
 ```
 
-_______________________________________
+### 3.5 Returning dictionaries or tuples
+You can forgo the overhead associated with returning a `QuerySet` of model instances in favor of 
+returning dictionaries or tuples by using either the `values(*fields, **expressions)` or 
+`values_list(*fields, flat=False, named=False)` clauses. However, results are limited to one 
+object per row.  This limitation prevents inclusion of object data otherwise available via 
+many-to-many or other multi-valued relationships (e.g., reverse foreign key relationships).
 
-### 3.x Aggregation and annotation
+#### 3.5.1 values()
+You can declare which fields to be included in a `QuerySet` by using the `values(*fields, 
+**expressions)` clause.  This is akin to referencing a specific set of columns in a SQL `SELECT` 
+statement.  
 
-
-### 3.x F object
-
-
-
-
-
-
-
-
-
-
-### Limit number of fields returned with .values()
+:warning: If you choose to use `values(*fields, **expressions)` note that the `QuerySet` returned
+ is composed of [dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) rather than Django model instances.
 
 ```commandline
->>> from heritagesites.models import CountryArea
->>> ca = CountryArea.objects.filter(country_area_name__startswith = 'China').values('country_area_name', 'iso_alpha3_code')
+>>> ca = CountryArea.objects\
+... .select_related('dev_status')\
+... .values('country_area_name', 'iso_alpha3_code')\
+... .filter(location__intermediate_region__pk = 7)\
+... .order_by('country_area_name')
+
+>>> ca.count()
+5
+
 >>> for c in ca:
 ...     print(c)
 ...
-...
-{'country_area_name': 'China', 'iso_alpha3_code': 'CHN'}
-{'country_area_name': 'China, Hong Kong Special Administrative Region', 'iso_alpha3_code': 'HKG'}
-{'country_area_name': 'China, Macao Special Administrative Region', 'iso_alpha3_code': 'MAC'}
+{'country_area_name': 'Botswana', 'iso_alpha3_code': 'BWA'}
+{'country_area_name': 'Eswatini', 'iso_alpha3_code': 'SWZ'}
+{'country_area_name': 'Lesotho', 'iso_alpha3_code': 'LSO'}
+{'country_area_name': 'Namibia', 'iso_alpha3_code': 'NAM'}
+{'country_area_name': 'South Africa', 'iso_alpha3_code': 'ZAF'}
 ```
+
+#### 3.5.2 values_list()
+Similarly, the `values_list(*fields, flat=False, named=False)` clause also allows one to specify 
+which fields to include in a `QuerySet`. However, unlike `values()` which returns dictionaries, 
+the `values_list()` returns [tuples](https://docs.python.org/3/tutorial/datastructures
+.html#tuples-and-sequences).
+
+```commandline
+>>> from heritagesites.models import CountryArea
+>>> ca = CountryArea.objects\
+... .select_related('dev_status')\
+... .values_list('country_area_name', 'iso_alpha3_code')\
+... .filter(location__intermediate_region__pk = 7)\
+... .order_by('country_area_name')
+
+>>> ca
+<QuerySet [('Botswana', 'BWA'), ('Eswatini', 'SWZ'), ('Lesotho', 'LSO'), ('Namibia', 'NAM'), ('South Africa', 'ZAF')]>
+
+>>> ca.count()
+5
+
+>>> for c in ca:
+...     print(c[0], c[1])
+...
+Botswana BWA
+Eswatini SWZ
+Lesotho LSO
+Namibia NAM
+South Africa ZAF
+```
+
+:bulb: if your `values_list()` is limited to a single field you can add the "Flat" parameter set 
+to True in order to return the results as single values rather than one-tuples:
+
+```commandline
+>>> CountryArea.objects\
+... .values_list('iso_alpha3_code')\
+... .filter(location__intermediate_region__pk = 7)\
+... .order_by('iso_alpha3_code')
+
+<QuerySet [('BWA',), ('LSO',), ('NAM',), ('SWZ',), ('ZAF',)]>
+```
+
+```commandline
+>>> CountryArea.objects\
+... .values_list('iso_alpha3_code', flat = True)\
+... .filter(location__intermediate_region__pk = 7)\
+... .order_by('iso_alpha3_code')
+
+<QuerySet ['BWA', 'LSO', 'NAM', 'SWZ', 'ZAF']>
+```
+
+:bulb: You can set the "named" parameter to True to have the results returned as a [namedtuple()](https://docs.python.org/3/library/collections.html#collections.namedtuple).
+
+```commandline
+>>> CountryArea.objects\
+... .select_related('dev_status')\
+... .values_list('country_area_name', 'iso_alpha3_code', named = True)\
+... .filter(location__intermediate_region__pk = 7)\
+... .order_by('country_area_name')
+
+<QuerySet [Row(country_area_name='Botswana', iso_alpha3_code='BWA'), Row(country_area_name='Eswatini', iso_alpha3_code='SWZ'), Row(country_area_name='Lesotho', iso_alpha3_code='LSO'), Row(country_area_name='Namibia', iso_alpha3_code='NAM'), Row(country_area_name='South Africa', iso_alpha3_code='ZAF')]>
+```
+
+### 3.6 F() expressions
+You can use an `F()` object to represent a model field or annotated column value. `F` 
+expressions allows one to refer to model field values and utilize them when querying the database.
+
+:bulb: Once you declare a `F()` object you can use it in subsequent clauses chained to the 
+`QuerySet` as is illustrated in the `.filter()` clause below:
+
+```commandline
+>>> from heritagesites.models import HeritageSite
+>>> from django.db.models import F
+>>> hs = HeritageSite.objects\
+... .values('site_name', 'longitude', 'latitude', intermediate_region_name=F('country_area__location__intermediate_region__intermediate_region_name'), country_area_name=F('country_area__country_area_name'))\
+... .filter(country_area_name = 'Botswana')
+>>> hs.count()
+2
+>>> for s in hs:
+...     print(s)
+...
+{'site_name': 'Okavango Delta', 'longitude': Decimal('22.90000000'), 'latitude': Decimal('-19.28333333'), 'intermediate_region_name': 'Southern Africa', 'country_area_name': 'Botswana'}
+{'site_name': 'Tsodilo', 'longitude': Decimal('21.73333333'), 'latitude': Decimal('-18.75000000'), 'intermediate_region_name': 'Southern Africa', 'country_area_name': 'Botswana'}
+```
+
+:warning: List `F()` objects *after* keyword arguments in `values(*fields, **expressions)` in order to avoid triggering a syntax error:
+
+```commandline
+SyntaxError: positional argument follows keyword argument
+``` 
+
+:bulb: You can view the underlying query that the Django ORM creates and issues by calling the `.query` method:
+
+```commandline
+>>> print(str(hs.query))
+SELECT `heritage_site`.`site_name`, `heritage_site`.`longitude`, `heritage_site`.`latitude`,
+       `intermediate_region`.`intermediate_region_name` AS `intermediate_region_name`, 
+       `country_area`.`country_area_name` AS `country_area_name`
+  FROM `heritage_site` 
+       LEFT OUTER JOIN `heritage_site_jurisdiction` 
+                    ON (`heritage_site`.`heritage_site_id` = `heritage_site_jurisdiction`.`heritage_site_id`)           
+       LEFT OUTER JOIN `country_area`
+                    ON (`heritage_site_jurisdiction`.`country_area_id` = `country_area`.`country_area_id`)
+       LEFT OUTER JOIN `location`
+                    ON (`country_area`.`location_id` = `location`.`location_id`)
+       LEFT OUTER JOIN `intermediate_region`
+                    ON (`location`.`intermediate_region_id` = `intermediate_region`.`intermediate_region_id`)
+ WHERE `country_area`.`country_area_name` = Botswana
+ ORDER BY `heritage_site`.`site_name` ASC
+```
+
+### 3.7 Sort order and limits
+Previous examples sorted the `QuerySet` returned using the `order_by(*fields)` clause. The 
+default sort order is _ascending_; to sort in _descending_ order add a hyphen ('-') in front of the 
+keyword as is demonstrated below.
+
+You can also impose a limit on the number of results returned using a subset of Python's [array slicing syntax](https://stackoverflow.com/questions/509211/understanding-pythons-slice-notation).
+
+In the example below, the `QuerySet` is sorted by `area_hectares` (descending), followed by 
+`site_name` (ascending) before limiting the `QuerySet` returned to the top five (5) largest protected areas.
+
+```commandline
+>>> from heritagesites.models import HeritageSite
+>>> hs = HeritageSite.objects.values('site_name', 'area_hectares').order_by('-area_hectares', 'site_name')[:5]
+>>> hs.count()
+5
+>>> for s in hs:
+...     site = ''.join(['site: ', s['site_name'], '\n', 'area (hectares): ', str(s['area_hectares']), '\n'])
+...     print(site)
+...
+site: Phoenix Islands Protected Area
+area (hectares): 40825000.0
+
+site: Papahānaumokuākea
+area (hectares): 36207499.0
+
+site: Great Barrier Reef
+area (hectares): 34870000.0
+
+site: Galápagos Islands
+area (hectares): 14066514.0
+
+site: Kluane / Wrangell-St. Elias / Glacier Bay / Tatshenshini-Alsek
+area (hectares): 9839121.0
+```
+
+### 3.8 Aggregation
+
+#### 3.8.1 aggregate() clause
+If you need to generate a summary value from a `QuerySet` in its entirety use the `aggregate()` 
+clause.
+
+```commandline
+>>> from heritagesites.models import HeritageSite
+>>> from django.db.models import Avg, Max, Min, Sum
+
+>>> HeritageSite.objects.aggregate(Max('area_hectares'))
+{'area_hectares__max': 40825000.0}
+
+>>> HeritageSite.objects.aggregate(Min('area_hectares'))
+{'area_hectares__min': 0.0}
+
+>>> HeritageSite.objects.aggregate(Avg('area_hectares'))
+{'area_hectares__avg': 275951.4937591573}
+
+>>> HeritageSite.objects.aggregate(Sum('area_hectares'))
+{'area_hectares__sum': 301339031.18499976}
+
+>>> HeritageSite.objects.all().count()
+1092
+```
+
+The `aggregate()` clause can also accept multiple arguments:
+
+```commandline
+>>> HeritageSite.objects.aggregate(Max('area_hectares'), Min('area_hectares'), Avg('area_hectares'), Sum('area_hectares'))
+{'area_hectares__max': 40825000.0, 'area_hectares__min': 0.0, 'area_hectares__avg': 275951.4937591573, 'area_hectares__sum': 301339031.18499976}
+```
+
+#### 3.8.2 annotation() clause
+If you need to generate summary values for each `QuerySet` item use the `annotate()` clause. The 
+`annotate()` clause is the equivalent of a SQL `GROUP BY` clause.
+
+Recall that a previous assignment involved using the `values(*fields, **expressions)` and 
+`annotate()` clauses to return counts of Developed vs Developing countries / areas in Asia:
+
+```commandline
+>>> loc = Location.objects\
+... .select_related('region')\
+... .values(region_name=F('region__region_name'), dev_status_name=F('countryarea__dev_status__dev_status_name'))\
+... .filter(region__region_name='Asia')\
+... .annotate(count=Count('dev_status_name'))\
+... .order_by('dev_status_name')
+
+>>> loc.count()
+2
+
+>>> for l in loc:
+...     print(l)
+...
+{'region_name': 'Asia', 'dev_status_name': 'Developed', 'count': 3}
+{'region_name': 'Asia', 'dev_status_name': 'Developing', 'count': 47}
+```
+
+Likewise, providing counts of countries / areas grouped by USND region and subregion also requires 
+use of both the `values(*fields, **expressions)` and `annotate()` clauses:
+
+```commandline
+>>> ca = CountryArea.objects\
+... .select_related('location').values(region=F('location__region__region_name'), subregion=F('location__sub_region__sub_region_name'))\
+... .annotate(country_area_count=Count('country_area_id'))\
+... .order_by('region', 'subregion')
+
+>>> ca.count()
+18
+
+>>> for c in ca:
+...     print(c)
+...
+{'region': None, 'subregion': None, 'country_area_count': 1}
+{'region': 'Africa', 'subregion': 'Northern Africa', 'country_area_count': 7}
+{'region': 'Africa', 'subregion': 'Sub-Saharan Africa', 'country_area_count': 53}
+{'region': 'Americas', 'subregion': 'Latin America and the Caribbean', 'country_area_count': 52}
+{'region': 'Americas', 'subregion': 'Northern America', 'country_area_count': 5}
+{'region': 'Asia', 'subregion': 'Central Asia', 'country_area_count': 5}
+{'region': 'Asia', 'subregion': 'Eastern Asia', 'country_area_count': 7}
+{'region': 'Asia', 'subregion': 'South-eastern Asia', 'country_area_count': 11}
+{'region': 'Asia', 'subregion': 'Southern Asia', 'country_area_count': 9}
+{'region': 'Asia', 'subregion': 'Western Asia', 'country_area_count': 18}
+{'region': 'Europe', 'subregion': 'Eastern Europe', 'country_area_count': 10}
+{'region': 'Europe', 'subregion': 'Northern Europe', 'country_area_count': 17}
+{'region': 'Europe', 'subregion': 'Southern Europe', 'country_area_count': 16}
+{'region': 'Europe', 'subregion': 'Western Europe', 'country_area_count': 9}
+{'region': 'Oceania', 'subregion': 'Australia and New Zealand', 'country_area_count': 6}
+{'region': 'Oceania', 'subregion': 'Melanesia', 'country_area_count': 5}
+{'region': 'Oceania', 'subregion': 'Micronesia', 'country_area_count': 8}
+{'region': 'Oceania', 'subregion': 'Polynesia', 'country_area_count': 10}
+```  
+
+
+
+_____________________________
+
+TODO
+
+DISTINCT
+.only  (add to limit section)
+subquery ???
+Show template tags and variables
+Update documentation with more links?
+
+
 
 ### Limit number of fields returned with .only()
 
@@ -374,168 +650,3 @@ Japan
 Mongolia
 Republic of Korea
 ```
-
-### JOIN across multiple tables
-
-```commandline
->>> from heritagesites.models import CountryArea, Region, SubRegion, IntermediateRegion, DevStatus
->>> ca8 = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__intermediate_region__intermediate_region_name = 'Southern Africa')
->>> for c in ca8:
-...     print(c.site_name)
-...
-...
-Barberton Makhonjwa Mountains
-Cape Floral Region Protected Areas
-Fossil Hominid Sites of South Africa
-iSimangaliso Wetland Park
-Maloti-Drakensberg Park
-Maloti-Drakensberg Park
-Mapungubwe Cultural Landscape
-Namib Sand Sea
-Okavango Delta
-Richtersveld Cultural and Botanical Landscape
-Robben Island
-Tsodilo
-Twyfelfontein or /Ui-//aes
-Vredefort Dome
-ǂKhomani Cultural Landscape
-
->>> str(ca8.query)
-'SELECT `heritage_site`.`heritage_site_id`, `heritage_site`.`site_name`, `heritage_site`.`description`, `heritage_site`.`justification`, `heritage_site`.`date_inscribed`, `heritage_site`.`longitude`, `heritage_site`.`latitude`, `heritage_site`.`area_hectares`, `heritage_site`.`heritage_site_category_id`, `heritage_site`.`transboundary`, `heritage_site_category`.`category_id`, `heritage_site_category`.`category_name` FROM `heritage_site` INNER JOIN `heritage_site_jurisdiction` ON (`heritage_site`.`heritage_site_id` = `heritage_site_jurisdiction`.`heritage_site_id`) INNER JOIN `country_area` ON (`heritage_site_jurisdiction`.`country_area_id` = `country_area`.`country_area_id`) INNER JOIN `intermediate_region` ON (`country_area`.`intermediate_region_id` = `intermediate_region`.`intermediate_region_id`) INNER JOIN `heritage_site_category` ON (`heritage_site`.`heritage_site_category_id` = `heritage_site_category`.`category_id`) WHERE `intermediate_region`.`intermediate_region_name` = Southern Africa ORDER BY `heritage_site`.`site_name` ASC'
-```
-
-### Add a values_list()
-
-```commandline
->>> hs = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__country_area_name__startswith = 'China').values_list('country_area__region__region_name', 'country_area__sub_region__sub_region_name', 'country_area__country_area_name', 'site_name', 'heritage_site_category__category_name')
->>> for s in hs:
-...     print(s)
-...
-...
-('Asia', 'Eastern Asia', 'China', 'Ancient Building Complex in the Wudang Mountains', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Ancient City of Ping Yao', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Ancient Villages in Southern Anhui – Xidi and Hongcun', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Capital Cities and Tombs of the Ancient Koguryo Kingdom', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Chengjiang Fossil Site', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'China Danxia', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Classical Gardens of Suzhou', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Cultural Landscape of Honghe Hani Rice Terraces ', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Dazu Rock Carvings', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Fanjingshan', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Fujian <em>Tulou</em>', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Historic Centre of Macao', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Historic Ensemble of the Potala Palace, Lhasa', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Historic Monuments of Dengfeng in “The Centre of Heaven and Earth”', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Huanglong Scenic and Historic Interest Area', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Hubei Shennongjia', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Imperial Tombs of the Ming and Qing Dynasties', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Jiuzhaigou Valley Scenic and Historic Interest Area', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Kaiping Diaolou and Villages', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Kulangsu, a Historic International Settlement', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Longmen Grottoes', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Lushan National Park', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Mausoleum of the First Qin Emperor', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Mogao Caves', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Mount Emei Scenic Area, including Leshan Giant Buddha Scenic Area', 'Mixed')
-('Asia', 'Eastern Asia', 'China', 'Mount Huangshan', 'Mixed')
-('Asia', 'Eastern Asia', 'China', 'Mount Qingcheng and the Dujiangyan Irrigation System', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Mount Sanqingshan National Park', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Mount Taishan', 'Mixed')
-('Asia', 'Eastern Asia', 'China', 'Mount Wutai', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Mount Wuyi', 'Mixed')
-('Asia', 'Eastern Asia', 'China', 'Mountain Resort and its Outlying Temples, Chengde', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Old Town of Lijiang', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Peking Man Site at Zhoukoudian', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Qinghai Hoh Xil', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Sichuan Giant Panda Sanctuaries - Wolong, Mt Siguniang and Jiajin Mountains ', 'Natural')
-('Asia', 'Eastern Asia', 'China', "Silk Roads: the Routes Network of Chang'an-Tianshan Corridor", 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Site of Xanadu', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'South China Karst', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Summer Palace, an Imperial Garden in Beijing', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Temple and Cemetery of Confucius and the Kong Family Mansion in Qufu', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Temple of Heaven: an Imperial Sacrificial Altar in Beijing', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'The Grand Canal', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'The Great Wall', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Three Parallel Rivers of Yunnan Protected Areas', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Tusi Sites', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'West Lake Cultural Landscape of Hangzhou', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Wulingyuan Scenic and Historic Interest Area', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Xinjiang Tianshan', 'Natural')
-('Asia', 'Eastern Asia', 'China', 'Yin Xu', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Yungang Grottoes', 'Cultural')
-('Asia', 'Eastern Asia', 'China', 'Zuojiang Huashan Rock Art Cultural Landscape', 'Cultural')
->>> ca8.count()
-53
->>> str(hs.query)
-'SELECT `region`.`region_name`, `sub_region`.`sub_region_name`, `country_area`.`country_area_name`, `heritage_site`.`site_name`, `heritage_site_category`.`category_name` FROM `heritage_site` INNER JOIN `heritage_site_jurisdiction` ON (`heritage_site`.`heritage_site_id` = `heritage_site_jurisdiction`.`heritage_site_id`) INNER JOIN `country_area` ON (`heritage_site_jurisdiction`.`country_area_id` = `country_area`.`country_area_id`) LEFT OUTER JOIN `region` ON (`country_area`.`region_id` = `region`.`region_id`) LEFT OUTER JOIN `sub_region` ON (`country_area`.`sub_region_id` = `sub_region`.`sub_region_id`) INNER JOIN `heritage_site_category` ON (`heritage_site`.`heritage_site_category_id` = `heritage_site_category`.`category_id`) WHERE `country_area`.`country_area_name` LIKE BINARY China% ORDER BY `heritage_site`.`site_name` ASC'
-```
-
-### Add a values_list() and extract values from tuples
-```commandline
->>> hs = HeritageSite.objects.select_related('heritage_site_category').filter(country_area__country_area_name__startswith = 'China').values_list('country_area__region__region_name', 'country_area__sub_region__sub_region_name', 'country_area__country_area_name', 'site_name', 'heritage_site_category__category_name')
->>> hs.count()
-53
->>> for s in hs:
-...     print(s[0], s[1], s[2], s[3], s[4])
-...
-...
-Asia Eastern Asia China Ancient Building Complex in the Wudang Mountains Cultural
-Asia Eastern Asia China Ancient City of Ping Yao Cultural
-Asia Eastern Asia China Ancient Villages in Southern Anhui – Xidi and Hongcun Cultural
-Asia Eastern Asia China Capital Cities and Tombs of the Ancient Koguryo Kingdom Cultural
-Asia Eastern Asia China Chengjiang Fossil Site Natural
-Asia Eastern Asia China China Danxia Natural
-Asia Eastern Asia China Classical Gardens of Suzhou Cultural
-Asia Eastern Asia China Cultural Landscape of Honghe Hani Rice Terraces  Cultural
-Asia Eastern Asia China Dazu Rock Carvings Cultural
-Asia Eastern Asia China Fanjingshan Natural
-Asia Eastern Asia China Fujian <em>Tulou</em> Cultural
-Asia Eastern Asia China Historic Centre of Macao Cultural
-Asia Eastern Asia China Historic Ensemble of the Potala Palace, Lhasa Cultural
-Asia Eastern Asia China Historic Monuments of Dengfeng in “The Centre of Heaven and Earth” Cultural
-Asia Eastern Asia China Huanglong Scenic and Historic Interest Area Natural
-Asia Eastern Asia China Hubei Shennongjia Natural
-Asia Eastern Asia China Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang Cultural
-Asia Eastern Asia China Imperial Tombs of the Ming and Qing Dynasties Cultural
-Asia Eastern Asia China Jiuzhaigou Valley Scenic and Historic Interest Area Natural
-Asia Eastern Asia China Kaiping Diaolou and Villages Cultural
-Asia Eastern Asia China Kulangsu, a Historic International Settlement Cultural
-Asia Eastern Asia China Longmen Grottoes Cultural
-Asia Eastern Asia China Lushan National Park Cultural
-Asia Eastern Asia China Mausoleum of the First Qin Emperor Cultural
-Asia Eastern Asia China Mogao Caves Cultural
-Asia Eastern Asia China Mount Emei Scenic Area, including Leshan Giant Buddha Scenic Area Mixed
-Asia Eastern Asia China Mount Huangshan Mixed
-Asia Eastern Asia China Mount Qingcheng and the Dujiangyan Irrigation System Cultural
-Asia Eastern Asia China Mount Sanqingshan National Park Natural
-Asia Eastern Asia China Mount Taishan Mixed
-Asia Eastern Asia China Mount Wutai Cultural
-Asia Eastern Asia China Mount Wuyi Mixed
-Asia Eastern Asia China Mountain Resort and its Outlying Temples, Chengde Cultural
-Asia Eastern Asia China Old Town of Lijiang Cultural
-Asia Eastern Asia China Peking Man Site at Zhoukoudian Cultural
-Asia Eastern Asia China Qinghai Hoh Xil Natural
-Asia Eastern Asia China Sichuan Giant Panda Sanctuaries - Wolong, Mt Siguniang and Jiajin Mountains  Natural
-Asia Eastern Asia China Silk Roads: the Routes Network of Chang'an-Tianshan Corridor Cultural
-Asia Eastern Asia China Site of Xanadu Cultural
-Asia Eastern Asia China South China Karst Natural
-Asia Eastern Asia China Summer Palace, an Imperial Garden in Beijing Cultural
-Asia Eastern Asia China Temple and Cemetery of Confucius and the Kong Family Mansion in Qufu Cultural
-Asia Eastern Asia China Temple of Heaven: an Imperial Sacrificial Altar in Beijing Cultural
-Asia Eastern Asia China The Grand Canal Cultural
-Asia Eastern Asia China The Great Wall Cultural
-Asia Eastern Asia China Three Parallel Rivers of Yunnan Protected Areas Natural
-Asia Eastern Asia China Tusi Sites Cultural
-Asia Eastern Asia China West Lake Cultural Landscape of Hangzhou Cultural
-Asia Eastern Asia China Wulingyuan Scenic and Historic Interest Area Natural
-Asia Eastern Asia China Xinjiang Tianshan Natural
-Asia Eastern Asia China Yin Xu Cultural
-Asia Eastern Asia China Yungang Grottoes Cultural
-Asia Eastern Asia China Zuojiang Huashan Rock Art Cultural Landscape Cultural
-```
-
-
-
-
-
