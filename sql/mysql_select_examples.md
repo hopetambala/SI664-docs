@@ -3,7 +3,7 @@
 The following examples represent the types of SQL `SELECT` statements you may be asked to write 
 as part of a weekly assignment or as part of an exam.
 
-## 1.0 MySQL Documentation
+## 1.0 MySQL documentation
 * [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
 * [Subquery syntax](https://dev.mysql.com/doc/refman/8.0/en/subqueries.html)
 * [Operators](https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html)
