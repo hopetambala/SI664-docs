@@ -5,6 +5,7 @@ write as part of a weekly assignment or as part of an exam.
 
 ## 1.0 Django documentation
 * [QuerySet API](https://docs.djangoproject.com/en/2.1/ref/models/querysets/)
+  - [distinct()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#distinct)
   - [order_by()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#order-by)
   - [values()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values)
   - [values_list()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values-list)
@@ -185,9 +186,67 @@ name: Ireland
 dev_status: Developed
 ```
 
-### 3.4 Filtering
+### 3.4 Distinct
+The `distinct(*fields)` clause eliminates duplicate values in referenced fields in the same 
+manner as a SQL `SELECT DISTINCT`. This `QuerySet` optimizer is particularly useful when joining 
+across multiple models where (undesired) opportunities for duplicating data lurk.
 
-#### 3.4.1 Filter with keyword arguments
+:warning: Django does *not* support field references in `distinct(*fields)` when the database 
+backend is MySQL.  Use `distinct()` only. Attempting to include field references will result in a
+ runtime error:
+
+```commandline
+django.db.utils.NotSupportedError: DISTINCT ON fields is not supported by this database backend
+``` 
+
+:warning: Django will add all fields referenced in an `order_by()` clause to those fields 
+purposely included in the `distinct()` clause. This can lead to duplication of rows in the 
+`QuerySet`.
+
+The following two examples illustrate use of `distinct()`:
+
+#### Countries / areas located in an intermediate region
+```commandline
+ca = CountryArea.objects\
+... .select_related('location')\
+... .values(name=F('location__intermediate_region__intermediate_region_name'))\
+... .filter(name__isnull=False)\
+... .order_by('name')
+
+>>> ca.count()
+108
+```
+
+#### Intermediate regions that include one or more countries / areas  
+```commandline
+ca = CountryArea.objects\
+... .select_related('location')\
+... .values(name=F('location__intermediate_region__intermediate_region_name'))\
+... .filter(name__isnull=False)
+... .distinct()\
+... .order_by('name')
+
+>>> ca.count()
+8
+
+>>> print(str(ca.query))
+
+SELECT DISTINCT `intermediate_region`.`intermediate_region_name` AS `name` 
+  FROM `country_area` 
+       INNER JOIN `location` 
+               ON (`country_area`.`location_id` = `location`.`location_id`) 
+       LEFT OUTER JOIN `intermediate_region` 
+               ON (`location`.`intermediate_region_id` = `intermediate_region`.`intermediate_region_id`) 
+WHERE `intermediate_region`.`intermediate_region_name` IS NOT NULL ORDER BY `name` ASC;
+```
+
+:bulb: You can also set a "distinct" boolean flag when using `Count` which is the 
+equivalent of SQL `SELECT COUNT(DISTINCT <field>)`. See [https://docs.djangoproject.com/en/2
+.1/ref/models/querysets/#id8](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#id8).
+
+### 3.5 Filtering
+
+#### 3.5.1 Filter with keyword arguments
 Retrieve a single object with the `get(**kwargs)` clause:
 
 ```commandline
@@ -199,7 +258,7 @@ Retrieve a single object with the `get(**kwargs)` clause:
 Acropolis, Athens
 ```
 
-Retrieve one or more objects using the `filter(**kwargs)` clause  Note too the use of the `
+Retrieve one or more objects using the `filter(**kwargs)` clause. Note too the use of the `
 .order_by(*fields)` clause to sort the each object returned:
 
 ```commandline
@@ -231,7 +290,7 @@ Wartburg Castle
 14
 ```
 
-#### 3.4.2 Filter with Q() objects
+#### 3.5.2 Filter with Q() objects
 Use `Q()` objects to encapsulate a collection of keyword arguments. This simplifies defining 
 filters using OR ('|') and AND ('&') operators:
 
@@ -282,6 +341,7 @@ A `Q` object can be negated with the `~` operator:
 ... .select_related('dev_status', 'location')\
 ... .filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'))\
 ... .order_by('country_area_name')
+
 >>> for c in ca:
 ...     print(c)
 ...
@@ -307,10 +367,13 @@ You can mix `Q` objects and keyword arguments in `filter(**kwargs)` so long as t
 are listed first:
 
 ```commandline
+>>> from heritagesites.models import CountryArea
+>>> from django.db.models import Q
 >>> ca = CountryArea.objects\
 ... .select_related('dev_status', 'location')\
 ... .filter(Q(country_area_name__startswith = 'A') & ~Q(country_area_name = 'Antarctica'), dev_status__dev_status_name = 'Developed')\
 ... .order_by('country_area_name')
+
 >>> for c in ca:
 ...     print(c)
 ...
@@ -322,14 +385,14 @@ Austria
 4
 ```
 
-### 3.5 Returning dictionaries or tuples
+### 3.6 Returning dictionaries or tuples
 You can forgo the overhead associated with returning a `QuerySet` of model instances in favor of 
 returning dictionaries or tuples by using either the `values(*fields, **expressions)` or 
 `values_list(*fields, flat=False, named=False)` clauses. However, results are limited to one 
 object per row.  This limitation prevents inclusion of object data otherwise available via 
 many-to-many or other multi-valued relationships (e.g., reverse foreign key relationships).
 
-#### 3.5.1 values()
+#### 3.6.1 values()
 You can declare which fields to be included in a `QuerySet` by using the `values(*fields, 
 **expressions)` clause.  This is akin to referencing a specific set of columns in a SQL `SELECT` 
 statement.  
@@ -338,6 +401,7 @@ statement.
  is composed of [dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) rather than Django model instances.
 
 ```commandline
+>>> from heritagesites.models import CountryArea
 >>> ca = CountryArea.objects\
 ... .select_related('dev_status')\
 ... .values('country_area_name', 'iso_alpha3_code')\
@@ -357,7 +421,7 @@ statement.
 {'country_area_name': 'South Africa', 'iso_alpha3_code': 'ZAF'}
 ```
 
-#### 3.5.2 values_list()
+#### 3.6.2 values_list()
 Similarly, the `values_list(*fields, flat=False, named=False)` clause also allows one to specify 
 which fields to include in a `QuerySet`. However, unlike `values()` which returns dictionaries, 
 the `values_list()` returns [tuples](https://docs.python.org/3/tutorial/datastructures
@@ -387,7 +451,7 @@ Namibia NAM
 South Africa ZAF
 ```
 
-:bulb: if your `values_list()` is limited to a single field you can add the "Flat" parameter set 
+:bulb: If your `values_list()` is limited to a single field you can add the "Flat" parameter set 
 to True in order to return the results as single values rather than one-tuples:
 
 ```commandline
@@ -420,7 +484,7 @@ to True in order to return the results as single values rather than one-tuples:
 <QuerySet [Row(country_area_name='Botswana', iso_alpha3_code='BWA'), Row(country_area_name='Eswatini', iso_alpha3_code='SWZ'), Row(country_area_name='Lesotho', iso_alpha3_code='LSO'), Row(country_area_name='Namibia', iso_alpha3_code='NAM'), Row(country_area_name='South Africa', iso_alpha3_code='ZAF')]>
 ```
 
-### 3.6 F() expressions
+### 3.7 F() expressions
 You can use an `F()` object to represent a model field or annotated column value. `F` 
 expressions allows one to refer to model field values and utilize them when querying the database.
 
@@ -468,7 +532,7 @@ SELECT `heritage_site`.`site_name`, `heritage_site`.`longitude`, `heritage_site`
  ORDER BY `heritage_site`.`site_name` ASC
 ```
 
-### 3.7 Sort order and limits
+### 3.8 Sort order and limits
 Previous examples sorted the `QuerySet` returned using the `order_by(*fields)` clause. The 
 default sort order is _ascending_; to sort in _descending_ order add a hyphen ('-') in front of the 
 keyword as is demonstrated below.
@@ -503,9 +567,9 @@ site: Kluane / Wrangell-St. Elias / Glacier Bay / Tatshenshini-Alsek
 area (hectares): 9839121.0
 ```
 
-### 3.8 Aggregation
+### 3.9 Aggregation
 
-#### 3.8.1 aggregate() clause
+#### 3.9.1 aggregate() clause
 If you need to generate a summary value from a `QuerySet` in its entirety use the `aggregate()` 
 clause.
 
@@ -536,7 +600,7 @@ The `aggregate()` clause can also accept multiple arguments:
 {'area_hectares__max': 40825000.0, 'area_hectares__min': 0.0, 'area_hectares__avg': 275951.4937591573, 'area_hectares__sum': 301339031.18499976}
 ```
 
-#### 3.8.2 annotation() clause
+#### 3.9.2 annotation() clause
 If you need to generate summary values for each `QuerySet` item use the `annotate()` clause. The 
 `annotate()` clause is the equivalent of a SQL `GROUP BY` clause.
 
