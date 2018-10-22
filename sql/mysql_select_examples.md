@@ -153,6 +153,40 @@ SELECT ca.country_area_name AS `country / area`, hsc.category_name AS `category`
 3 rows in set (0.00 sec)
 ```
 
+Given the many-to-many relationship that exists between heritage sites and countries / areas you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
+
+* `COUNT(DISTINCT hs.heritage_site_id)` -- filters out duplicate rows produced by a heritage 
+site located in more than a single country / area.
+
+```mysql
+SELECT ca.country_area_name AS `country / area`, hsc.category_name AS `category`, 
+       COUNT(DISTINCT hs.heritage_site_id) AS `heritage site count`
+  FROM heritage_site hs
+       LEFT JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       LEFT JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       LEFT JOIN heritage_site_category hsc
+              ON hs.heritage_site_category_id = hsc.category_id     
+ WHERE TRIM(ca.country_area_name) = 'India'
+ GROUP BY ca.country_area_name, hsc.category_name
+ ORDER BY hsc.category_name;
+```
+
+In this case, the counts remain the same.  This cannot be guaranteed in other cases, however.
+
+#### Result set
+```commandline
++----------------+----------+---------------------+
+| country / area | category | heritage site count |
++----------------+----------+---------------------+
+| India          | Cultural |                  29 |
+| India          | Mixed    |                   1 |
+| India          | Natural  |                   7 |
++----------------+----------+---------------------+
+3 rows in set (0.00 sec)
+```
+
 ### 3.3 Return a list of heritage sites that includes the word 'Lake' in the name
 
 #### Required column names (aliased)
@@ -436,7 +470,14 @@ ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 * subregion name (ASC)
 
 #### Query
-This query requires use of an aggregate function together with a `GROUP BY` clause in order to group the result set counts by region and subregion. The SQL statement highlights use of the following syntax:
+This query requires use of an aggregate function together with a `GROUP BY` clause in order to 
+group the result set counts by region and subregion. The following SQL statement highlights use
+ of the following syntax:
+
+* `COUNT(*)` -- returns heritage site counts per region and sub region.  Given the many-to-many 
+relationship that exists between heritage sites and countries / areas duplicate results cannot be
+ ruled out.    
+* `!=` -- `WHERE` clause condition that excludes Antarctica from the search results
 
 ```mysql
 SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, COUNT(*) AS `heritage sites`
@@ -480,6 +521,57 @@ ORDER BY r.region_name, sr.sub_region_name;
 +----------+---------------------------------+----------------+
 16 rows in set (0.01 sec)
 ```
+
+As was noted earlier, given the many-to-many relationship that exists between heritage sites and countries / areas you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
+
+* `COUNT(DISTINCT hs.heritage_site_id)` -- filters out duplicate rows produced by a heritage 
+site located in more than a single country / area.
+
+```mysql
+SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`, COUNT(DISTINCT hs.heritage_site_id) AS `heritage sites`
+  FROM heritage_site hs
+       INNER JOIN heritage_site_jurisdiction hsj 
+              ON hs.heritage_site_id = hsj.heritage_site_id
+       INNER JOIN country_area ca 
+              ON hsj.country_area_id = ca.country_area_id
+       INNER JOIN location l
+              ON ca.location_id = l.location_id
+       INNER JOIN region r
+              ON l.region_id = r.region_id
+       INNER JOIN sub_region sr 
+              ON l.sub_region_id = sr.sub_region_id
+WHERE TRIM(ca.country_area_name) != 'Antarctica'
+GROUP BY r.region_name, sr.sub_region_name
+ORDER BY r.region_name, sr.sub_region_name;
+```
+
+#### Result set
+```commandline
++----------+---------------------------------+----------------+
+| region   | subregion                       | heritage sites |
++----------+---------------------------------+----------------+
+| Africa   | Northern Africa                 |             39 |
+| Africa   | Sub-Saharan Africa              |             97 |
+| Americas | Latin America and the Caribbean |            142 |
+| Americas | Northern America                |             40 |
+| Asia     | Central Asia                    |             15 |
+| Asia     | Eastern Asia                    |             95 |
+| Asia     | South-eastern Asia              |             38 |
+| Asia     | Southern Asia                   |             83 |
+| Asia     | Western Asia                    |             80 |
+| Europe   | Eastern Europe                  |             91 |
+| Europe   | Northern Europe                 |             77 |
+| Europe   | Southern Europe                 |            158 |
+| Europe   | Western Europe                  |            124 |
+| Oceania  | Australia and New Zealand       |             22 |
+| Oceania  | Melanesia                       |              4 |
+| Oceania  | Micronesia                      |              4 |
++----------+---------------------------------+----------------+
+16 rows in set (0.01 sec)
+```
+
+As the result set above illustrates, in certain cases, such as Southern Europe, the counts fall 
+significantly.
 
 ### 3.7 Return the largest UNESCO heritage site by area (hectares) in the Caribbean
 
