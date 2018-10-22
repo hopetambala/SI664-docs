@@ -1,4 +1,4 @@
-# SI664: Django ORM and QuerySet Examples
+# SI664: Django ORM QuerySet Examples
 
 The following examples represent the types of Django ORM queries you may be asked to 
 write as part of a weekly assignment or as part of an exam.

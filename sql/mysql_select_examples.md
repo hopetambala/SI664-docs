@@ -153,7 +153,7 @@ SELECT ca.country_area_name AS `country / area`, hsc.category_name AS `category`
 3 rows in set (0.00 sec)
 ```
 
-Given the many-to-many relationship that exists between heritage sites and countries / areas you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
+Given the many-to-many relationship that exists between between the `heritage_site` and `country_area` tables you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
 
 * `COUNT(DISTINCT hs.heritage_site_id)` -- filters out duplicate rows produced by a heritage site located in more than a single country / area.
 
@@ -521,7 +521,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 16 rows in set (0.01 sec)
 ```
 
-As was noted earlier, given the many-to-many relationship that exists between heritage sites and countries / areas you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
+As was noted earlier, given the many-to-many relationship that exists between between the `heritage_site` and `country_area` tables you should check whether or not any of the counts are inflated by the presence of sites that span more than one country / area.  Note the following adjustment:
 
 * `COUNT(DISTINCT hs.heritage_site_id)` -- filters out duplicate rows produced by a heritage site located in more than a single country / area.
 
