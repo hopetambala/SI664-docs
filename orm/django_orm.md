@@ -1,5 +1,6 @@
 # SI664: Django ORM QuerySet Examples
 
+## Table of contents
 * 1.0 [Django Python shell](#shell)
 * 2.0 [Django QuerySet examples](#examples)
   - 2.1 [Retrieving all objects](#examples_all_objects)

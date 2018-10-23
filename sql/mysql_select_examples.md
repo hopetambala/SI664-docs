@@ -1,18 +1,21 @@
 # SI664: MySQL SELECT Statement Examples
 
-The following examples represent the types of SQL `SELECT` statements you may be asked to write 
-as part of a weekly assignment or as part of an exam.
-
-## 1.0 MySQL documentation
-* [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
-* [Subquery syntax](https://dev.mysql.com/doc/refman/8.0/en/subqueries.html)
-* [Operators](https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html)
-* [String functions](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
-* [Numeric Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)
-* [Cast Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html)
-
-
-## 2.0 MySQL shell
+## Table of contents
+* 1.0 [MySQL shell](#shell)
+* 2.0 [Example SQL statements](#examples)
+  - 2.1 [Return a list of Indian heritage sites](#examples_india_sites)
+  - 2.2 [Return a count of Indian heritage sites by heritage site category](#examples_india_sites_by_category)
+  - 2.3 [Return a list of heritage sites that includes the word 'Lake' in the name](#examples_sites_name_lake)
+  - 2.4 [Return list of castles, fortifications and walled cities and towns inscribed as heritage sites](#examples_sites_castles)
+  - 2.5 [Return British, French, German and Dutch heritage sites inscribed between 2010-2018](#examples_sites_2010_2018)
+  - 2.6 [Return a list of heritage site counts by region and subregion](#examples_sites_region_sub_region)
+  - 2.7 [Return the largest heritage site by area (hectares) in the Caribbean](#examples_sites_carrib_largest)
+  - 2.8 [Return the total area (in hectares) per region that have been protected by the heritage site designation](#examples_region_total_area)
+  - 2.9 [Return a list of heritage sites that span regional boundaries](#examples_site_region_shared)
+* 3.0 [Further reading: MySQL documentation](#further_reading)
+* Appendix A. [Retrieving database and table information](#appendix_a)
+  
+## <a name="shell"></a>1.0 MySQL shell
 When using the MYSQL command line shell be sure to select the `unesco_heritage_sites` database 
 before attempting to execute the example queries.
 
@@ -20,10 +23,13 @@ before attempting to execute the example queries.
 USE unesco_heritage_sites;
 ``` 
 
-## 3.0 Example SQL statements
+## <a name="examples"></a>2.0 Example SQL statements
+The following examples represent the types of SQL `SELECT` statements you may be asked to write 
+as part of a weekly assignment or as part of an exam.
+
 :warning: Actual assignment or exam questions that ask you to write a SQL statement may vary with respect to the number of `SELECT` columns required along with supporting table joins, aliases needed, `WHERE` or `HAVING` clause filter conditions, aggregate functions needed together with supporting `GROUP BY` clauses, subqueries, and sort order.
 
-### 3.1 Return a list of India's UNESCO heritage sites
+### <a name="examples_india_sites"></a>2.1 Return a list of Indian heritage sites
 
 #### Required column names (aliased)
 * country / area
@@ -106,7 +112,7 @@ SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`
 37 rows in set (0.01 sec)
 ```
 
-### 3.2 Return a count of Indian UNESCO Heritage Sites by heritage site category
+### <a name="examples_india_sites_by_category"></a>2.2 Return a count of Indian heritage sites by heritage site category
 
 #### Required column names (aliased)
 * country / area
@@ -186,7 +192,7 @@ In this case, the counts remain the same.  This cannot be guaranteed in other ca
 3 rows in set (0.00 sec)
 ```
 
-### 3.3 Return a list of heritage sites that includes the word 'Lake' in the name
+### <a name="examples_sites_name_lake"></a>2.3 Return a list of heritage sites that includes the word 'Lake' in the name
 
 #### Required column names (aliased)
 * country / area
@@ -257,7 +263,7 @@ ORDER BY ca.country_area_name, hs.site_name;
 7 rows in set (0.00 sec)
 ```
 
-### 3.4 Return list of castles, fortifications and walled cities and towns inscribed as UNESCO heritage sites
+### <a name="examples_sites_castles"></a>2.4 Return list of castles, fortifications and walled cities and towns inscribed as heritage sites
 
 #### Required column names (aliased)
 * country / area
@@ -378,7 +384,7 @@ SELECT ca.country_area_name AS `country / area`, hs.site_name AS `heritage site`
 54 rows in set (0.01 sec)
 ```
 
-### 3.5 Return British, French, German and Dutch UNESCO heritage sites inscribed between 2010-2018
+### <a name="examples_sites_2010_2018"></a>2.5 Return British, French, German and Dutch heritage sites inscribed between 2010-2018
 
 #### Required column names (aliased)
 * country / area
@@ -454,7 +460,7 @@ ORDER BY hs.date_inscribed DESC, ca.country_area_name, hs.site_name;
 26 rows in set (0.00 sec)
 ```
 
-### 3.6 Return a list of heritage site counts by region and subregion
+### <a name="examples_sites_region_sub_region"></a>2.6 Return a list of heritage site counts by region and subregion
 
 #### Required column names (aliased)
 * region
@@ -571,7 +577,7 @@ ORDER BY r.region_name, sr.sub_region_name;
 As the result set above illustrates, in certain cases, such as Southern Europe, the counts fall 
 significantly.
 
-### 3.7 Return the largest UNESCO heritage site by area (hectares) in the Caribbean
+### <a name="examples_sites_carrib_largest"></a>2.7 Return the largest heritage site by area (hectares) in the Caribbean
 
 #### Required column names (aliased)
 * region
@@ -664,7 +670,7 @@ intermediateregion: Caribbean
 1 row in set (0.02 sec)
 ```
 
-### 3.8 Return the total area (in hectares) per region that have been protected by the UNESCO heritage site designation
+### <a name="examples_region_total_area"></a>2.8 Return the total area (in hectares) per region that have been protected by the heritage site designation
 
 #### Required column names (aliased)
 * region
@@ -723,7 +729,7 @@ SELECT r.region_name AS 'region',
 5 rows in set (0.01 sec)
 ```
 
-## 3.9 Return a list of heritage sites, if any, that span regional boundaries
+## <a name="examples_site_region_shared"></a>2.9 Return a list of heritage sites that span regional boundaries
 
 #### Required column names (aliased)
 * `heritage site`
@@ -802,7 +808,15 @@ with a list of the regions associated with each site.
 3 rows in set (0.01 sec)
 ```
 
-## Appendix A. Retrieving database and table information
+## <a name="further_reading"></a>3.0 Further reading: MySQL documentation
+* [SELECT syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html)
+* [Subquery syntax](https://dev.mysql.com/doc/refman/8.0/en/subqueries.html)
+* [Operators](https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html)
+* [String functions](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+* [Numeric Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)
+* [Cast Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html)
+
+## <a name="appendix_a"></a>Appendix A. Retrieving database and table information
 It can prove helpful at times to retrieve information about the database, tables, and columns 
 that are the target of your queries.  MySQL provides several useful SQL statements for 
 retrieving such information.
