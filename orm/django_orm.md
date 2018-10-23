@@ -13,7 +13,7 @@
   - 2.9 [Summary data](#examples_summary)
 * 3.0 [Further reading: Django documentation of particular interest](#further_reading)
 
-## <a name="app"></a>1.0 Django Python shell
+## <a name="shell"></a>1.0 Django Python shell
 Make sure you activate the `heritagesites` project virtual environment before running the Django 
 Python shell.
 
