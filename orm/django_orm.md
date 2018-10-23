@@ -253,6 +253,16 @@ WHERE `intermediate_region`.`intermediate_region_name` IS NOT NULL ORDER BY `nam
 equivalent of SQL `SELECT COUNT(DISTINCT <field>)`. See [https://docs.djangoproject.com/en/2
 .1/ref/models/querysets/#id8](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#id8).
 
+```commandline
+>>> from heritagesites.models import HeritageSite
+>>> from django.db.models import Count, Q
+>>> hs = HeritageSite.objects\
+... .filter(Q(country_area__location__sub_region__sub_region_name = 'Northern Europe') | Q(country_area__location__sub_region__sub_region_name = 'Western Europe'))\
+... .aggregate(count=Count('heritage_site_id', distinct=True))
+>>> print(hs)
+{'count': 199}
+```
+
 ### <a name="examples_filtering"></a>2.5 Filtering with keyword args and Q objects
 
 #### 2.5.1 Filtering with keyword arguments
