@@ -1,45 +1,19 @@
 # SI664: Django ORM QuerySet Examples
 
-The following examples represent the types of Django ORM queries you may be asked to 
-write as part of a weekly assignment or as part of an exam.
+* 1.0 [Django Python shell](#shell)
+* 2.0 [Django QuerySet examples](#examples)
+  - 2.1 [Retrieving all objects](#examples_all_objects)
+  - 2.2 [Working with many-to-many relationships](#examples_many_to_many)
+  - 2.3 [Selecting related objects](#examples_related_objects)
+  - 2.4 [Pruning duplicate data with distinct() and Count(value, distinct=True)](#examples_distinct)
+  - 2.5 [Filtering with keyword args and Q objects](#examples_filtering)
+  - 2.6 [Returning dictionaries or tuples](#examples_dicts_tuples)
+  - 2.7 [Using F() expressions](#examples_f)
+  - 2.8 [Sorting and imposing limits](#examples_sort)
+  - 2.9 [Summary data](#examples_summary)
+* 3.0 [Further reading: Django documentation of particular interest](#further_reading)
 
-## 1.0 Django documentation of particular interest
-* [QuerySet API](https://docs.djangoproject.com/en/2.1/ref/models/querysets/)
-  * Methods that return new QuerySets
-    - [all()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#all)
-    - [annotate()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#annotate)
-    - [distinct()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#distinct)
-    - [filter()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#filter)
-    - [order_by()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#order-by)
-    - [select_related()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#select-related)
-    - [values()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values)
-    - [values_list()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values-list)
-  * Operators that return new QuerySets
-    - [AND (&)](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#and)
-    - [OR (|)](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#or)
-  * Methods that do not return QuerySets
-    - [aggregate()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#aggregate)
-    - [get()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#get)
-    - [count()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#count)
-  * Field lookups
-    - [in](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#in)
-    - [isnull](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#isnull)
-    - [regex](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#regex)
-    - [startswith](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#startswith)
-  * Aggregate Functions
-    - [Avg](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#avg)
-    - [Count](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#id8)
-    - [Max](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#max)
-    - [Min](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#min)
-    - [Sum](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#sum)
-* [Making Queries](https://docs.djangoproject.com/en/2.1/topics/db/queries/)
-  * [Retrieving objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#retrieving-objects)
-  * [Complex Lookups with Q objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#complex-lookups-with-q-objects)
-* [Query Expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/)
-  * [F expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/#f-expressions)
-* [Aggregation](https://docs.djangoproject.com/en/2.1/topics/db/aggregation/)  
-
-## 2.0 Django Python shell
+## <a name="app"></a>1.0 Django Python shell
 Make sure you activate the `heritagesites` project virtual environment before running the Django 
 Python shell.
 
@@ -53,9 +27,11 @@ Python shell.
 (venv) > python manage.py shell
 ```
 
-## 3.0 Django QuerySet examples
+## <a name="examples"></a>2.0 Django QuerySet examples
+The following examples represent the types of Django ORM queries you may be asked to 
+write as part of a weekly assignment or as part of an exam.
 
-### 3.1 Retrieving all objects
+### <a name="examples_all_objects"></a>2.1 Retrieving all objects
 You can retrieve a `QuerySet` that contains a copy of all objects associated with a model 
 instance by appending the `all()` clause to it.
 
@@ -117,7 +93,7 @@ Cultural
 0
 ```
 
-### 3.2 Working with Many-to-Many relationships
+### <a name="examples_many_to_many"></a>2.2 Working with many-to-many relationships
 Recall that the `HeritageSite` model includes a `ManyToManyField` assignment: 
 
 ```commandline
@@ -165,7 +141,7 @@ South Africa
 Cultural
 ```
 
-### 3.3 Selecting related objects
+### <a name="examples_related_objects"></a>2.3 Selecting related objects
 You can minimize database calls and optimize the `QuerySet` creation process by using the `select_related(*fields)` clause to load additional object data available via direct foreign-key relationships.  
 
 The following represents two calls to the database, one for the `ca` assignment and a second for 
@@ -214,7 +190,7 @@ name: Ireland
 dev_status: Developed
 ```
 
-### 3.4 Pruning duplicate data with distinct()
+### <a name="examples_distinct"></a>2.4 Pruning duplicate data with distinct() and Count(value, distinct=True)
 The `distinct(*fields)` clause eliminates duplicate field values in the same manner as a SQL `SELECT DISTINCT`. This `QuerySet` optimizer is particularly useful when joining across multiple models where duplicate data may lurk.
 
 :warning: Django does *not* support referencing fields in `distinct(*fields)` when the database 
@@ -276,9 +252,9 @@ WHERE `intermediate_region`.`intermediate_region_name` IS NOT NULL ORDER BY `nam
 equivalent of SQL `SELECT COUNT(DISTINCT <field>)`. See [https://docs.djangoproject.com/en/2
 .1/ref/models/querysets/#id8](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#id8).
 
-### 3.5 Filtering
+### <a name="examples_filtering"></a>2.5 Filtering with keyword args and Q objects
 
-#### 3.5.1 Filtering with keyword arguments
+#### 2.5.1 Filtering with keyword arguments
 Retrieve a single object with the `get(**kwargs)` clause:
 
 ##### Retrieve a single HeritageSite instance with get()
@@ -324,7 +300,7 @@ Wartburg Castle
 14
 ```
 
-#### 3.5.2 Filtering with Q() objects
+#### 2.5.2 Filtering with Q() objects
 Use `Q()` objects to encapsulate a collection of keyword arguments. This simplifies defining 
 filters using OR ('|') and AND ('&') operators:
 
@@ -422,14 +398,14 @@ Austria
 4
 ```
 
-### 3.6 Returning dictionaries or tuples
+### <a name="examples_dicts_tuples"></a>2.6 Returning dictionaries or tuples
 You can forgo the overhead associated with returning a `QuerySet` of model instances in favor of 
 returning dictionaries or tuples by using either the `values(*fields, **expressions)` or 
 `values_list(*fields, flat=False, named=False)` clauses. However, results are limited to one 
 object per row.  This limitation prevents inclusion of object data otherwise available via 
 many-to-many or other multi-valued relationships (e.g., reverse foreign key relationships).
 
-#### 3.6.1 Calling values()
+#### 2.6.1 Calling values()
 You can declare which fields to be included in a `QuerySet` by using the `values(*fields, 
 **expressions)` clause.  This is akin to referencing a specific set of columns in a SQL `SELECT` 
 statement.  
@@ -459,7 +435,7 @@ statement.
 {'country_area_name': 'South Africa', 'iso_alpha3_code': 'ZAF'}
 ```
 
-#### 3.6.2 Calling values_list()
+#### 2.6.2 Calling values_list()
 Similarly, the `values_list(*fields, flat=False, named=False)` clause also allows one to specify 
 which fields to include in a `QuerySet`. 
 
@@ -526,7 +502,7 @@ to `True` in order to return the results as single values rather than one-tuples
 <QuerySet [Row(country_area_name='Botswana', iso_alpha3_code='BWA'), Row(country_area_name='Eswatini', iso_alpha3_code='SWZ'), Row(country_area_name='Lesotho', iso_alpha3_code='LSO'), Row(country_area_name='Namibia', iso_alpha3_code='NAM'), Row(country_area_name='South Africa', iso_alpha3_code='ZAF')]>
 ```
 
-### 3.7 Using F() expressions
+### <a name="examples_f"></a>2.7 Using F() expressions
 You can use an `F()` object to represent a model field or annotated column value. `F` 
 expressions allows one to "alias" model field values and utilize them when querying the database.
 
@@ -555,7 +531,7 @@ expressions allows one to "alias" model field values and utilize them when query
 SyntaxError: positional argument follows keyword argument
 ``` 
 
-### 3.8 Sorting and imposing limits
+### <a name="examples_sort"></a>2.8 Sorting and imposing limits
 Previous examples sorted the `QuerySet` returned using the `order_by(*fields)` clause. The 
 default sort order is _ascending_; to sort in _descending_ order add a hyphen ('-') in front of the 
 keyword as is demonstrated below.
@@ -591,9 +567,9 @@ site: Kluane / Wrangell-St. Elias / Glacier Bay / Tatshenshini-Alsek
 area (hectares): 9839121.0
 ```
 
-### 3.9 Aggregating data
+### <a name="examples_summary"></a>2.9 Summary data
 
-#### 3.9.1 Calling aggregate()
+#### 2.9.1 Calling aggregate()
 If you need to generate a summary value based on the *entire* `QuerySet` use the `aggregate()` clause.
 
 ##### Returning summary values with aggregate()
@@ -625,7 +601,7 @@ The `aggregate()` clause can also accept multiple arguments:
 {'area_hectares__max': 40825000.0, 'area_hectares__min': 0.0, 'area_hectares__avg': 275951.4937591573, 'area_hectares__sum': 301339031.18499976}
 ```
 
-#### 3.9.2 Calling annotation()
+#### 2.9.2 Calling annotation()
 If you need to generate summary values for *each* `QuerySet` item use the `annotate()` clause. The 
 `annotate()` clause is the equivalent of a SQL `GROUP BY` clause.
 
@@ -685,4 +661,40 @@ use of both the `values(*fields, **expressions)` and `annotate()` clauses:
 {'region': 'Oceania', 'subregion': 'Melanesia', 'country_area_count': 5}
 {'region': 'Oceania', 'subregion': 'Micronesia', 'country_area_count': 8}
 {'region': 'Oceania', 'subregion': 'Polynesia', 'country_area_count': 10}
-```  
+```
+
+## <a name="further_reading"></a>3.0 Further reading: Django documentation of particular interest
+* [QuerySet API](https://docs.djangoproject.com/en/2.1/ref/models/querysets/)
+  * Methods that return new QuerySets
+    - [all()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#all)
+    - [annotate()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#annotate)
+    - [distinct()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#distinct)
+    - [filter()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#filter)
+    - [order_by()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#order-by)
+    - [select_related()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#select-related)
+    - [values()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values)
+    - [values_list()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values-list)
+  * Operators that return new QuerySets
+    - [AND (&)](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#and)
+    - [OR (|)](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#or)
+  * Methods that do not return QuerySets
+    - [aggregate()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#aggregate)
+    - [get()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#get)
+    - [count()](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#count)
+  * Field lookups
+    - [in](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#in)
+    - [isnull](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#isnull)
+    - [regex](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#regex)
+    - [startswith](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#startswith)
+  * Aggregate Functions
+    - [Avg](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#avg)
+    - [Count](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#id8)
+    - [Max](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#max)
+    - [Min](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#min)
+    - [Sum](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#sum)
+* [Making Queries](https://docs.djangoproject.com/en/2.1/topics/db/queries/)
+  * [Retrieving objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#retrieving-objects)
+  * [Complex Lookups with Q objects](https://docs.djangoproject.com/en/2.1/topics/db/queries/#complex-lookups-with-q-objects)
+* [Query Expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/)
+  * [F expressions](https://docs.djangoproject.com/en/2.1/ref/models/expressions/#f-expressions)
+* [Aggregation](https://docs.djangoproject.com/en/2.1/topics/db/aggregation/)    
