@@ -1,5 +1,6 @@
 # SI664: MySQL SELECT Statement Examples
 
+## Table of contents
 * 1.0 [MySQL shell](#shell)
 * 2.0 [Example SQL statements](#examples)
   - 2.1 [Return a list of Indian heritage sites](#examples_india_sites)
