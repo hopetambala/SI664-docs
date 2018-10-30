@@ -399,18 +399,20 @@ Sign in and Google will redirect you back to the `heritagsites` app.  You should
 ### 6.2 heritagesites screenshot
 On the "Countries and Areas" list page click on page 13 and take a screenshot.  Rename the screenshot `<uniqname>-heritagesites_country_area_pg13.png`.
 
+![hertiagesites country_area list](./static/img/heritagesites/SI664-heritagesites_login_country_area_pg13.png)
+
 ### 6.3 Django admin site users page screenshot
 Sign in to the Django admin site at `http://localhost:8000/admin/` as the superuser.  Under "Authentication and Authorization administration" click on the "Users" link.  Take a screenshot of the users listed.
 
 :bulb: If you signed in via Google with your UMich user account you should see a uniqname with a string of characters appended to the name (which is good).  Take a screenshot of the page. Rename the screenshot `<uniqname>-heritagesites_admin_users.png`.
 
-![Google Sign in screen](./static/img/heritagesites/heritagesites_admin_social_users.png)
+![Django admin users page](./static/img/heritagesites/SI664-heritagesites_admin_social_users.png)
 
 ### 6.4 Submit your screenshots
 Create a zip archive of
 
-`<uniqname>-google_sign_in.png`
-`<uniqname>-heritagesites_country_area_pg13.png`
-`<uniqname>-heritagesites_admin_users.png`
+* `<uniqname>-google_sign_in.png`
+* `<uniqname>-heritagesites_country_area_pg13.png`
+* `<uniqname>-heritagesites_admin_users.png`
 
 Name the archive `<uniqname>-si664-mtg7.zip`. Go to the Canvas assignment page and submit the zip archive.
