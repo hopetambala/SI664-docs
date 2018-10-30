@@ -257,7 +257,7 @@ urlpatterns = [
     path('', lambda r: HttpResponseRedirect('heritagesites/')),
     path('admin/', admin.site.urls),
     path('auth/', include('social_django.urls', namespace='social')),
-    # path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL},
          name='logout'),
     path('heritagesites/', include('heritagesites.urls')),
@@ -292,7 +292,7 @@ class CountryAreaListView(generic.ListView):
 
 ```
 
-Do the same for `CountryAreaDetailView(generic.DetailView)`,` adding a `dispatch` method and `@method_decorator`.
+Do the same for `CountryAreaDetailView(generic.DetailView)`, adding a `dispatch` method and `@method_decorator`.
 
 ### 5.3 Create Login / Logout templates
 In the `heritagesites/templates` directory create a new `registration` directory.  that includes the following new templates: `login.html` and `logout.html`.
@@ -333,7 +333,7 @@ In the `heritagesites/templates` directory create a new `registration` directory
 ```
 
 ### 5.4 Reduce code duplication
-Before updating the `country_area.html` and `country_area_detail.html` templates, take a moment to reduce a bit of code duplication that has crept into the `heritagesites` app.  Create a template called `pagination.html`.  Move the the pagination code (`<nav> ... </nav>`) out of `site.html` and
+Before updating the `country_area.html` and `country_area_detail.html` templates, take a moment to reduce a bit of code duplication that has crept into the `heritagesites` app.  Create a template called `pagination.html`.  Move the pagination code (`<nav> ... </nav>`) out of `site.html` and
 into `pagination.html`. Replace the code removed from `site.html` with an `include` template tag:
 
 ```html
@@ -358,6 +358,17 @@ Add the `user.is_authenticated` check to both `country_area.html` and `country_a
 {% endblock content %}}
 ```
 
+### TODO
+
+Start up development server.
+Click on Country/Area navbar link
+If all goes well you will be redirected to Google login Page
+Once authenticated you should be redirected to the `heritagesites` app.
+
+Login into admin and check if new user has been added.
+
+<uniqname>-string appended.
+Take a screenshot
 
 
 
@@ -371,5 +382,4 @@ Add the `user.is_authenticated` check to both `country_area.html` and `country_a
 
 
 ## Documentation
-[Python Social Auth documentation](https://python-social-auth-docs.readthedocs
-.io/en/latest/configuration/django.html)
+[Python Social Auth documentation](https://python-social-auth-docs.readthedocs.io/en/latest/configuration/django.html)
