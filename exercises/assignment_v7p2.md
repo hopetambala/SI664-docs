@@ -186,7 +186,7 @@ You will next be prompted to click the blue "Configure a consent screen" button.
 Add the following values to the "OAuth consent screen" form:
 1. Application name: "heritagesites"
 2. Application logo: ![UMSI logo](./static/img/umsi/umsi-blue-100x100.png)
-3. Support email: <uniqname>@umich
+3. Support email: \<uniqname\>@umich.edu
 4. Do *not* provide a domain or any links (leave values as is)
 5. Click the blue "save" button
 
