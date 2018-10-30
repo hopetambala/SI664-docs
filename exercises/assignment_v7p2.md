@@ -295,7 +295,7 @@ class CountryAreaListView(generic.ListView):
 Do the same for `CountryAreaDetailView(generic.DetailView)`, adding a `dispatch` method and `@method_decorator`.
 
 ### 5.3 Create Login / Logout templates
-In the `heritagesites/templates` directory create a new `registration` directory.  that includes the following new templates: `login.html` and `logout.html`.
+In the `heritagesites/templates` directory create a new `registration` directory.  that includes the following new templates: `login.html` and `logout.html`.  We will be discussing Django forms in more detail next week so don't sweat the details regarding the template tags between the `<form> .... </form>` tags.
 
 ##### login.html
 ```html
@@ -303,15 +303,21 @@ In the `heritagesites/templates` directory create a new `registration` directory
 
 {% block content %}
 
-  <h2>Login</h2>
+  <header>
+    <h2>UNESCO Heritage Sites Login</h2>
+  </header>
+
+  <p>Connect with a social network:</p>
+
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Sign in with Google</a>
+  <p>&nbsp;</p>
+  <p>Sign in with your email address and password:</p>
+
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
   </form>
-  <br>
-  <p><strong>-- OR --</strong></p>
-  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
 
 {% endblock content %}
 ```
@@ -342,8 +348,9 @@ into `pagination.html`. Replace the code removed from `site.html` with an `inclu
 
 Do the same for `country_area.html`.
 
-### 5.5 Update templates
-Add the `user.is_authenticated` check to both `country_area.html` and `country_area_detail.html`.
+### 5.5 Restrict access to country/area templates
+Add the `user.is_authenticated` template tag check to both `country_area.html` and
+`country_area_detail.html`.  Each template should be scaffolded as follows:
 
 ```html
 {% extends 'heritagesites/base.html' %}
@@ -358,28 +365,52 @@ Add the `user.is_authenticated` check to both `country_area.html` and `country_a
 {% endblock content %}}
 ```
 
-### TODO
+### 5.6 Add a login link to the navigation bar
+Add a login link to the `base.html` navigation bar. Add the `mr-auto` class to the <ul> tag to push the menu items to the right:
 
-Start up development server.
-Click on Country/Area navbar link
-If all goes well you will be redirected to Google login Page
-Once authenticated you should be redirected to the `heritagesites` app.
+```html
+<ul class="navbar-nav mr-auto">
+  <!-- existing list items -->
+</ul>
 
-Login into admin and check if new user has been added.
+<ul class="navbar-nav mr-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">login</a>
+  </li>
+</ul>
+```
 
-<uniqname>-string appended.
-Take a screenshot
+## 6.0 Test the integration and document your work
+Start up the Django development server and load `http://localhost:8000/heritagesites/` in your browser.  You need to take a couple of screenshots to complete the assignment.
 
+### 6.1 Google sign in page screenshot
+Click on the "country/area" navigation bar link.  You should be redirected to the Google sign in screen.
 
+![Google Sign in screen](./static/img/google/SI664-google_sign_in.png)
 
+If clicking on the "country/area" link does not result in a redirect to the Google sign in page review your work above, make corrections, and try it again.  If you encounter issues ping the class using the Canvas discussion tool or drop me a note at [arwhyte@umich.edu](mailto:arwhyte@umich.edu).
 
+__Before signing in__, take a screenshot of the sign in page displaying the list of Google accounts that you can use.  Rename the screenshot `<uniqname>-google_sign_in.png`.
 
+Sign in and Google will redirect you back to the `heritagsites` app.  You should be able to view the list of countries/areas.
 
+:bulb: If you sign in to Google before obtaining a screenshot of the sign in page, clear your browser history and cache, close/restart your browser, load `http://localhost:8000/heritagesites/` and click on the "country/area" navigation bar link again.
 
+### 6.2 heritagesites screenshot
+On the "Countries and Areas" list page click on page 13 and take a screenshot.  Rename the screenshot `<uniqname>-heritagesites_country_area_pg13.png`.
 
+### 6.3 Django admin site users page screenshot
+Sign in to the Django admin site at `http://localhost:8000/admin/` as the superuser.  Under "Authentication and Authorization administration" click on the "Users" link.  Take a screenshot of the users listed.
 
+:bulb: If you signed in via Google with your UMich user account you should see a uniqname with a string of characters appended to the name (which is good).  Take a screenshot of the page. Rename the screenshot `<uniqname>-heritagesites_admin_users.png`.
 
+![Google Sign in screen](./static/img/heritagesites/heritagesites_admin_social_users.png)
 
+### 6.4 Submit your screenshots
+Create a zip archive of
 
-## Documentation
-[Python Social Auth documentation](https://python-social-auth-docs.readthedocs.io/en/latest/configuration/django.html)
+`<uniqname>-google_sign_in.png`
+`<uniqname>-heritagesites_country_area_pg13.png`
+`<uniqname>-heritagesites_admin_users.png`
+
+Name the archive `<uniqname>-si664-mtg7.zip`. Go to the Canvas assignment page and submit the zip archive.
