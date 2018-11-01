@@ -196,7 +196,8 @@ On the following "Create OAuth Client ID" screen select "Web Application as the 
 
 1. Name: "heritagesites_oauth2"
 2. Authorized Javascript origins: leave as is
-3. Authorized redirect URIs: add http://localhost:8000/auth/complete/google-oauth2/
+3. Authorized redirect URIs: add http://localhost:8000/auth/complete/google-oauth2/ __and__ 
+http://127.0.0.1:8000/auth/complete/google-oauth2/
 4. Click the blue "create" button
 
 ![Google Developer Console Create OAuth Client ID screen](./static/img/google/SI664-google_api_console-7.png)
