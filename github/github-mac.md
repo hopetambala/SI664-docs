@@ -1,4 +1,4 @@
-# Version control with Git and Github (macOS)
+# Setting up a Github Remote Repository (macOS)
 
 * 1.0 [Git](#git)
   - 1.1 [Install Git](#git-install)
