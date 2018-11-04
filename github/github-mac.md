@@ -40,7 +40,7 @@ $ brew install git
 
 If you don't want to use Homebrew, you can also [download](https://git-scm.com/download/mac) Git from the [git-scm](https://git-scm.com/) website and install it manually along with Xcode.
 
-## <a name="git-init"></a>1.2 Initialize working directory
+### <a name="git-init"></a>1.2 Initialize working directory
 Next, change directories to your Django `heritagesites` project directory and initialize it as a Git repository using the `init` command:
 
 ```commandline
@@ -56,7 +56,7 @@ Intialization creates a `heritagesites/.git` subdirectory that contains a set of
 ### <a name="github-account"></a>2.1 Create account
 Git is a distributed version control system. Github is a cloud platform that hosts public and private Git repositories.  If you have yet to create a Github account visit https://github.com/join?source=header-home and set up your account.
 
-## <a name="github-repo"></a>2.2 Create heritagsites repository
+### <a name="github-repo"></a>2.2 Create heritagsites repository
 Go to your Github account.  Click the "Repositories" tab.  Then click the green "New" button to access the "Create repository" form.
 
 <img src="./static/img/SI664-github-new_repo-800x681.png" alt="Github new repo form">
@@ -404,7 +404,7 @@ Refresh your repo home page.  Your `heritagesites` app files should now reside i
 
 <img src="./static/img/SI664-github-new_repo_1st_commit-800x630.png" alt="Github repo 1st commit">
 
-### <a name="git-workflow"></a>5.0 Looking ahead: a new workflow
+## <a name="git-workflow"></a>5.0 Looking ahead: a new workflow
 Going forward, adopt the following workflow whenever you make changes to your local working directory:
 
 1. Add or modify a file or related set of files.
