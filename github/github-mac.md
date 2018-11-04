@@ -106,7 +106,7 @@ Other FOSS licenses exist, including "reciprocal" licenses that tend to limit co
 ### <a name="work_dir-readme"></a>3.3 Add a README.md file
 README files typically provide a brief description of the project as well as installation, configuration, and other relevant information.
 
-Copy the [README.md](/static/README.md) file and place it at the top level of your `heritagesites` project.
+Copy the [README.md](./static/README.md) file and place it at the top level of your `heritagesites` project.
 
 ### <a name="work_dir-review"></a>3.4 Review file locations
 Your `heritagesites` project should now include the following top level directories and files:
