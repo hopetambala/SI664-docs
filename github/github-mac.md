@@ -1,4 +1,4 @@
-# Version control with Git and Github (macOS)
+# Setting up a Github Remote Repository (macOS)
 
 * 1.0 [Git](#git)
   - 1.1 [Install Git](#git-install)
@@ -40,7 +40,7 @@ $ brew install git
 
 If you don't want to use Homebrew, you can also [download](https://git-scm.com/download/mac) Git from the [git-scm](https://git-scm.com/) website and install it manually along with Xcode.
 
-## <a name="git-init"></a>1.2 Initialize working directory
+### <a name="git-init"></a>1.2 Initialize working directory
 Next, change directories to your Django `heritagesites` project directory and initialize it as a Git repository using the `init` command:
 
 ```commandline
@@ -56,7 +56,7 @@ Intialization creates a `heritagesites/.git` subdirectory that contains a set of
 ### <a name="github-account"></a>2.1 Create account
 Git is a distributed version control system. Github is a cloud platform that hosts public and private Git repositories.  If you have yet to create a Github account visit https://github.com/join?source=header-home and set up your account.
 
-## <a name="github-repo"></a>2.2 Create heritagsites repository
+### <a name="github-repo"></a>2.2 Create heritagsites repository
 Go to your Github account.  Click the "Repositories" tab.  Then click the green "New" button to access the "Create repository" form.
 
 <img src="./static/img/SI664-github-new_repo-800x681.png" alt="Github new repo form">
@@ -229,7 +229,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 ```
 :bulb: note that `.gitignore` has successfully excluded the `heritagesites/venv/` subdirectory from the list of untracked directories and files.
 
-To stage all tracked `heritagesites` app files for the next commit add a trailing dot ('.') when you add the files:
+To stage all untracked `heritagesites` app files for the next commit add a trailing dot ('.') when you add the files:
 
 ```commandline
 $ git add .
@@ -404,7 +404,7 @@ Refresh your repo home page.  Your `heritagesites` app files should now reside i
 
 <img src="./static/img/SI664-github-new_repo_1st_commit-800x630.png" alt="Github repo 1st commit">
 
-### <a name="git-workflow"></a>5.0 Looking ahead: a new workflow
+## <a name="git-workflow"></a>5.0 Looking ahead: a new workflow
 Going forward, adopt the following workflow whenever you make changes to your local working directory:
 
 1. Add or modify a file or related set of files.
@@ -430,6 +430,9 @@ Other useful Git commands include:
 
 ## <a name="git-documentation"></a>6.0 Documentation
 git-scm.org. [Official Documentation](https://git-scm.com/docs).
+
 D. Demaree. *[Git for Humans](https://www.safaribooksonline.com/library/view/git-for-humans/9781492017875/)*. A Book Apart, September 2016.
+
 R. Dudler. "[git - the simple guide](http://rogerdudler.github.io/git-guide/)".
+
 F. Santacroce.  *[Git Essentials - Second Edition](https://www.safaribooksonline.com/library/view/git-essentials-/9781787120723/)*.  Packt Publishing, November 2017.
