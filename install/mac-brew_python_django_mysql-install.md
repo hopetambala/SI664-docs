@@ -93,7 +93,6 @@ export MYSQL_HOME="/usr/local/mysql"
 export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$MYSQL_HOME/bin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-
 ```
 
 ```bash
