@@ -229,7 +229,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 ```
 :bulb: note that `.gitignore` has successfully excluded the `heritagesites/venv/` subdirectory from the list of untracked directories and files.
 
-To stage all tracked `heritagesites` app files for the next commit add a trailing dot ('.') when you add the files:
+To stage all untracked `heritagesites` app files for the next commit add a trailing dot ('.') when you add the files:
 
 ```commandline
 $ git add .
@@ -430,6 +430,9 @@ Other useful Git commands include:
 
 ## <a name="git-documentation"></a>6.0 Documentation
 git-scm.org. [Official Documentation](https://git-scm.com/docs).
+
 D. Demaree. *[Git for Humans](https://www.safaribooksonline.com/library/view/git-for-humans/9781492017875/)*. A Book Apart, September 2016.
+
 R. Dudler. "[git - the simple guide](http://rogerdudler.github.io/git-guide/)".
+
 F. Santacroce.  *[Git Essentials - Second Edition](https://www.safaribooksonline.com/library/view/git-essentials-/9781787120723/)*.  Packt Publishing, November 2017.
