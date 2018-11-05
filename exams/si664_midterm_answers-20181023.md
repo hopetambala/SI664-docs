@@ -1,4 +1,4 @@
-# SI 664 Midterm
+# SI 664 Midterm (Answers)
 ## Fall 2018
 
 ## Table of contents
