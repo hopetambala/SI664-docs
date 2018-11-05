@@ -37,15 +37,15 @@ SELECT sr.sub_region_name AS `subregion`, ca.country_area_name AS `country / are
        hs.site_name AS `heritage site`, hsc.category_name AS `category`, hs.date_inscribed AS `date_inscribed`
   FROM heritage_site hs
        INNER JOIN heritage_site_jurisdiction hsj 
-                      ON hs.heritage_site_id = hsj.heritage_site_id
+               ON hs.heritage_site_id = hsj.heritage_site_id
        INNER JOIN country_area ca 
-                      ON hsj.country_area_id = ca.country_area_id
+               ON hsj.country_area_id = ca.country_area_id
        INNER JOIN location l
-                       ON ca.location_id = l.location_id
+               ON ca.location_id = l.location_id
        INNER JOIN sub_region sr
-                      ON l.sub_region_id = sr.sub_region_id
+               ON l.sub_region_id = sr.sub_region_id
        INNER JOIN heritage_site_category hsc
-              ON hs.heritage_site_category_id = hsc.category_id
+               ON hs.heritage_site_category_id = hsc.category_id
  WHERE TRIM(ca.country_area_name) = 'India' AND hs.date_inscribed >= 2000
  ORDER BY hs.date_inscribed DESC, hs.site_name;
 ```
@@ -57,13 +57,13 @@ SELECT sr.sub_region_name AS `subregion`, ca.country_area_name AS `country / are
        hs.site_name AS `heritage site`, hsc.category_name AS `category`, hs.date_inscribed AS `date_inscribed`
   FROM heritage_site hs
        LEFT JOIN heritage_site_jurisdiction hsj 
-                      ON hs.heritage_site_id = hsj.heritage_site_id
+              ON hs.heritage_site_id = hsj.heritage_site_id
        LEFT JOIN country_area ca 
-                      ON hsj.country_area_id = ca.country_area_id
+              ON hsj.country_area_id = ca.country_area_id
        LEFT JOIN location l
-                       ON ca.location_id = l.location_id
+              ON ca.location_id = l.location_id
        LEFT JOIN sub_region sr
-                      ON l.sub_region_id = sr.sub_region_id
+              ON l.sub_region_id = sr.sub_region_id
        LEFT JOIN heritage_site_category hsc
               ON hs.heritage_site_category_id = hsc.category_id
  WHERE TRIM(ca.country_area_name) = 'India' AND hs.date_inscribed >= 2000
@@ -226,15 +226,15 @@ SELECT r.region_name AS `region`, sr.sub_region_name AS `subregion`,
        ca.country_area_name AS `country / area`, COUNT(*) AS `heritage sites`
   FROM heritage_site hs
        LEFT JOIN heritage_site_jurisdiction hsj 
-                      ON hs.heritage_site_id = hsj.heritage_site_id
+              ON hs.heritage_site_id = hsj.heritage_site_id
        LEFT JOIN country_area ca 
-                      ON hsj.country_area_id = ca.country_area_id
+              ON hsj.country_area_id = ca.country_area_id
        LEFT JOIN location l
-                      ON ca.location_id = l.location_id
+              ON ca.location_id = l.location_id
        LEFT JOIN region r
-                      ON l.region_id = r.region_id
+              ON l.region_id = r.region_id
        LEFT JOIN sub_region sr 
-                      ON l.sub_region_id = sr.sub_region_id
+              ON l.sub_region_id = sr.sub_region_id
 GROUP BY r.region_name, sr.sub_region_name,  ca.country_area_name
 ORDER BY COUNT(*) DESC, r.region_name, sr.sub_region_name,  ca.country_area_name LIMIT 25;
 ```
@@ -753,6 +753,8 @@ Create two new templates in the `heritagesites/templates/heritagesites/` directo
 :bulb: recall that only a small number of countries / areas are located in an UNSD intermediate 
 region. Rather than render a row with no value to be displayed in such cases wrap the row in 
 `{% if ... %} ... {% endif %}` conditional tags as is illustrated in `site_detail.html`.
+
+:bulb: the if/else handling involving Antarctica is a "nice to have" check but was not included in the scoring of `country_area_detail.html`
 
 ```html
 {% extends 'heritagesites/base.html' %}
