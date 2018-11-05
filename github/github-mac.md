@@ -2,7 +2,8 @@
 
 * 1.0 [Git](#git)
   - 1.1 [Install Git](#git-install)
-  - 1.2 [Initialize working directory](#git-init)
+  - 1.2 [Establish your Git identity](#git-identity)
+  - 1.3 [Initialize working directory](#git-init)
 * 2.0 [Github](#github)
   - 2.1 [Create account](#github-account)
   - 2.2 [Create heritagsites repository](#github-repo)
@@ -40,7 +41,30 @@ $ brew install git
 
 If you don't want to use Homebrew, you can also [download](https://git-scm.com/download/mac) Git from the [git-scm](https://git-scm.com/) website and install it manually along with Xcode.
 
-### <a name="git-init"></a>1.2 Initialize working directory
+### <a name="git-install"></a>1.2 Establish your Git identity
+Use the Git config tool to associate your account with the commits you make. While you can specify a Git username for each local repository, I recommend setting your username globally for use with all repos you set up locally. While you are at it also specify your commit email address.
+
+```commandline
+$ git config --global user.name "Anthony Whyte"
+$ git config --global user.email "anthwhyte@gmail.com"
+```
+
+Confirm that you have specified your global `user.name` and `user.email` correctly:
+
+```commandline
+$ git config --global user.name
+Anthony Whyte
+$ git config --global user.email
+anthwhyte@gmail.com
+```
+
+Git stores these settings in `~/.gitconfig`. Establishing your identy is not the only configuration options available to you. Atlassian offers a useful [overview](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config) of common configuration settings that you can specify.
+
+:bulb: You can also connect to your Github account using SSH.  If you have an existing SSH key or want to generate a new key and add it to your account follow the instructions at https://help.github.com/articles/connecting-to-github-with-ssh/.
+
+:bulb: Although beyond the scope of this guide know that you can also sign your commits using GnuPG (a.k.a GPG). See https://help.github.com/articles/signing-commits/ for more details.
+
+### <a name="git-init"></a>1.3 Initialize working directory
 Next, change directories to your Django `heritagesites` project directory and initialize it as a Git repository using the `init` command:
 
 ```commandline
