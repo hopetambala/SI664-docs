@@ -58,7 +58,7 @@ $ git config --global user.email
 anthwhyte@gmail.com
 ```
 
-Git stores these settings in `~/.gitconfig`. Establishing your identity is not the only configuration options available to you. Atlassian offers a useful [overview](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config) of common configuration settings that you can specify.
+Git stores these settings in `~/.gitconfig`. Establishing your identity is not the only configuration option available to you. Atlassian offers a useful [overview](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config) of common configuration settings that you can specify.
 
 :bulb: You can also connect to your Github account using SSH.  If you have an existing SSH key or want to generate a new key and add it to your account follow the instructions at https://help.github.com/articles/connecting-to-github-with-ssh/.
 
