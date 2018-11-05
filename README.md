@@ -7,6 +7,7 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
     - [win10: Python, Django, MySQL Dev Environment](install/win-choco_python_django_mysql-install.md)
 * [Git and Github](github)
     - [Setting up a Github Remote Repository](github/github-mac.md) (macOS)
+    - [Setting up a Github Remote Repository](github/github-win.md) (Windows)
 * [Tools](tools)
     - [macOS: ngrok](tools/mac-ngrok.md)
     - [win10: ngrok](tools/win-ngrok.md)
@@ -20,6 +21,9 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
   * Meeting 6
     - [Exercise 6.2](exercises/assignment_v6p2_mac.md) (macOS)
     - [Exercise 6.2](exercises/assignment_v6p2_win.md) (Windows)
+  * Midterm
+    - [Midterm](exams/si664_midterm-20181023.md)
+    - [Midterm answers](exams/si664_midterm_answers-20181023.md)   
   * Meeting 7
     - [Exercise 7.2](exercises/assignment_v7p2.md)
 
