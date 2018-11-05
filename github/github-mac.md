@@ -41,7 +41,7 @@ $ brew install git
 
 If you don't want to use Homebrew, you can also [download](https://git-scm.com/download/mac) Git from the [git-scm](https://git-scm.com/) website and install it manually along with Xcode.
 
-### <a name="git-install"></a>1.2 Establish your Git identity
+### <a name="git-identity"></a>1.2 Establish your Git identity
 Use the Git config tool to associate your account with the commits you make. While you can specify a Git username for each local repository, I recommend setting your username globally for use with all repos you set up locally. While you are at it also specify your commit email address.
 
 ```commandline
