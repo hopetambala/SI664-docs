@@ -682,8 +682,8 @@ If the entry has not been updated, debug your app code.
 ### 5.3 Delete the entry
 Open the MySQL Workbench.  Write a query that joins the `HeritageSiteJurisdiction` (hsj)table to 
 the `HeritageSite` (hs) table (use an INNER JOIN) and return a record set of all Heritage Sites 
-with a `heritage_site_id` value >= 1091. Your new entry should be listed in the result set along 
-with two entries for the "Heritage of Mercury. Almadén and Idrija" site. If 
+with a `heritage_site_id` value >= 1092. Your new entry should be listed in the result set along 
+with two entries for the "Mosi-oa-Tunya / Victoria Falls" site. If 
 not 
 adjust the query until you retrieve your new 
 Heritage Site entry. 
