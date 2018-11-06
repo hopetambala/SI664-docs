@@ -113,7 +113,7 @@ Create a Python 3.7 virtual environment and activate it:
 > cd heritagesites
 > virtualenv venv
 > venv\Scripts\activate
-(venv) $
+(venv) >
 ```
 
 Install the `Django` and `mysqlclient` packages. Recall that you must utilize Christoph Gohlke's 

@@ -66,7 +66,7 @@ wheel                          0.32.1
 ## 2.0 App setup
 
 ### 2.1 Register social_django
-Add the `social_django` app to `mysite/settings.py` `INSTALLED_APPS` setting:
+Add the `social_django` app to `mysite/settings.py` `INSTALLED_APPS`:
 
 ```python
 INSTALLED_APPS = [
