@@ -574,8 +574,7 @@ Replace the contents of `site_detail.html` with the following code:
    ```
 
 ### 3.8 custom template tags and filters
-Django's template engine can be extended with [custom tags and filters](https://docs
-.djangoproject.com/en/2.1/howto/custom-template-tags/). The `site_detail.html` includes a `{% load heritagesites_extras %}` tag. This tag loads a couple of custom filters that add either leading or trailing commas to rendered string values. 
+Django's template engine can be extended with [custom tags and filters](https://docs.djangoproject.com/en/2.1/howto/custom-template-tags/). The `site_detail.html` includes a `{% load heritagesites_extras %}` tag. This tag loads a couple of custom filters that add either leading or trailing commas to rendered string values. 
  
 ##### add_leading_comma custom filter 
  ```html
