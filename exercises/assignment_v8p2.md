@@ -572,7 +572,58 @@ Replace the contents of `site_detail.html` with the following code:
      {% endif %}
    {% endblock content %}
    ```
-   
+
+### 3.8 custom template tags and filters
+Django's template engine can be extended with [custom tags and filters](https://docs
+.djangoproject.com/en/2.1/howto/custom-template-tags/). The `site_detail.html` includes a `{% load heritagesites_extras %}` tag. This tag loads a couple of custom filters that add either leading or trailing commas to rendered string values. 
+ 
+##### add_leading_comma custom filter 
+ ```html
+{{ country_area.location.region.region_name.strip|add_leading_comma }}
+```
+
+Add a `templatetags/` directory to the `heritagesites` app.  You must add a `__init__.py` file 
+(file with no content) that signals that the directory is to be treated as a Python package.
+
+
+```html
+heritagesites/
+    templatetags/
+        __init__.py
+        heritagesites_extras.py
+```
+
+Next, add a `heritagesites_extra.py` to `templatetags/` composed of the following custom filters:
+
+##### heritagesites_extras.py
+```python
+from django import template
+from django.template.defaultfilters import stringfilter
+
+register = template.Library()
+
+
+@register.filter(name='add_leading_comma')
+@stringfilter
+def add_leading_comma(value):
+	return ''.join([', ', value])
+
+
+@register.filter(name='add_trailing_comma')
+@stringfilter
+def add_trailing_comma(value):
+	return ''.join([value, ','])
+
+
+@register.filter(name='add_parens')
+@stringfilter
+def add_parentheses(value):
+	return ''.join(['(', value, ')'])
+```
+
+:warning: After adding the `templatetags` modules, you must stop and restart the Django 
+development server in order to activate the custom tags and filters. 
+ 
 ## 4.0 Styling
 The `heritagesites` app rendered text tends to rub up against the sides of the browser window.  
 There are a few other issues worth addressing that help clean up the look-and-feel of the app:
@@ -710,6 +761,10 @@ If the entry has not been deleted, debug your app code.
 
 ### 5.4 Stage, commit and push changes to Github
 Follow the Github guide for [macOS](../github/github-mac.md) or [Windows](../github/github-win.md) and after installing and configuring Git, stage, commit and push all changes to your Github `heritagesites` repo.
+
+:warning: Before pushing code to your Github repo, pull the three secret key values out of 
+`settings.py` and store them either as environment variables or in a `mysite/secrets.py` file. 
+See the [Github guide](../github) for directions.
 
 After pushing your code changes to Github take a screenshot of your repo's home page.  Rename the
  screenshot 
