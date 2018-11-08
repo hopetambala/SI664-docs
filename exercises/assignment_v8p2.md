@@ -236,7 +236,7 @@ class SiteDeleteView(generic.DeleteView):
 		return HttpResponseRedirect(self.get_success_url())
 ```
 
-#### 3.5 Add new routes
+### 3.5 Add new routes
 Add three new `HeritageSite` routes.  Nothing broken here; just add the routes to 
 `heritagesites/urls.py`:
 
