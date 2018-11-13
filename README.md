@@ -27,9 +27,9 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
   * Meeting 7
     - [Exercise 7.2](exercises/assignment_v7p2.md)
   * Meeting 8
-      - [Exercise 8.2](exercises/assignment_v8p2.md)
+    - [Exercise 8.2](exercises/assignment_v8p2.md)
   * Meeting 9
-        - [Exercise 9.2](exercises/assignment_v9p2.md)    
+    - [Exercise 9.2](exercises/assignment_v9p2.md)    
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
