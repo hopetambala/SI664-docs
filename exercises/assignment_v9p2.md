@@ -230,10 +230,10 @@ Each new filter field requires that you choose the appropriate django_filters mo
 * `lookup_expr` - Django [field lookup](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#field-lookups)
 * `queryset` (required by `ModelChoiceFilter() or `ModelMultipleChoiceFilter()`)
 
-*warning* In certain cases the `field_name` value will require traversing model relationships
+:warning: In certain cases the `field_name` value will require traversing model relationships
  by joining the related models with the ORM lookup separator (__), e.g., `HeritageSite` to `Region` via `CountryArea` and `Location`.
 
-*warning* Note the `QuerySet` expression required for the `country_area` `queryset` argument.  Other filter
+:warning: Note the `QuerySet` expression required for the `country_area` `queryset` argument.  Other filter
 fields that provide lookup values will require the same treatment.
 
 :bulb: See the django-filter [Filter Reference](https://django-filter.readthedocs
@@ -262,7 +262,7 @@ Add a new `path()` to `heritagesites/urls.py`. You need to define three properti
 
 `path(route, view, kwargs=None, name=None)`
 
-### 2.4 Add a filter template
+### 2.6 Add a filter template
 Add a new template. Give it the name referenced in the `SiteFilterView(FilterView)` class.  The form will leverage `crispy_forms`. The skeletal code below requires the following additions in order to make it whole:
 
 * Add a form submit button.
@@ -305,7 +305,7 @@ Add a new template. Give it the name referenced in the `SiteFilterView(FilterVie
 {% endblock content %}
 ```
 
-### 2.5 Modify site_detail.html
+### 2.7 Modify site_detail.html
 The model methods that you added to the `HeritageSite` model renders redundant the templating
 tags used to create strings of regions, subregions, and intermediate regions for heritage sites
 that span multiple countries and, in a few cases, regional boundaries.
@@ -342,7 +342,7 @@ Then for each of the rows commented out, replace with a new row that renders the
   {% endif %}
 ```
 
-### 2.6 update the \<navbar\>
+### 2.8 update the \<navbar\>
 Comment out the countries/areas and sites links.  Add a new sites link with its `href` attribute set to `{% url 'search' %}`.
 
 ```html
