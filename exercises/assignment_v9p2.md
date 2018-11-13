@@ -219,16 +219,15 @@ Add the following additional filter fields to the `FilterSet` in the following o
 * `region`
 * `sub_region`
 * `intermediate_region`
-* `country_area (done)`
+* `country_area` (done)
 * `date_inscribed`
 
-Each new filter field requires that you choose the appropriate django_filters model field (e.g.,
-`django_filters.NumberFilter()`) as well as define the following arguments:
+Each new filter field requires that you choose the appropriate django_filters model field (e.g., `django_filters.NumberFilter()`) as well as define the following arguments:
 
 * `field_name` - name of the model field
 * `label` - HTML display name
 * `lookup_expr` - Django [field lookup](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#field-lookups)
-* `queryset` (required by `ModelChoiceFilter() or `ModelMultipleChoiceFilter()`)
+* `queryset` (required by `ModelChoiceFilter()` or `ModelMultipleChoiceFilter()`)
 
 :warning: In certain cases the `field_name` value will require traversing model relationships
  by joining the related models with the ORM lookup separator (__), e.g., `HeritageSite` to `Region` via `CountryArea` and `Location`.
@@ -236,9 +235,7 @@ Each new filter field requires that you choose the appropriate django_filters mo
 :warning: Note the `QuerySet` expression required for the `country_area` `queryset` argument.  Other filter
 fields that provide lookup values will require the same treatment.
 
-:bulb: See the django-filter [Filter Reference](https://django-filter.readthedocs
-.io/en/master/ref/filters.html) for additional information regarding filter fields and their
-arguments.
+:bulb: See the django-filter [Filter Reference](https://django-filter.readthedocs.io/en/master/ref/filters.html) for additional information regarding filter fields and their arguments.
 
 ### 2.4 Modify views.py
 Add `SiteFilterView()` to `heritagesites/views.py`. You are responsible for adding the necessary
@@ -267,13 +264,12 @@ Add a new template. Give it the name referenced in the `SiteFilterView(FilterVie
 
 * Add a form submit button.
   - Set the button text to "filter".
-  - Style the button like the other Bootstrap[outline buttons](https://getbootstrap.com/docs/4.0/components/buttons/#outline-buttons) that feature in the `heritagesites` app.
+  - Style the button like the other Bootstrap [outline buttons](https://getbootstrap.com/docs/4.0/components/buttons/#outline-buttons) that feature in the `heritagesites` app.
 * Inside the for loop tag, add the following:
-  - Between `<h4>...</h4>` add an anchor <a> tag with an `href` attribute set to a `{% url ... %}` tag that redirects the user to `site_detail.html` based on the site's primary key value. Set the <a>..</a> tag text to the Heritage Site name.
- - Below the `<h4>` tags add `{{ site.country_area_names }}`. Wrap the `{{ site.country_area_names }}` template tag in an `{% if ... %} ... {% endif %}` tag check.
+  - Between `<h4>...</h4>` add an anchor <a> tag with an `href` attribute set to a `{% url ... %}` tag that redirects the user to `site_detail.html` based on the site's primary key value. Set the `<a>..</a>` tag text to the Heritage Site name.
+ - Below the `<h4>` tag add `{{ site.country_area_names }}`. Wrap the `{{ site.country_area_names }}` template tag in an `{% if ... %} ... {% endif %}` tag check.
   - Add the site description template tag below the `{{ site.country_area_names }}` tag. Add the
-  `safe` filter. Do not place inside a `<p> ... </p>`. The paragraph tags are stored in the
-  database. Wrap the description template tag in an `{% if ... %} ... {% endif %}` tag check.
+  `safe` filter. Do not place the template variable inside a `<p> ... </p>`. The paragraph tags are stored in the database and rendered as raw HTML. Wrap the description template tag in an `{% if ... %} ... {% endif %}` tag check.
 
 ```html
 {% extends 'heritagesites/base.html' %}
@@ -343,7 +339,7 @@ Then for each of the rows commented out, replace with a new row that renders the
 ```
 
 ### 2.8 update the \<navbar\>
-Comment out the countries/areas and sites links.  Add a new sites link with its `href` attribute set to `{% url 'search' %}`.
+Comment out the countries/areas and sites links.  Add a new sites link with its `href` attribute set to `{% url 'your lookup name' %}` set earlier in `heritagesites/urls.py`.
 
 ```html
 <nav class="navbar navbar-expand-sm navbar-dark navbar-custom sticky-top px-4 py-2">
@@ -356,7 +352,7 @@ Comment out the countries/areas and sites links.  Add a new sites link with its 
             <a class="nav-link" href="{% url 'about' %}">about</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'search' %}">sites</a>
+            <a class="nav-link" href="{% url 'your lookup name' %}">sites</a>
           </li>
           <!--
           <li class="nav-item">
@@ -388,7 +384,7 @@ Place it in your `<uniqname>-mtg9` directory.
 
 :warning: Your screenshot must exhibit the look-and-feel of the following screenshot (excepting, of course, the color palette). If not review your work and make corrections.
 
-<img src="./static/img/SI664-heritagesites_site_filter_southern_african_parks.png" alt="Southern African Parks inscribed as Heritage Sites">
+<img src="./static/img/heritagesites/SI664-heritagesites_site_filter_southern_african_parks.png" alt="Southern African Parks inscribed as Heritage Sites">
 
 ### 3.2 The Architectural Work of Le Corbusier
 Charles-Édouard Jeanneret-Gris, otherwise known as Le Corbusier, was a Swiss French architect who lived between 1887 and 1965. Seventeen of his architectural projects were recognized as UNESCO Heritage Sites in 2016.  Construct a filter and retrieve the Heritage Site entry.  Click on the entry. Take a screenshot of the detail page and name it:
@@ -399,7 +395,7 @@ Place it in your `<uniqname>-mtg9` directory.
 
 :warning: Your screenshot must exhibit the look-and-feel of the following screenshot (excepting, of course, the color palette). If not review your work and make corrections.
 
-<img src="./static/img/SI664-heritagesites_site_detail_le_corbusier.png" alt="The Architectural Work of Le Corbusier detail page">
+<img src="./static/img/heritagesites/SI664-heritagesites_site_detail_le_corbusier.png" alt="The Architectural Work of Le Corbusier detail page">
 
 ### 3.3 Stonehenge, Avebury, and Associated Sites
 Construct a filter and retrieve the Heritage Site entry for Stonehenge, perhaps the most famous megalith in the world. Take a screenshot of the detail page and name it:
@@ -410,7 +406,7 @@ Place it in your `<uniqname>-mtg9` directory.
 
 :warning: Your screenshot must exhibit the look-and-feel of the following screenshot (excepting, of course, the color palette). If not review your work and make corrections.
 
-<img src="./static/img/SI664-heritagesites_site_detail_stonehenge.png" alt="Stonehenge, Avebury, and Associated Sites detail page">
+<img src="./static/img/heritagesites/SI664-heritagesites_site_detail_stonehenge.png" alt="Stonehenge, Avebury, and Associated Sites detail page">
 
 ### 3.4 Submit your screenshots
 Create a zip archive of
