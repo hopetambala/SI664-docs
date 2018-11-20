@@ -655,7 +655,7 @@ Create a zip archive of
 * `<uniqname>-mtg10-postman_post_site_new.png`
 * `<uniqname>-mtg10-postman_put_site_new.png`
 
-Name the archive `<uniqname>-si664-mtg9.zip`. Go to the Canvas assignment page and submit the zip archive.
+Name the archive `<uniqname>-si664-mtg10.zip`. Go to the Canvas assignment page and submit the zip archive.
 
 ### 4.0 Stage, commit and push changes to Github
 Stage, commit and push all changes to your Github `heritagesites` repo. I will review your code, in particular the new api app.
