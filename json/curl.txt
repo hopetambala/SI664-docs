@@ -1,0 +1,6 @@
+curl --request PUT \
+  --url http://localhost:8000/heritagesites/api/sites/2079/ \
+  --header 'Authorization: Token dde2f7a147952f1dc755506225a30e63fa7a4de8' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --data @heritage_site_1809_ives_rd.json
