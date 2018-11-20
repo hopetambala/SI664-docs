@@ -7,6 +7,7 @@ the `heritagesites/models.py` foreign key constraints
 * Add a `heritagesites` REST API using the Django REST framework (DRF)
 * Enhance Authz permissions with token-based authentication
 * Generate API documentation
+* Use Postman to issue HTTP requests against API endpoints
 * Stage, commit, and push your changes to your Github `heritagesites` repo
 
 ## 1.0 Database changes
@@ -161,7 +162,6 @@ INSTALLED_APPS = [
     # ...
 
     # Local
-    'api.apps.ApiConfig',
     'heritagesites.apps.HeritagesitesConfig',
 
     # Third-party
@@ -213,7 +213,6 @@ INSTALLED_APPS = [
     # ...
 
     # Local
-    'api.apps.ApiConfig',
     'heritagesites.apps.HeritagesitesConfig',
 
     # Third-party
@@ -276,7 +275,6 @@ INSTALLED_APPS = [
     # ...
 
     # Local
-    'api.apps.ApiConfig',
     'heritagesites.apps.HeritagesitesConfig',
 
     # Third-party
@@ -288,19 +286,6 @@ INSTALLED_APPS = [
 
     # ...
 ]
-```
-
-Stop the server (if running) and perform a migration:
-
-```commandline
-(venv) $ python3 manage.py migrate
-Operations to perform:
-  Apply all migrations: admin, auth, authtoken, contenttypes, sessions, social_django
-Running migrations:
-  Applying authtoken.0001_initial... OK
-/Users/arwhyte/Development/repos/github/UMSI-SI664-2018Fall/heritagesites/venv/lib/python3.7/site-packages/django/db/backends/mysql/base.py:71: Warning: (3719, "'utf8' is currently an alias for the character set UTF8MB3, but will be an alias for UTF8MB4 in a future release. Please consider using UTF8MB4 in order to be unambiguous.")
-  return self.cursor.execute(query, args)
-  Applying authtoken.0002_auto_20160226_1747... OK
 ```
 
 ### 3.2 Install django-rest-auth
@@ -330,8 +315,8 @@ INSTALLED_APPS = [
 ]
 ```
 
-### 3.4 Add a new project route
-Add a `rest-auth` path to the project (not app) `urls.py` file:
+### 3.4 Add a new project-level route
+Add a `rest-auth` path to the `mysites/urls.py` file:
 
 ```python
 path('heritagesites/api/rest-auth/', include('rest_auth.urls')),
@@ -361,7 +346,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Local
-    'api.apps.ApiConfig',
     'heritagesites.apps.HeritagesitesConfig',
 
     # Third-party
@@ -392,23 +376,7 @@ SITE_ID = 1
 Registration emails will also be generated but in lieu of setting up an email server, the
 messages will be directed to the console.
 
-### 3.7 Run migrations
-
-```commandline
-python3 manage.py migrate
-Operations to perform:
-  Apply all migrations: account, admin, auth, authtoken, contenttypes, sessions, sites, social_django, socialaccount
-Running migrations:
-  Applying account.0001_initial... OK
-  Applying account.0002_email_max_length... OK
-  Applying sites.0001_initial... OK
-  Applying sites.0002_alter_domain_unique... OK
-  Applying socialaccount.0001_initial... OK
-  Applying socialaccount.0002_token_max_lengths... OK
-  Applying socialaccount.0003_extra_data_default_dict... OK
-```
-
-### 3.8 Add a new route
+### 3.7 Add a new route
 Add a `rest-auth/registration/` path to the project (not app) `urls.py` file:
 
 ```python
@@ -477,7 +445,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-### 5.3 Add a project-level api route
+### 5.3 Add a project-level route
 Add the following routes to `mysite/urls.py`:
 
 ```python
@@ -502,6 +470,27 @@ Create an `api/serializers.py` file with code copied from the SI664-docs repo as
 Create an `api/views.py` file with code copied from the SI664-docs repo assignment 10
 [views.py](./static/code/assignment_v10p2/view.py) file.
 The file adds a `SiteViewSet` class that provides both 'list' and 'detail' views of serialized `HeritageSite` objects.
+
+### 5.8 Run migrations
+Stop the server (if running) and perform a migration:
+
+```commandline
+(venv) $ python3 manage.py migrate
+Operations to perform:
+  Apply all migrations: account, admin, auth, authtoken, contenttypes, sessions, sites, social_django, socialaccount
+Running migrations:
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying authtoken.0001_initial... OK
+/Users/alexandracarey/Documents/Third_Semester/664/Exercise_4/heritagesites/venv/lib/python3.7/site-packages/django/db/backends/mysql/base.py:71: Warning: (3719, "'utf8' is currently an alias for the character set UTF8MB3, but will be an alias for UTF8MB4 in a future release. Please consider using UTF8MB4 in order to be unambiguous.")
+  return self.cursor.execute(query, args)
+  Applying authtoken.0002_auto_20160226_1747... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+```
 
 ## 6.0 Available endpoints
 Start up the development server. Go to http://localhost:8000/heritagesites/api/swagger-docs/ (or http://127.0.0.1:8000/heritagesites/api/swagger-docs/).
