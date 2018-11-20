@@ -230,7 +230,7 @@ Add two new middleware entries to the MIDDLEWARE setting:
 * 'corsheaders.middleware.CorsMiddleware'
 * 'django.middleware.common.CommonMiddleware'
 
-Place the two middleware entries **first** and **second**, respectively, in the MIDDLEWARE setting 
+Place the two middleware entries **first** and **second**, respectively, in the MIDDLEWARE setting
 list.
 
 :warning: Per the django-cores-headers project description: "CorsMiddleware should be placed as
@@ -262,15 +262,15 @@ CORS_ORIGIN_WHITELIST = (
 ```
 
 ## 3.0 User permissions
-The `heritagesites` API will use token authentication to secure its endpoints. User registration 
-will include the generation of a unique token that must be included in the HTTP Authorization 
-request header of every message transmitted to the server from a client.  
+The `heritagesites` API will use token authentication to secure its endpoints. User registration
+will include the generation of a unique token that must be included in the HTTP Authorization
+request header of every message transmitted to the server from a client.
 
 ### 3.1 Register the authtoken app
 The `REST_FRAMEWORK` settings added above provides for Token Authentication.  The Django REST
- framework includes an `authtoken` app for minting tokens. Simply add `rest_framework.authtoken` to the list of 
+ framework includes an `authtoken` app for minting tokens. Simply add `rest_framework.authtoken` to the list of
  `INSTALLED_APPS`:
- 
+
  ```python
 INSTALLED_APPS = [
     # ...
@@ -285,7 +285,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    
+
     # ...
 ]
 ```
@@ -304,7 +304,7 @@ Running migrations:
 ```
 
 ### 3.2 Install django-rest-auth
-Install [django-rest-auth](https://pypi.org/project/django-rest-auth/) to add log in, log out, 
+Install [django-rest-auth](https://pypi.org/project/django-rest-auth/) to add log in, log out,
 and password reset endpoints.  Stop the server, if running, and install the package:
 
 ```commandline
@@ -317,7 +317,7 @@ Add `rest_auth` to `mysite/settings.py` INSTALLED_APPS:
 ```python
 INSTALLED_APPS = [
     # ...
-    
+
     # Third-party
     'corsheaders',
     'crispy_forms',
@@ -325,7 +325,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    
+
     # ...
 ]
 ```
@@ -338,7 +338,7 @@ path('heritagesites/api/rest-auth/', include('rest_auth.urls')),
 ```
 
 ### 3.5 Add user registration
-Install `django-allauth`, a package that provides 
+Install `django-allauth`, a package that provides
 
 > an integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication.
 
@@ -388,8 +388,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 ```
 
-:bulb: `django-allauth` uses Django's site framework and requires that a `SITE_ID` be specified. 
-Registration emails will also be generated but in lieu of setting up an email server, the 
+:bulb: `django-allauth` uses Django's site framework and requires that a `SITE_ID` be specified.
+Registration emails will also be generated but in lieu of setting up an email server, the
 messages will be directed to the console.
 
 ### 3.7 Run migrations
@@ -416,8 +416,8 @@ path('heritagesites/api/rest-auth/registration/', include('rest_auth.registratio
 ```
 
 ## 4.0 Documentation
-With the right libraries installed you can provide auto-generated machine-readable `heritagesites` 
-API schema as well as human-friendly API documentation that describes available endpoints and 
+With the right libraries installed you can provide auto-generated machine-readable `heritagesites`
+API schema as well as human-friendly API documentation that describes available endpoints and
 supported operations.
 
 ### 4.1 Install coreapi and pyyaml
@@ -428,7 +428,7 @@ Install the Python `coreapi` package along with the `pyyaml` package:
 ```
 
 ### 4.2 Install django-rest-swagger
-Install the [django-rest-swagger](https://pypi.org/project/django-rest-swagger/) package, an 
+Install the [django-rest-swagger](https://pypi.org/project/django-rest-swagger/) package, an
 API document generator that implements the [OpenAPI Specification](https://swagger.io/specification/):
 
 ```commandline
@@ -441,7 +441,7 @@ Add `rest_framework_swagger` to `mysite/settings.py` INSTALLED_APPS:
 ```python
 INSTALLED_APPS = [
     # ...
-    
+
     'rest_auth.registration',
     'rest_framework_swagger',
     'social_django',
@@ -450,7 +450,7 @@ INSTALLED_APPS = [
 ```
 
 ## 5.0 Create a Django api app
-The `heritagesites` REST API views, serializers, routes, a browsable API and Swagger API 
+The `heritagesites` REST API views, serializers, routes, a browsable API and Swagger API
 documentation will live in an "api" app separate from the `heritagesites` webapp.
 
 ### 5.1 Create a new api app
@@ -500,16 +500,162 @@ Create an `api/serializers.py` file with code copied from the SI664-docs repo as
 
 ### 5.7 Add an api app views.py
 Create an `api/views.py` file with code copied from the SI664-docs repo assignment 10
-[views.py](./static/code/assignment_v10p2/view.py) file.  
+[views.py](./static/code/assignment_v10p2/view.py) file.
 The file adds a `SiteViewSet` class that provides both 'list' and 'detail' views of serialized `HeritageSite` objects.
 
-### 6.0 Document your work
+## 6.0 Available endpoints
+Start up the development server. Go to http://localhost:8000/heritagesites/api/swagger-docs/ (or http://127.0.0.1:8000/heritagesites/api/swagger-docs/).
 
-...
+### 6.1 Unauthenticated endpoints
+The `heritagesites` API should now expose the following endpoints accessable by anonymous users:
 
+#### Unauthenticated rest_auth endpoints
+<img src="./static/img/heritagesites-api/SI664-heritagesites-api-rest_auth_endpoints_anon.png" alt="heritagesites API rest_auth anonymous endpoints">
 
+#### Unauthenticated heritage sites endpoints
+<img src="./static/img/heritagesites-api/SI664-heritagesites-api-heritage_site_endpoints_anon.png" alt="heritagesites API heritage sites anonymous endpoints">
 
-## TODO LIST ALL ROUTES
+### 6.2 Authenticated endpoints
+Authenticated users will be able to access the following `heritagesites` CRUD endpoints:
 
-Browserable API
-rest-auth login/logout, etc. routes
+#### Authenticated: rest_auth endpoints
+<img src="./static/img/heritagesites-api/SI664-heritagesites-api-rest_auth_endpoints_auth.png" alt="heritagesites API rest_auth authorized endpoints">
+
+#### Authenticated: heritage site endpoints
+<img src="./static/img/heritagesites-api/SI664-heritagesites-api-heritage_site_endpoints_auth.png" alt="heritagesites API heritage sites authorized endpoints">
+
+If the Swagger API documentation is not accessible recheck your work.
+
+## 7.0 Document your work
+Create a temporary directory to hold a number of files that you will submit as evidence that you have completed the assignment successfully.  Name it:
+
+`<uniqname>-si664-mtg10`
+
+### 7.1 Add a token for an existing user
+Log in to http://localhost:8000/admin/login/?next=/admin/.  Under Site Administration click on the Tokens "Add" link:
+
+ <img src="./static/img/heritagesites-admin/SI664-heritagesites-admin-token_add.png" alt="heritagesites admin add token">
+
+Select a user and add a token. Take a screenshot of http://localhost:8000/admin/authtoken/token/ and name it:
+
+`<uniqname>-mtg10-current_user_token.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.2 Register a new user
+Go to http://localhost:8000/heritagesites/api/rest-auth/registration/.  Fill out the registration form and POST it.
+
+:warning: This screen is designed for use by unauthenticated users. Make sure no user is currently logged in before attempting to register a user. Otherwise, you are liable to HTTP 403 error `{"detail": "CSRF Failed: CSRF token missing or incorrect."}` when registering a user while logged in.
+
+<img src="./static/img/heritagesites-rest_auth/SI664-heritagesites-rest_auth_register.png" alt="heritagesites rest_auth registration">
+
+A successful registration will include the generation of a token. You can save it locally or look it up in the Admin site. A token will be required later in the exercise when you use Postman to send HTTP requests to the `heritagesites` API.
+
+<img src="./static/img/heritagesites-rest_auth/SI664-heritagesites-rest_auth_register_token.png" alt="heritagesites rest_auth registration">
+
+Take a screenshot of http://localhost:8000/admin/authtoken/token/ and name it:
+
+`<uniqname>-mtg10-new_user_token.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.3 Swagger API
+Go to http://localhost:8000/heritagesites/api/swagger-docs/. If viewing as an anonymous user, log in as your new user. Click on the "sites" set of endpoints and take a screenshot and name it:
+
+`<uniqname>-mtg10-new_user_swagger.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.4 GET Request with Postman
+The final assignment deliverables involve sending HTTP requests to the `heritagesites` API.  You
+can use the CLI tool [curl](https://curl.haxx.se/) to do so but an excellent GUI called [Postman]
+(https://www.getpostman.com/) makes for an excellent substitute. Use it for this final portion of
+the assignment.
+
+:bulb: Postman also makes available a browser extension for Chrome called [Interceptor](https://chrome.google
+.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo/) that you can also
+install, although it is not required for this assignment.
+
+Install the [Postman](https://www.getpostman.com/apps) binary appropriate for your operating
+system. If you have never used Postman review the [documentation](https://www.getpostman
+.com/docs/v6/) before attempting to send a request to the `heritagesites` API.
+
+When ready use Postman to issue a GET request to
+http://localhost:8000/heritagesites/api/sites/1092/.  Select "GET" from the dropdown, provide the endpoint, and then click the blue "Send" button.
+
+:warning: do not forget to add the trailing slash "/" to the endpoint URL.
+
+<img src="./static/img/postman/SI664-postman-api-get_site_1092_vic_falls.png" alt="Postman GET
+Victoria Falls Heritage Site.">
+
+Take a screenshot of the Postman screen that includes the JSON response and name it:
+
+`<uniqname>-mtg10-postman_get_site_1092.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.4 POST Request with Postman
+Next, add a new Heritage Site (have fun with this, submit a real place) by issuing an HTTP POST to http://localhost:8000/heritagesites/api/sites/. You must create your POST request as follows:
+
+1) Select "POST" from the dropdown.
+
+2) Enter the request URL as http://localhost:8000/heritagesites/api/sites/.
+
+3) Click the "Headers" tab and add the following Request headers:
+  * key=Authorization, value=Token \<your token\>
+  * key=Content-Type, value=application/json
+
+4) Click on the "Body" tab and specify the payload:
+  * click the "raw" button
+  * provide a JSON payload as specified in the [Swagger](http://localhost:8000/heritagesites/api/swagger-docs/) `heritagesites` API documentation. Ensure that the payload you create:
+    - provides values for all required fields.
+    - specifies one or more `country_area_id` values for the `jursidiction_ids` array (the identifiers do not need to be sent as string values).
+
+5) Click the blue "Send" button.
+
+Take a screenshot of the Postman screen that includes the JSON response and name it:
+
+`<uniqname>-mtg10-postman_post_site_new.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.5 PUT Request with Postman
+Next, update the new Heritage Site record you just created by issuing an HTTP PUT to http://localhost:8000/heritagesites/api/sites/\{heritage_site_id\}/. You must create your PUT request as follows:
+
+1) Select "PUTT" from the dropdown.
+
+2) Enter the request URL as http://localhost:8000/heritagesites/api/sites/\{heritage_site_id\}/. You must provide the new Heritage Site's `heritage_site_id`.
+
+3) Click the "Headers" tab and add the following Request headers:
+  * key=Authorization, value=Token \<your token\>
+  * key=Content-Type, value=application/json
+
+4) Click on the "Body" tab and specify the payload adding or modifying one or more values:
+  * click the "raw" button
+  * provide a JSON payload as specified in the [Swagger](http://localhost:8000/heritagesites/api/swagger-docs/) `heritagesites` API documentation. Ensure that the payload you create:
+    - changes or modifies one or more values.
+    - provides values for all required fields.
+    - specifies one or more `country_area_id` values for the `jursidiction_ids` array (the identifiers do not need to be sent as string values).
+
+5) Click the blue "Send" button.
+
+Take a screenshot of the Postman screen that includes the JSON response and name it:
+
+`<uniqname>-mtg10-postman_put_site_new.png`
+
+Place it in your `<uniqname>-mtg10` directory.
+
+### 7.6 Submit your screenshots
+Create a zip archive of
+
+* `<uniqname>-mtg10-current_user_token.png`
+* `<uniqname>-mtg10-new_user_token.png`
+* `<uniqname>-mtg10-new_user_swagger.png`
+* `<uniqname>-mtg10-postman_get_site_1092.png`
+* `<uniqname>-mtg10-postman_post_site_new.png`
+* `<uniqname>-mtg10-postman_put_site_new.png`
+
+Name the archive `<uniqname>-si664-mtg9.zip`. Go to the Canvas assignment page and submit the zip archive.
+
+### 4.0 Stage, commit and push changes to Github
+Stage, commit and push all changes to your Github `heritagesites` repo. I will review your code, in particular the new api app.
