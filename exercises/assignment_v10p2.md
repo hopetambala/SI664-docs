@@ -427,7 +427,7 @@ Install the Python `coreapi` package along with the `pyyaml` package:
 (venv) $ pip3 install coreapi pyyaml
 ```
 
-## 4.2 Install django-rest-swagger
+### 4.2 Install django-rest-swagger
 Install the [django-rest-swagger](https://pypi.org/project/django-rest-swagger/) package, an 
 API document generator that implements the [OpenAPI Specification](https://swagger.io/specification/):
 
@@ -491,16 +491,16 @@ path('heritagesites/api/', include('api.urls')),
 Delete `api/models.py`. `heritagesites` models are maintained outside the api app.
 
 ### 5.5 Add an api app urls.py file
-Create an `api/urls.py` file with code copied from the SI664-docs repo 
-[exercises/static/code/assignment_v10p2/urls.py](./static/code/assignment_v10p2/urls.py) file.
+Create an `api/urls.py` file with code copied from the SI664-docs repo assignment 10
+[urls.py](./static/code/assignment_v10p2/urls.py) file.
 
 ### 5.6 Add an api app serializers.py
-Create an `api/serializers.py` file with code copied from the SI664-docs repo 
-[exercises/static/code/assignment_v10p2/serializers.py](./static/code/assignment_v10p2/serializers.py) file.
+Create an `api/serializers.py` file with code copied from the SI664-docs repo assignment 10
+[serializers.py](./static/code/assignment_v10p2/serializers.py) file.
 
 ### 5.7 Add an api app views.py
-Create an `api/views.py` file with code copied from the SI664-docs repo 
-[exercises/static/code/assignment_v10p2/views.py](./static/code/assignment_v10p2/view.py) file.  
+Create an `api/views.py` file with code copied from the SI664-docs repo assignment 10
+[views.py](./static/code/assignment_v10p2/view.py) file.  
 The file adds a `SiteViewSet` class that provides both 'list' and 'detail' views of serialized `HeritageSite` objects.
 
 ### 6.0 Document your work
