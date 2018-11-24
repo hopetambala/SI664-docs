@@ -468,7 +468,7 @@ Create an `api/serializers.py` file with code copied from the SI664-docs repo as
 
 ### 5.7 Add an api app views.py
 Create an `api/views.py` file with code copied from the SI664-docs repo assignment 10
-[views.py](./static/code/assignment_v10p2/view.py) file.
+[views.py](./static/code/assignment_v10p2/views.py) file.
 The file adds a `SiteViewSet` class that provides both 'list' and 'detail' views of serialized `HeritageSite` objects.
 
 ### 5.8 Run migrations
