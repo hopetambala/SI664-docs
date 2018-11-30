@@ -1,13 +1,14 @@
 # MySQL: Reading local files (Windows)
 
+## 1.0 Reading data files
 A MySQL *.sql script can read text files (e.g., *.csv, *.tsv, *.txt) using the [LOAD DATA INFILE](https://dev.mysql.com/doc/refman/8.0/en/load-data.html) syntax.
 
-### Reading local files
+### 1.1 Loading Local files
 The `LOCAL` keyword is used to load files located on the client host (e.g., your laptop). `LOAD 
 DATA LOCAL INFILE <file path> INTO TABLE <table name> . . .` works only if your server and your 
 client both have been configured to permit the loading of locally sourced files.
 
-### Example: Populating a table with data from an external file
+#### Example: Populating a table with data from an external file
 The two SQL statements below create a `movie` table and a `LOAD DATA LOCAL INFILE` statement
  that inserts into the `movie` table a single column of data from a tab-delimited file named 
  `movie.tsv`.
@@ -34,7 +35,7 @@ INTO TABLE movie
   (movie_name);
 ```  
 
-### File load error
+### 1.1 File load error
 I expect that you will encounter the following error when attempting to execute a *.sql script 
 that includes one or more `LOAD DATA LOCAL INFILE` statements.
 
@@ -42,7 +43,7 @@ that includes one or more `LOAD DATA LOCAL INFILE` statements.
 WARNING: Transaction rollback: (1148, 'The used command is not allowed with this MySQL version')
 ```
 
-### Add local-infile setting to my.ini
+### 1.2 Add local-infile setting to my.ini
 In order to read local files you must add the `local-infile` setting to your `my.ini` file.  
 
 Location: C:\ProgramData\MySQL\MySQL Server 8.0\my.ini
@@ -68,7 +69,7 @@ Locate the `secure-file-priv` setting and below it insert the following:
 local-infile=1
 ```
 
-### Shutdown/Startup the MySQL Server
+### 1.3 Shutdown/Startup the MySQL Server
 In order for the new setting to take effect you *must* stop and then start (or restart) your 
 running MySQL 8.0 server. Assuming that you are running MySQL Server as a Windows service you can
  start/stop/restart MySQL in a number of ways:
@@ -95,7 +96,7 @@ icon (click the "show hidden icons" icon to reveal it) and click the "Stop" butt
 
 <img src="./static/img/SI664-mysql-win_notifier_stop.png" alt="MySQL Notifier Stop button">
 
-### Confirm setting is active
+### 1.4 Confirm setting is active
 Start the mysql shell and issue the following statement:
 
 ```commandline
@@ -111,7 +112,7 @@ mysql> SHOW VARIABLES LIKE '%local%';
 If the `local_infile` value equals "ON" (or 1) the setting has been activated.  If the setting is
  missing or the value equals "OFF" (or 0) recheck your work and shutdown / startup the MySQL Server again.
  
-### File locations
+### 1.5 File locations
 The following rule applies when using the `LOCAL` keyword:
 
 > If LOCAL is specified, the file is read by the client program on the client host and sent to the server. The file can be given as a full path name to specify its exact location. If given as a relative path name, the name is interpreted relative to the directory in which the client program was started.
@@ -126,6 +127,7 @@ secure-file-priv="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads"
 However, as described above you can locate your files elsewhere and use either absolute or 
 relative paths as the following example `run_mysql_script.py` output illustrates:
 
+#### Example: reading a local file using a relative path 
 ```commandline
 (venv) > python run_mysql_script.py -c config/movies.yaml -p input/sql/movies.sql
 INFO: Connection created.
@@ -180,7 +182,7 @@ INFO: Cursor closed.
 INFO: Connection closed.
 ```
 
-### Table check
+### 1.6 Table check
 Success.
 
 ```mysql

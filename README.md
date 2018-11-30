@@ -12,7 +12,7 @@ This repo provides a document store for [UMSI](https://www.si.umich.edu/) SI 664
     - [Django ORM QuerySet Examples](orm/django_orm.md)
 * [SQL](sql)
     - [MySQL SELECT Statement Examples](sql/mysql_select_examples.md)
-    - [Win10: Reading local files](sql/mysql-load_local_file_setup-win.md)
+    - [MySQL: Reading local files (Windows)](sql/mysql-load_local_file_setup-win.md)
 * [Tools](tools)
     - [macOS: ngrok](tools/mac-ngrok.md)
     - [win10: ngrok](tools/win-ngrok.md)
