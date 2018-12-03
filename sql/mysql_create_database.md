@@ -401,7 +401,7 @@ Sledgehammer Games, Retro Studios, and Entertainment Analysis & Development Divi
 involve either pre-import work using the Pandas library or implementing the following approach in
  the *.sql script itself.
 
-First, create a temporary table called `numbers` with a single column called `num` that is designated as the primary key.  Insert a range of integers, starting with 1 and ending with a maximum value greater than or equal to the number of "splits" required to parse the delimited strings that contain multiple values. 
+The script approach is described below. First, create a temporary table called `numbers` with a single column called `num` that is designated as the primary key.  Insert a range of integers, starting with 1 and ending with a maximum value greater than or equal to the number of "splits" required to parse the delimited strings that contain multiple values. 
 
 ```mysql
 CREATE TEMPORARY TABLE numbers
@@ -432,7 +432,7 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_0900_ai_ci;
 ```
 
-Third, utilize the following query (adjusted to your needs) to split the delimited string of values (e.g., game developer companies) by joining the source table on the `number` table with the `ON` clause returning rows whenever the character length of the delimited string *minus* the character length of the delimited string with all the delimiters removed is greater than or equal to `number.num` value.
+Third, utilize the following query (adjusted to your needs) to split the delimited string of values (e.g., game developer companies) by joining the source table on the `number` table with the `ON` clause returning a row whenever the character length of the delimited string *minus* the character length of the delimited string with all the delimiters removed is greater than or equal to `number.num` value.
 
 The `SELECT` clause provides the `game.game_id` and a `game.developer_name` value split out from 
 the delimited string by the use of the [SUBSTRING_INDEX()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index) function.
