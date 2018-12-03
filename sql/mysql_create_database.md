@@ -329,11 +329,7 @@ ORDER BY tg.global_sales DESC, tg.game_name, tg.year_released;
 
 ### 3.4 Efficient storage strategies
 The `video_game_sales_trimmed.csv` includes several columns of sales data organized by region. To
- simplify the initial import the sales columns were loaded into the `game` table directly. This 
- adding thousands of `NULL` values being inserted since the sales numbers, while extensive, 
- remained incomplete. A solution to this situation is to create a `region` table to store the 
- regions and a `sale` table that reflects the many-to-many relationship between a game and a 
- sales region and to migrate the sales data from the `game` table to the `sale` table.
+ simplify the initial import the sales columns were loaded into the `game` table directly. This added thousands of `NULL` values to the `game` table since the sales numbers, while extensive, are nevertheless incomplete. A solution to this situation is to create a `region` table to store the regions and a `sale` table that reflects the many-to-many relationship between a game and a sales region. With these tables in place the sales data can be migrated from the `game` table to the `sale` table.
  
 ```mysql
 CREATE TABLE IF NOT EXISTS sale (
