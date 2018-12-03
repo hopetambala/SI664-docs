@@ -1,4 +1,4 @@
-# SI664: MySQL SELECT Statement Examples
+# MySQL: SELECT Statement Examples
 
 ## Table of contents
 * 1.0 [MySQL shell](#shell)
