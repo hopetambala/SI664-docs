@@ -442,7 +442,7 @@ the delimited string by the use of the `SUBSTRING_INDEX()` function.
 SUBSTRING_INDEX(str, delim, count)
 ```
 
-The MySQL [reference manual]((https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index)) describes the function as follows:
+The MySQL [reference manual](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index) describes the function as follows:
 
 > Returns the substring from string str before count occurrences of the delimiter delim. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. SUBSTRING_INDEX() performs a case-sensitive match when searching for delim.
 
