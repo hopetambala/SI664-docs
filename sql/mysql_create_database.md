@@ -100,6 +100,10 @@ INSERT IGNORE INTO region (region_name) VALUES
 If, on the other hand, you need to populate a lookup table with no foreign keys with a large 
 number of rows consider using the Python [Pandas](https://pandas.pydata.org/) library to extract the column data out of your source file and then write it to a `csv` or `tsv` file. You can then call the file with your *.sql script and write the row data into the table using the [LOAD DATA LOCAL INFILE](https://dev.mysql.com/doc/refman/8.0/en/load-data.html) syntax.
 
+:warning: Ensure that you have configured your MySQL server instance to permit the loading of text 
+files.  Refer to the [Reading local files](./mysql-load_local_file_setup-win.md) tutorial for how
+ to add the necessary `local-infile` setting. 
+
 ```mysql
 CREATE TABLE IF NOT EXISTS publisher (
   publisher_id INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
