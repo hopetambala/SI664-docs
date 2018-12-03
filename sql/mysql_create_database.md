@@ -123,7 +123,8 @@ INTO TABLE publisher
 ```
 
 In the example above the file `video_game_publishers.csv` provides a list of publisher names.  
-The `LOAD DATA LOCAL INFILE` portion of the statement reads rows from the csv file into a target table column (e.g., `publisher_name`). 
+The `LOAD DATA LOCAL INFILE` portion of the statement reads rows from the csv file into the target 
+table column `publisher_name`. 
 
 The following row handling options are specified:
 
@@ -168,8 +169,8 @@ Ensure that the tables from which the foreign key values will be drawn are creat
 populated with row data. In the example below `genre`, `platform`, `publisher` and `rating` 
 tables are required.
 
-Create a temporary table (e.g., `temp_game`) that will serve as a temporary home flat file source 
-data that specifies from one column to the next the entity relationships that you have chosen to model.
+Create a temporary table that will serve as a temporary home for the flat file 
+source data that specifies from one column to the next the entity relationships that you have chosen to model.
 
 ```mysql
 CREATE TEMPORARY TABLE temp_game (
@@ -237,8 +238,7 @@ INTO TABLE temp_game
   rating_name = IF(rating_name = '', NULL, TRIM(rating_name));
 ```
 
-Create the actual table (e.g., `game`) that will be used in "production" to store game-related 
-attributes. Add foreign key and other constraints consistent with your logical data model.
+Create the actual table that will be used in "production" to store game-related attributes. Add foreign key and other constraints consistent with your logical data model.
 
 ```mysql
 CREATE TABLE IF NOT EXISTS game (
@@ -421,8 +421,7 @@ INSERT IGNORE INTO numbers (num) VALUES
   (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12), (13), (14), (15);
 ```
 
-Second, create a temporary table (e.g., `temp_game_developer`) that will hold the individual 
-values split out of the delimited string.
+Second, create a temporary table that will hold the individual values split out of the delimited string.
 
 ```mysql
 CREATE TEMPORARY TABLE temp_game_developer
@@ -437,11 +436,7 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_0900_ai_ci;
 ```
 
-Third, utilize the following query (adjusted to your needs) to split the delimited string of 
-values (e.g., game developer companies) by joining the source table (e.g., `game`) on the 
-`number` table with the `ON` clause returning rows whenever the character length of the 
-delimited string *minus* the character length of the delimited string with all the delimiters 
-removed is greater than or equal to `number.num` value.
+Third, utilize the following query (adjusted to your needs) to split the delimited string of values (e.g., game developer companies) by joining the source table on the `number` table with the `ON` clause returning rows whenever the character length of the delimited string *minus* the character length of the delimited string with all the delimiters removed is greater than or equal to `number.num` value.
 
 The `SELECT` clause provides the `game.game_id` and a `game.developer_name` value split out from 
 the delimited string by the use of the [SUBSTRING_INDEX()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index) function.
