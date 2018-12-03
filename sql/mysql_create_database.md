@@ -449,11 +449,10 @@ The MySQL [reference manual](https://dev.mysql.com/doc/refman/8.0/en/string-func
 The inner `SUBSTRING_INDEX()` function returns a substring of the `developer_name` value to the left of the targeted delimiter (`n.num`). The outer `SUBSTRING_INDEX()` ensures that the final value in the delimited string is properly returned. 
 
 :bulb: To illustrate how the `SUBSTRING_INDEX(SUBSTRING_INDEX(g.developer_name, ',', n.num), ',',
- -1)` behaves run the following examples online using the w3schools [trymsql](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_substring_index2)
+ -1)` behaves run the following examples online using the w3schools [trymsql](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_substring_index2) page.
  
 #### Example 1
-Execute the `SELECT SUBSTRING_INDEX()` statement twice [here](https://www.w3schools.com/sql/trymysq.asp?filename=trysql_func_mysql_substring_index2). On the second run change the 
-count value from 1 to 2.
+Execute the `SELECT SUBSTRING_INDEX()` statement twice. On the second run change the count value from 1 to 2.
 
 ```mysql
 SELECT SUBSTRING_INDEX("Infinity Ward, Sledgehammer Games", ",", 1);
@@ -505,7 +504,7 @@ SELECT DISTINCT TRIM(tgd.developer_name) AS developer_name
 
 With the `developer` table populated and the primary keys in place, the associative/junction 
 `game_developer` table can be created with a Django-friendly `game_developer_id` primary key 
-provided in place of a `game_id`, `developer_id` composite primary key.
+provided in place of a `game_id` and `developer_id` composite primary key.
 
 ```mysql
 CREATE TABLE IF NOT EXISTS game_developer (
@@ -525,7 +524,7 @@ COLLATE utf8mb4_0900_ai_ci;
 
 The `game_id` and `developer_id` foreign key values can now be inserted into the `game_developer` 
 table via a `INSERT INTO SELECT` statement that joins the `temp_game_developer` table with the 
-`developer` table with the `developer_id` key derived by an equality check between 
+`developer` table. The `developer_id` key is pulled in by the equality check between 
 `temp_game_developer.developer_name` and the `developer.developer_name`.
 
 ```mysql
