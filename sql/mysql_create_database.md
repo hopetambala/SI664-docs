@@ -432,27 +432,28 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_0900_ai_ci;
 ```
 
-Third, utilize the following query (adjusted to your needs) to split the delimited string of values (e.g., game developer companies) by joining the source table on the `number` table with the `ON` clause returning a row whenever the character length of the delimited string *minus* the character length of the delimited string with all the delimiters removed is greater than or equal to `number.num` value.
+Third, utilize the following query (adjusted to your needs) to split the delimited string of 
+values (e.g., game developer companies) by joining the source table on the `number` table with the `ON` clause returning a row whenever the character length of the delimited string *minus* the character length of the delimited string with all the delimiters removed is greater than or equal to the `number.num` value.
 
 The `SELECT` clause provides the `game.game_id` and a `game.developer_name` value split out from 
-the delimited string by the use of the [SUBSTRING_INDEX()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index) function.
+the delimited string by the use of the `SUBSTRING_INDEX()` function.
 
 ```
 SUBSTRING_INDEX(str, delim, count)
 ```
 
-> Returns the substring from string str before count occurrences of the delimiter delim. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. SUBSTRING_INDEX() performs a case-sensitive match when searching for delim.
-  
+The MySQL [reference manual]((https://dev.mysql.com/doc/refman/8.0/en/string-functions
+.html#function_substring-index)) describes the function as follows:
 
-The inner `SUBSTRING_INDEX()` function returns a substring of the delimited `developer_name` value before a 
-specified number of delimiters (`n.num`) occurs. The outer `SUBSTRING_INDEX()` ensures that the 
-final value in the delimited string is properly returned. 
+> Returns the substring from string str before count occurrences of the delimiter delim. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. SUBSTRING_INDEX() performs a case-sensitive match when searching for delim.
+
+The inner `SUBSTRING_INDEX()` function returns a substring of the `developer_name` value to the left of the targeted delimiter (`n.num`). The outer `SUBSTRING_INDEX()` ensures that the final value in the delimited string is properly returned. 
 
 :bulb: To illustrate how the `SUBSTRING_INDEX(SUBSTRING_INDEX(g.developer_name, ',', n.num), ',',
  -1)` behaves run the following examples online using the w3schools [trymsql](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_substring_index2)
  
 #### Example 1
-Execute the `SELECT SUBSTRING_INDEX()` statement twice [here](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_substring_index2). On the second run change the 
+Execute the `SELECT SUBSTRING_INDEX()` statement twice [here](https://www.w3schools.com/sql/trymysq.asp?filename=trysql_func_mysql_substring_index2). On the second run change the 
 count value from 1 to 2.
 
 ```mysql
@@ -469,7 +470,7 @@ SELECT SUBSTRING_INDEX(SUBSTRING_INDEX("Infinity Ward, Sledgehammer Games", ",",
 
 ```
 
-Now you should be able to comprehend the following query:
+Now you should be able to comprehend the purpose of the following query:
 
 ```mysql
 INSERT IGNORE INTO temp_game_developer (game_id, developer_name)
@@ -523,8 +524,8 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_0900_ai_ci;
 ```
 
-The `game_id` and `developer_id` key values can now be inserted into the `game_developer` table 
-via a `INSERT INTO SELECT` statement that joins the `temp_game_developer` table with the 
+The `game_id` and `developer_id` foreign key values can now be inserted into the `game_developer` 
+table via a `INSERT INTO SELECT` statement that joins the `temp_game_developer` table with the 
 `developer` table with the `developer_id` key derived by an equality check between 
 `temp_game_developer.developer_name` and the `developer.developer_name`.
 
