@@ -1,4 +1,4 @@
-# Extra credit: Django ORM queryset
+# Extra credit: Django ORM queryset (75 points)
 
 ## 1.0 Queryset requirements
 Construct a `QuerySet` of Northern European UNESCO heritage sites that are described as a 
@@ -6,7 +6,7 @@ Construct a `QuerySet` of Northern European UNESCO heritage sites that are descr
 *distinct* site counts grouped by region, sub_region, country, and heritage site category. 
 The `QuerySet` *must* also be optimized by use of the `.select_related()` method.  Use the `
 .values()` method and `F` expressions to define the key/value pairs to be included in the `QuerySet`
- of dictionaries. Use `Q` objects in your `.filter()` method. The `.annotate()` method must 
+ of dictionaries. Use `Q` objects in your `.filter()` method. The `.annotate()` method *must* 
  define a *distinct* site count. Order the `QuerySet` by site count *descending*, and then country.
  
 ## 2.0 Document your work

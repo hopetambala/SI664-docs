@@ -611,7 +611,7 @@ Place it in your `<uniqname>-mtg10` directory.
 ### 7.5 PUT Request with Postman
 Next, update the new Heritage Site record you just created by issuing an HTTP PUT to http://localhost:8000/heritagesites/api/sites/\{heritage_site_id\}/. You must create your PUT request as follows:
 
-1) Select "PUTT" from the dropdown.
+1) Select "PUT" from the dropdown.
 
 2) Enter the request URL as http://localhost:8000/heritagesites/api/sites/\{heritage_site_id\}/. You must provide the new Heritage Site's `heritage_site_id`.
 
