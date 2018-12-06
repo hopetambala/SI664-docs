@@ -1,4 +1,4 @@
-# Meeting 9 Exercise
+# Meeting 9.2 Exercise
 
 In this assignment you will
 
