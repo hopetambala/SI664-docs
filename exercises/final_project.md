@@ -1,4 +1,4 @@
-# Final Project
+# SI664: Final Project (2000 points)
 You are responsible for the following final project deliverables:
 
 ## Deliverables
@@ -7,7 +7,7 @@ You are responsible for the following final project deliverables:
 * 3.0 [MySQL data base](#mysql_db)
 * 4.0 [Django app](#django_app)
 * 5.0 [Django REST API](#django_rest_api)
-* 6.0 [Extra Credit](#extra_credit)
+* 6.0 [Extra Credit](#extra_credit) (optional)
 
 ## <a name="github_repo"></a>1.0 Github repo
 Create a [Github](http://github.com) repo. You are free to name it what you will, although I 
@@ -28,7 +28,9 @@ Your repo *must* include a `.gitignore` file that lists Python, Django, local ID
 and other directories and files to be excluded from your commits. 
 
 ### 1.4 Directory/file exclusions
-Do *not* push to your repo the final project's local Python virtual environment `/venv` directory environment (e.g., IDE config files). In other words, exclude your Python virtual environment `/venv` directory in your `.gitignore`. Other files that you `must` exclude: hidden system files (e.g., `.DS_Store`, `Thumbs.db`), personal IDE config files, files generated at runtime, compiled code, and build output directories.
+Do *not* push to your repo the final project's local Python virtual environment `/venv` directory
+ environment (e.g., IDE config files). In other words, exclude your Python virtual environment 
+ `/venv` directory in your `.gitignore`. Other files that you *must* exclude: hidden system files (e.g., `.DS_Store`, `Thumbs.db`), personal IDE config files, files generated at runtime, compiled code, and build output directories.
 
 :bulb: If you have previously pushed your virtual environment directory and files inadvertently 
 to your repo, do the following:
@@ -71,9 +73,7 @@ Take a screenshot of the logical data model and *render* the image in the `READM
 * [Exercise 8.3](./assignment_v8p3.md)
 
 ## <a name="mysql_db"></a>3.0 MySQL database
-Write a data import script that transforms your flat file data set into a MySQL relational 
-database. You can embed your SQL statements in a Python script or write a MySQL script (`*.sql`) 
-script that creates and populates your database with data. 
+Write a data import script that transforms your flat file data set into a MySQL relational database. You can embed your SQL statements in a Python script or write a MySQL script (`*.sql`) that creates and populates your database with data. 
 
 :bulb: Feel free to utilize the `run_mysql_script.py` script available in the 
 [SI664-repo](https://github.com/UMSI-SI664-2018Fall/SI664-scripts/tree/master/scripts) to execute 
@@ -100,34 +100,26 @@ Design and implement a Django app that interacts with your MySQL database. This 
 to create models, views, templates, URL routes as well as one or more forms and filters. Feel 
 free to mimic [heritagesites app](https://github.com/UMSI-SI664-2018Fall/heritagesites) 
 capabilities (repo now public) as well as borrow code from it. Also consider using Django's 
-`inspectdb` utility to auto-generate your models as described in Exercise 4, [section 2.6]
-(https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises/assignment_v4p2_mac.md#26-auto-generate-unescounsd-models). You will need to review and likely edit the auto-generated `models.py` file but it will save you time. The following requirements also apply:
+`inspectdb` utility to auto-generate your models as described in Exercise 4, [section 2.6](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises/assignment_v4p2_mac.md#26-auto-generate-unescounsd-models). You will need to review and likely edit the auto-generated `models.py` file but it will save you time. The following requirements also apply:
 
 ### 4.1 Bootstrap 4 styling
-Style your app with [Bootstrap 4](https://getbootstrap.com/docs/4
-.1/getting-started/introduction/). See the `heritagesites` app `base.html` file for how to add 
-the required Bootstrap 4 CDN `<link>` and JQuery, Popper, and Boostrap `<script>` tags to your 
-`base.html` file. Consider re-purposing your local `heritagesites.css` file for your final project app. Stay 
-with the color palette you chose for your `heritagesites` app or choose 3-5 new colors. See Exercise 6, 
-[section 6.0](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises
-/assignment_v6p2_mac.md#60-static-assets) regarding how to set up your app's `/static` directory 
-structure.
+Style your app with [Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/). See the `heritagesites` app `base.html` file for how to add the required Bootstrap 4 CDN `<link>` and JQuery, Popper, and Boostrap `<script>` tags to your `base.html` file. Consider re-purposing your local `heritagesites.css` file for your final project app. Stay with the color palette you chose for your `heritagesites` app or choose 3-5 new colors. See Exercise 6, [section 6.0](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises/assignment_v6p2_mac.md#60-static-assets) regarding how to set up your app's `/static` directory structure.
 
 ### 4.2 Home/About page
 Create a home or about page that provides a brief description of your app. 
 
 ### 4.3 Login page (+Social Login)
 Install the `social-auth-app-django` package and build a login page that also permits a user to 
-authenticate using their Google credentials. Utilize the Google credentials you created for 
-[Exercise 7.2](./assignment_v7p2.md).
+authenticate using their Google credentials. Utilize the Google OAuth2 key and secret that you 
+created for [Exercise 7.2](./assignment_v7p2.md).
 
-:warning: do not place your secret values in `/mysite/settings.py`. Locate them elsewhere as 
+:warning: Do not place your secret values in `/mysite/settings.py`. Locate them elsewhere as 
 described in "Setting up a Github Remote Repository", [section 3.5](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/github/github-mac.md#35-hide-secret-key-values).
 
 ### 4.4 List and detail pages
-Create at least one list view (`ListView`) and supporting template that displays a list of the 
+Create at least *one* list view (`ListView`) and supporting template that displays a list of the 
 principal entities described in your model (e.g., artworks, hospitals, movies, super heroes, wines, 
-etc.). Each list item *must* provide a clickable link to an associated "detail" view (`DetailView`) and template. The detail page *must* display a set of entity attributes. Attributes lacking values (e.g. NULL) *must* be hidden from view.
+etc.). Each list item *must* provide a clickable link to an associated detail view (`DetailView`) and template. The detail page *must* display a set of entity attributes. Attributes lacking values (e.g. NULL) *must* be hidden from view.
 
 :bulb: Implementing a *single* list page with linked detail pages will satisfy this requirement. 
 
@@ -141,12 +133,11 @@ list page (Add) and your detail page (Update, Delete) as described in [Exercise 
 Install the `django-filter` package and implement a minimum *two* filters. Add a `filters.py` 
 file and implement at least one `CharFilter` (text) and one `ModelChoiceFilter` (dropdown) that are 
 based on your principal model as described in [Exercise 9.2](./assignment_v9p2.md). You may embed your filter 
-in your list page or embed it in a navigation bar or place it elsewhere.  
+in your list page or place it in a navigation bar or elsewhere.  
 
 ### 4.7 Navigation
 Provide a means to navigate between the various views provided by your app. I recommend that 
-implement Bootstrap 4's navigation header, the [navbar](https://getbootstrap.com/docs/4
-.0/components/navbar/).
+implement Bootstrap 4's navigation header, the [navbar](https://getbootstrap.com/docs/4.0/components/navbar/).
 
 ### 4.8 Related assignment(s)
 * [Exercise 4.2 (macOS)](./assignment_v4p2_mac.md)
@@ -167,7 +158,7 @@ implement Bootstrap 4's navigation header, the [navbar](https://getbootstrap.com
 
 Include references to assignments
 
-## <a name="extra_credit"></a>6.0 Extra Credit
+## <a name="extra_credit"></a>6.0 Extra credit (optional)
 
 6.1 Additional CRUD Forms
 6.2 Additional REST endpoint
