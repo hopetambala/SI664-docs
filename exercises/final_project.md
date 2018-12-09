@@ -7,8 +7,10 @@ You are responsible for the following final project deliverables:
 * 3.0 [MySQL data base](#mysql_db)
 * 4.0 [Django app](#django_app)
 * 5.0 [Django REST API](#django_rest_api)
-* 6.0 []
 * 6.0 [Extra credit](#extra_credit) (optional)
+* 7.0 [Admin user](#admin_user)
+* 8.0 [Database dump file](#dump_file)
+* 9.0 [Final project evaluation](#evaluation)
 
 :bulb: Feel free to mimic [heritagesites app](https://github.com/UMSI-SI664-2018Fall/heritagesites) capabilities as well as borrow code from it. The repo that houses the code I wrote is now public.
 
@@ -164,12 +166,25 @@ described in "Setting up a Github Remote Repository", [section 3.5](https://gith
 Create at least *one* list view (`ListView`) and supporting template that displays an instance 
 list of the principal entity described in your model (e.g., artworks, hospitals, movies, super heroes, wines, etc.). Each list item instance *must* provide a clickable link to an associated detail view (`DetailView`) and template. The detail page *must* display a set of entity attributes. Attributes lacking values (e.g., blank or NULL) *must* be hidden from view.
 
-### 4.6 Add/Update/Delete forms
-Install the `django-crispy-forms` package and implement a *single set* of Add/Update/Delete forms 
-that operate on your *principal* entity (e.g., artwork, game, hospital, movie, wine). Create a 
-`forms.py` files and use the Django helper class (`ModelForm`)to create a new `Form` class based on your chosen model.  In addition to the form submission buttons, add additional navigation buttons on your list page (add -> add form page), your detail page (update -> update form page, delete -> delete form page) and your delete page (cancel -> detail page) as described in [Exercise 8.2](./assignment_v8p2.md). 
+### 4.6 Create/Update/Delete web forms
+Install the `django-crispy-forms` package and implement a *single set* of create/update/delete web forms that operate on your *principal* entity (e.g., artwork, game, hospital, movie, wine). Create a `forms.py` files and use the Django helper class (`ModelForm`)to create a new `Form` class based on your chosen model.  In addition to the form submission buttons, add additional navigation buttons on your list page (add -> add form page), your detail page (update -> update form page, delete -> delete form page) and your delete page (cancel -> detail page) as described in [Exercise 8.2](./assignment_v8p2.md). 
 
-:warning: Test your forms and navigation buttons make sure they perform as intended.
+Refer to the `heritagesites` app `urls.py` file to establish your web form routes.
+
+#### heritagesites app urls.py
+```python
+urlpatterns = [
+	...
+	path('sites/', views.SiteFilterView.as_view(), name='site'),
+	path('sites/new/', views.SiteCreateView.as_view(), name='site_new'),
+	path('sites/<int:pk>/', views.SiteDetailView.as_view(), name='site_detail'),
+	path('sites/<int:pk>/delete/', views.SiteDeleteView.as_view(), name='site_delete'),
+	path('sites/<int:pk>/update/', views.SiteUpdateView.as_view(), name='site_update'),
+]
+```
+
+:warning: Test your web forms and navigation buttons in order to ensure that they perform as 
+intended.
 
 ### 4.7 Filter
 Install the `django-filter` package and implement at least *one* filter. Add a `filters.py` file and implement a `CharFilter` (string search) or a `ModelChoiceFilter` (dropdown item search) that is based on your principal model as described in [Exercise 9.2](./assignment_v9p2.md). You may embed your filter in your list page or place it in a navigation bar or elsewhere.  
@@ -178,7 +193,7 @@ If the output of your `FilterView` is a long list implement pagination. Grab the
 `heritagesite` app's [pagination.html](https://github.com/UMSI-SI664-2018Fall/heritagesites/blob/master/heritagesites/templates/heritagesites/pagination.html) template. URL query string values are now correctly passed between page clicks. Also see `views.py` and add the `PaginatedFilterView(generic.View)` class to your final project's `views.py`. It is a generic view mixin that returns a query 
 string as a context [template](https://docs.djangoproject.com/en/2.1/ref/templates/api/) variable. Add this object to your the `FilterView` class to handle paginated filtering (see the `SiteFilterView(PaginatedFilterView, FilterView)` class).
 
-:warning: Test your filter(s) and make sure they perform as intended.
+:warning: Test your filter(s) in order to ensure that they perform as intended.
 
 ### 4.8 Navigation
 Provide a means to navigate between the various views/pages provided by your app. I recommend 
@@ -186,10 +201,13 @@ that you implement Bootstrap 4's [navbar](https://getbootstrap.com/docs/4.0/comp
 navigation header as was done for the `heritagesites` app, 
 
 ### 4.9 Related resources
-In addition to the weekly readings and Django project [documentation](https://docs.djangoproject
+In addition to the weekly readings, Django project [documentation](https://docs.djangoproject
 .com/en/2.1/), and other online resources, the following resources are also relevant:
 
 * A. Whyte, ["Django ORM Queryset Examples"](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/orm/django_orm.md)
+* django-crispy-forms [documentation](https://django-crispy-forms.readthedocs.io/en/latest/)
+* django-filters [documentation](https://django-filter.readthedocs.io/en/master/)
+* social-auth-app-django [documentation](https://python-social-auth-docs.readthedocs.io/en/latest/configuration/django.html)
 * [Exercise 4.2 (macOS)](./assignment_v4p2_mac.md)
 * [Exercise 4.2 (Windows)](./assignment_v4p2_win.md)
 * [Exercise 5.2 (macOS)](./assignment_v5p2_mac.md)
@@ -202,7 +220,7 @@ In addition to the weekly readings and Django project [documentation](https://do
 
 ## <a name="django_rest_api"></a>5.0 Django REST API
 Create a Django `api` app and implement a *single set* of [OpenAPI](https://swagger.io/docs/specification/about/) complaint 
-REST API GET/POST/PUT/DELETE endpoints for your final project. The POST/PUT/DELETE endpoints *must* be protected by token authentication.
+REST API GET/POST/PUT/DELETE endpoints for your final project.
 
 ### 5.1 package installs
 Follow the directions laid out in [Exercise 10](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md) and install the following 
@@ -223,64 +241,134 @@ Create a final project Django `api` app. Follow the steps outlined in Exercise 1
 .0](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2
 .md#50-create-a-django-api-app). 
 
-### 5.3 Target entity
-Choose an entity that has a *many-to-many* relationship with your principal 
-entity, e.g.,
-
-* Principal entity: artwork (Form-based CRUD operations)
-* Associative table: artwork_artist (many-to-many relationships stored)
-* Secondary entity: artist (REST API CRUD operations)   
-
-*bulb*: one might argue that the artist should be considered the principal entity in the example 
-above rather than the artwork which represents the output of their artistic endeavours. I have no
- objection to reversing the entity target of the Forms-based vs REST API CRUD implementations. Simply note that art museums such as the Metropolitan Museum of Art that supply the data sets collect artworks not artists. 
- 
- 
- 
- an entity other than your principle entity to 
-add/update/delete via your REST API (e.g., principal entity: artwork; secondary entity: artist). 
-
-
-
+### api app code
 Base your `api/views.py`, `api/serializers.py` and `api/urls.py` on the `heritagesites` `api` app [code](https://github.com/UMSI-SI664-2018Fall/heritagesites/tree/master/api). 
 
 Once the `api` app is created and configured run a database migration as outlined in Exercise 10.2, [section 5.8](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#58-run-migrations).
 
-### 5.3 Endpoints
-Choose an entity other than your principle entity to add/update/delete via your REST API.  
+### 5.3 Target entity
+Choose an entity that has a *many-to-many* relationship with your principal 
+entity. You will target this entity with your REST API GET/POST/PUT/DELETE endpoints.
 
-:warning: Use [Postman](https://www.getpostman.com/) to test your endpoints. Bad endpoints will impact your score negatively.
+An example:
 
-### 5.4 Swagger API documentation
+* Principal entity: `artwork` (create/update/delete via web form-based CRUD operations)
+* Associative table: `artwork_artist` (many-to-many relationships stored)
+* Secondary entity: `artist` (create/update/delete via REST API CRUD operations)   
 
-Postman
-Pick an entity to create/up/delete.   
+You are free to decide which entity to consider as the principal entity and which to consider as 
+a secondary entity. Let the your data model's problem domain be your guide. 
 
+*bulb*: In the above example, one might argue that the artist rather than the artwork (which 
+represents the output of an artist's artistic genius) should be considered the principal 
+entity. Yet art museums collect artworks not artists; an observation that determined behind my 
+choice.
 
+### 5.4 Endpoints
+Refer to the `heritagesites` project files when establishing your API-related routes:
 
+#### mysite/urls.py   
 
-5.2 Token Authentication
-5.3 Swagger Doc
+```python
+urlpatterns = [
+    ...
+    path('api-auth/', include('rest_framework.urls')),
+    ...
+    path('heritagesites/api/', include('api.urls')),
+    path('heritagesites/api/rest-auth/', include('rest_auth.urls')),
+    path('heritagesites/api/rest-auth/registration/', include('rest_auth.registration.urls'))
+]
+```
 
-### 5.x Related resources
-In addition to the weekly readings, Django REST Framework project [documentation](https://www
-.django-rest-framework.org/), and other online resources, the following exercises are also relevant:
+#### api/urls.py
+```python
+urlpatterns = [
+	path('', include(router.urls)),
+	path('docs/', docs_view),
+	path('swagger-docs/', schema_view)
+]
+```
 
+#### Example REST API endpoints
+```
+GET /<final_project_app_name>/api/<entity_name_plural_form>/
+
+example: GET /heritagesites/api/sites/
+
+GET /<final_project_app_name>/api/<entity_name_plural_form>/{entity_id}
+
+example: GET /heritagesites/api/sites/25/
+```
+
+```
+POST /<final_project_app_name>/api/<entity_name_plural_form>/
+
+example: POST /heritagesites/api/sites/
+```
+
+```
+PUT /<final_project_app_name>/api/<entity_name_plural_form>/{entity_id}
+
+example: PUT /heritagesites/api/sites/25/
+```
+
+```
+DELETE /<final_project_app_name>/api/<entity_name_plural_form>/{entity_id}
+       
+example: DELETE /heritagesites/api/sites/25/
+```
+
+:warning: Use [Postman](https://www.getpostman.com/) to test your endpoints. Bad endpoint URLs or
+ endpoints that fail to perform as advertised will impact your score negatively.
+ 
+### 5.4 Token Authentication
+The POST/PUT/DELETE endpoints *must* be protected by token authentication.
+
+#### 5.5 Swagger API documentation
+I will refer to your Swagger API documentation when testing your endpoints. I'll check your 
+`api/urls.py` file to confirm the path to your final project's Swagger docs. If you mimic the 
+`heritagesites` api app I'll find them here:
+
+```
+http://localhost:8000/<final_project_app_name>/api/swagger-docs/
+```
+
+### 5.6 Related resources
+In addition to the weekly readings and other online resources, the following exercises are also relevant:
+
+* Django REST Framework [documentation](https://www.django-rest-framework.org/)
+* Postman [documentation](https://learning.getpostman.com/docs/postman/launching_postman/installation_and_updates/)
 * [Exercise 10.2](./assignment_v10p2.md)
 
+## <a name="extra_credit"></a>7.0 Extra credit opportunities (optional)
+The final project includes opportunities for extra credit:
 
-### 6.0 Admin user, database dump file
+### 6.1 Additional set of CRUD web forms (125 points)
+Choose another entity and implement a second `ListView`/`DetailView` set of views along with 
+accompanying templates and routes together with a set of create/update/delete web forms and earn 
+up to 150 additional points. You can target the secondary entity chosen for your required REST API 
+implementation.  Implement the second set of web forms in a manner similar to that described 
+in section [4.0](#django_app).  
 
-### 6.1 New user (me)
-Using the Django admin site create a user with the following attributes:
+### 6.2 Additional Filters (50 points)
+Add up to two additional filters to your `filters.py` `FilterSet` class and earn up to an 
+additional 25 per points per filter added (50 points max). Each filter included in your final project *must* implement a *different* [filter](https://django-filter.readthedocs.io/en/master/ref/filters.html) type. See the `heritagesites` app [filters.py](https://github.com/UMSI-SI664-2018Fall/heritagesites/blob/master/heritagesites/filters.py) 
+`HeritageSiteFilter(django_filters.FilterSet)` class for working examples. Implement your additional filters in a manner similar to that described in section [4.0](#django_app).
+
+### 6.3 Additional set of REST API Endpoints (125 points)
+Choose another entity and implement a *second set* of [OpenAPI](https://swagger.io/docs/specification/about/) complaint REST API GET/POST/PUT/DELETE endpoints for your final project. You can target the principal entity chosen for your required web forms implementation. Implement your extra credit endpoints in a manner similar to that described in section [5.0](#django_rest_api).
+ 
+## <a name="admin_user"></a>7.0 Admin user
+Using the Django admin site create a user account with the following attributes:
 
 * user name: arwhyte
 * password: goblue2018
 * first name: Anthony
 * last name: Whyte
+* email: arwhyte@umich.edu
 
-Once the `arwhyte` user is created, click the "Users" link under the "AUTHENTICATION AND 
-AUTHORIZATION", then click the username "arwhyte". In the "Change User" form under "Permissions" 
+Once the `arwhyte` user is created, click the "Users" link under "AUTHENTICATION AND 
+AUTHORIZATION", and click the username "arwhyte". In the "Change User" form under "Permissions" 
 check the following boxes:
 
 * Active (yes)
@@ -289,24 +377,21 @@ check the following boxes:
 
 Next, under "Auth Tokens", click "Tokens" and generate a token for the user `arwhyte`.
 
-### 6.2 Database dump file
-Once you have created a new user Generate a *.sql dump file of your database and place a copy of it
- in 
-the final project's 
-root 
-level `static/sql` directory. I will use the dump file to create a local instance of your 
-database for evaluation purposes.
+:bulb: I need this user in order to evaluate your apps.
 
+## <a name="admin_user"></a>8.0 Database dump file
+After creating the new `arwhyte` user account, applying the proper permissions, and assigning an 
+authorization token, generate a MySQL dump file of your database named 
+`<uniqname>-<database_name>-dump-YYYYMMDDhhmm.sql`.
 
+Place the dump file your final project's root level `static/sql` directory. I will use the dump file to create a new 
+instance of your database for evaluation purposes.
 
+## <a name="evaluation"></a>9.0 Final project evaluation
+Stage, commit and push all final project code and supporting files to your Github final project 
+repo *no later than* _Thursday, 20 December 2018, 11:59 PM_. I will fork your Github repo, clone it 
+locally, and install and run your final project apps, testing required capabilities and the REST 
+API as part of my evaluation. 
 
-
-## <a name="extra_credit"></a>6.0 Extra credit (optional)
-
-6.1 Additional CRUD Forms
-6.2 Additional REST endpoint
-6.2 Additional filters
-
-
- 
-
+As with the weekly assignments and the midterm partial credit will be awarded at the discretion 
+of the instructor. 
