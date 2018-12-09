@@ -16,7 +16,7 @@ You are responsible for the following final project deliverables:
 
 ## <a name="github_repo"></a>1.0 Github repo
 Create a [Github](http://github.com) repo. You are free to name it what you will, although I 
-recommend a name that reflects the theme of your final project. The following requirements also apply:  
+recommend a name that reflects the theme of your final project. The following requirements apply:  
 
 ### 1.1 README
 Your repo *must* include a `README.md` file. See [assignment 9.3](./assignment_v9p3.md) for a 
@@ -53,7 +53,7 @@ In addition to the weekly readings and other online resources, the following exe
 
 ## <a name="github_repo"></a>2.0 Logical data model
 Create a logical data model that defines the entities, their attributes, and the relationships 
-between entities that describe your problem domain. The following requirements also apply:
+between entities that describe your problem domain. The following requirements apply:
 
 ### 2.1 Naming conventions
 Table and property names *must* follow the naming conventions established in Simon Holywell's 
@@ -73,16 +73,15 @@ The logical data model should comprise *approximately* 7-10 tables.
 
 ### 2.4 Entity relationships
 It is expected that 3-4 one-to-many relationships will be expressed by the logical data model. In
- addition the logical data model *must* define *at least one* many-to-many relationship between two
-  of the entities described in the model (e.g., `artist` - `artist_artwork` - `artwork`).  
-  Utilize Crow's foot notation to illustrate the relationships.
+ addition the logical data model *must* define *at least one* many-to-many relationship between 
+ two of the entities described in the model (e.g., `artist` - `artist_artwork` - `artwork`). Utilize Crow's foot notation to illustrate the relationships.
 
 ### 2.5 *.mwb file
 Place a copy of the MySQL Workbench logical data model `*.mwb` file in the final project's root 
 level `static/sql` directory.
 
 ### 2.6 Screenshot
-Take a screenshot of the logical data model and *render* the image in the `README.md` file (a link to the image file is not sufficient). Locate the screenshot image file in the final project's root level `static/img` directory.
+Take a screenshot of the logical data model and *render* the image in the `README.md` file (a link to the image file is not sufficient). Place the screenshot image file in the final project's root level `static/img` directory.
 
 ### 2.7 Related resources
 In addition to the weekly readings and other online resources, the following exercises are also relevant:
@@ -91,16 +90,10 @@ In addition to the weekly readings and other online resources, the following exe
 * [Exercise 8.3](./assignment_v8p3.md)
 
 ## <a name="mysql_db"></a>3.0 MySQL database
-Write a data import script that transforms your flat file data set into a MySQL relational 
-database. You can embed your SQL statements in a Python script or write a MySQL script (`*.sql`) 
-that creates and populates your database with data. Handle your csv files carefully; creating for
- yourself file encoding issues or string length mismatches between the original source data and 
- data you extract into new flat files is a [very real possibility](https://umich.instructure.com/courses/245664/discussion_topics/628836).
+Write a data import script that transforms your flat file data set into a MySQL relational database. You can embed your SQL statements in a Python script or write a MySQL script (`*.sql`) that creates and populates your database with data. Handle your csv files carefully otherwise file encoding issues or string length mismatches between the original source data and data you extract into new flat files [can occur](https://umich.instructure.com/courses/245664/discussion_topics/628836).
 
 ### 3.1 Foreign Key constraints
-Make sure that all foreign key constraints that you define set both the `ON DELETE` and `ON 
-UPDATE` values to `CASCADE` in order to ensure that any parent table row deletions that you 
-initiate are properly cascaded through your database.
+Make sure that all foreign key constraints that you define set both the `ON DELETE` and `ON UPDATE` values to `CASCADE` in order to ensure that any parent table row deletions that you initiate are properly cascaded through your database.
 
 ```mysql
 CREATE TABLE IF NOT EXISTS heritage_site_jurisdiction
@@ -142,7 +135,7 @@ In addition to the weekly readings, MySQL 8.0 [documentation](https://dev.mysql.
 
 ## <a name="django_app"></a>4.0 Django app
 Design and implement a Django app that interacts with your MySQL database. This will require you 
-to create and activate a virtual environment, install package dependencies, use Django to start a project and start an app, create models, views, templates, URL routes as well as one or more forms and filters. The following requirements also apply:
+to create and activate a virtual environment, install package dependencies, use Django to start a project and start an app, create models, views, templates, URL routes as well as one or more forms and filters. The following requirements apply:
 
 ### 4.1 Models
 Install the `mysqlclient` package and configure your database connection in `mysite/settings.py`.
@@ -164,12 +157,12 @@ described in "Setting up a Github Remote Repository", [section 3.5](https://gith
 
 ### 4.5 List and detail pages
 Create at least *one* list view (`ListView`) and supporting template that displays an instance 
-list of the principal entity described in your model (e.g., artworks, hospitals, movies, super heroes, wines, etc.). Each list item instance *must* provide a clickable link to an associated detail view (`DetailView`) and template. The detail page *must* display a set of entity attributes. Attributes lacking values (e.g., blank or NULL) *must* be hidden from view.
+list of the *principal* entity described in your model (e.g., artworks, hospitals, movies, super heroes, wines, etc.). Each list item instance *must* provide a clickable link to an associated detail view (`DetailView`) and template. The detail page *must* display a set of entity attributes. Attributes lacking values (e.g., blank or NULL) *must* be hidden from view.
 
 ### 4.6 Create/Update/Delete web forms
-Install the `django-crispy-forms` package and implement a *single set* of create/update/delete web forms that operate on your *principal* entity (e.g., artwork, game, hospital, movie, wine). Create a `forms.py` files and use the Django helper class (`ModelForm`)to create a new `Form` class based on your chosen model.  In addition to the form submission buttons, add additional navigation buttons on your list page (add -> add form page), your detail page (update -> update form page, delete -> delete form page) and your delete page (cancel -> detail page) as described in [Exercise 8.2](./assignment_v8p2.md). 
+Install the `django-crispy-forms` package and implement a *single set* of create/update/delete web forms that operate on your *principal* entity (e.g., artwork, game, hospital, movie, wine). Create a `forms.py` files and use the Django helper class (`ModelForm`) to create a new `Form` class based on your chosen model.  In addition to the form submission buttons, add additional navigation buttons on your list page (add -> add form page), your detail page (update -> update form page, delete -> delete form page) and your delete page (cancel -> detail page) as described in [Exercise 8.2](./assignment_v8p2.md). 
 
-Refer to the `heritagesites` app `urls.py` file to establish your web form routes.
+Refer to the `heritagesites/urls.py` file to establish your web form routes.
 
 #### heritagesites app urls.py
 ```python
@@ -187,11 +180,10 @@ urlpatterns = [
 intended.
 
 ### 4.7 Filter
-Install the `django-filter` package and implement at least *one* filter. Add a `filters.py` file and implement a `CharFilter` (string search) or a `ModelChoiceFilter` (dropdown item search) that is based on your principal model as described in [Exercise 9.2](./assignment_v9p2.md). You may embed your filter in your list page or place it in a navigation bar or elsewhere.  
+Install the `django-filter` package and implement at least *one* filter. Add a `filters.py` file 
+and implement a `CharFilter` (string search) or a `ModelChoiceFilter` (dropdown item search) that is based on your *principal* entity as described in [Exercise 9.2](./assignment_v9p2.md). You may embed your filter in your list page or place it in a navigation bar or elsewhere.  
 
-If the output of your `FilterView` is a long list implement pagination. Grab the updated 
-`heritagesite` app's [pagination.html](https://github.com/UMSI-SI664-2018Fall/heritagesites/blob/master/heritagesites/templates/heritagesites/pagination.html) template. URL query string values are now correctly passed between page clicks. Also see `views.py` and add the `PaginatedFilterView(generic.View)` class to your final project's `views.py`. It is a generic view mixin that returns a query 
-string as a context [template](https://docs.djangoproject.com/en/2.1/ref/templates/api/) variable. Add this object to your the `FilterView` class to handle paginated filtering (see the `SiteFilterView(PaginatedFilterView, FilterView)` class).
+If the output of your `FilterView` is a long list implement pagination. Grab the updated `heritagesite` app's [pagination.html](https://github.com/UMSI-SI664-2018Fall/heritagesites/blob/master/heritagesites/templates/heritagesites/pagination.html) template. URL query string values are now correctly passed between page clicks. Also see `views.py` and add the `PaginatedFilterView(generic.View)` class to your final project's `views.py`. It is a generic view mixin that returns a query string as a context [template](https://docs.djangoproject.com/en/2.1/ref/templates/api/) variable. Add this object to your the `FilterView` class to handle paginated filtering (see the `SiteFilterView(PaginatedFilterView, FilterView)` class).
 
 :warning: Test your filter(s) in order to ensure that they perform as intended.
 
@@ -201,8 +193,7 @@ that you implement Bootstrap 4's [navbar](https://getbootstrap.com/docs/4.0/comp
 navigation header as was done for the `heritagesites` app, 
 
 ### 4.9 Related resources
-In addition to the weekly readings, Django project [documentation](https://docs.djangoproject
-.com/en/2.1/), and other online resources, the following resources are also relevant:
+In addition to the weekly readings, Django project [documentation](https://docs.djangoproject.com/en/2.1/), and other online resources, the following resources are also relevant:
 
 * A. Whyte, ["Django ORM Queryset Examples"](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/orm/django_orm.md)
 * django-crispy-forms [documentation](https://django-crispy-forms.readthedocs.io/en/latest/)
@@ -237,18 +228,15 @@ packages:
 Configure the newly installed apps in `mysite/settings.py` as described in the exercise.
 
 ### 5.2 api app
-Create a final project Django `api` app. Follow the steps outlined in Exercise 10.2, [section 5
-.0](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2
-.md#50-create-a-django-api-app). 
+Create a final project Django `api` app. Follow the steps outlined in Exercise 10.2, [section 5.0](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#50-create-a-django-api-app). 
 
-### api app code
 Base your `api/views.py`, `api/serializers.py` and `api/urls.py` on the `heritagesites` `api` app [code](https://github.com/UMSI-SI664-2018Fall/heritagesites/tree/master/api). 
 
-Once the `api` app is created and configured run a database migration as outlined in Exercise 10.2, [section 5.8](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#58-run-migrations).
+:warning: Once the `api` app is created and configured don't forget to run a database migration as outlined in Exercise 10.2, [section 5.8](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#58-run-migrations).
 
 ### 5.3 Target entity
-Choose an entity that has a *many-to-many* relationship with your principal 
-entity. You will target this entity with your REST API GET/POST/PUT/DELETE endpoints.
+Choose an entity that has a *many-to-many* relationship with your principal entity. You will 
+target this entity with your REST API GET/POST/PUT/DELETE endpoints.
 
 An example:
 
@@ -321,10 +309,10 @@ example: DELETE /heritagesites/api/sites/25/
 :warning: Use [Postman](https://www.getpostman.com/) to test your endpoints. Bad endpoint URLs or
  endpoints that fail to perform as advertised will impact your score negatively.
  
-### 5.4 Token Authentication
+### 5.5 Token Authentication
 The POST/PUT/DELETE endpoints *must* be protected by token authentication.
 
-#### 5.5 Swagger API documentation
+### 5.5 Swagger API documentation
 I will refer to your Swagger API documentation when testing your endpoints. I'll check your 
 `api/urls.py` file to confirm the path to your final project's Swagger docs. If you mimic the 
 `heritagesites` api app I'll find them here:
@@ -333,7 +321,7 @@ I will refer to your Swagger API documentation when testing your endpoints. I'll
 http://localhost:8000/<final_project_app_name>/api/swagger-docs/
 ```
 
-### 5.6 Related resources
+### 5.7 Related resources
 In addition to the weekly readings and other online resources, the following exercises are also relevant:
 
 * Django REST Framework [documentation](https://www.django-rest-framework.org/)
