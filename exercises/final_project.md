@@ -247,7 +247,7 @@ An example:
 You are free to decide which entity to consider as the principal entity and which to consider as 
 a secondary entity. Let your data model's problem domain be your guide. 
 
-*bulb*: In the above example, one might argue that the artist rather than the artwork (which 
+:bulb: In the above example, one might argue that the artist rather than the artwork (which 
 represents the output of an artist's artistic genius) should be considered as the principal entity. Yet art museums collect artworks not artists; an observation that determined my choices.
 
 ### 5.4 Endpoints
