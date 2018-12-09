@@ -1,4 +1,4 @@
-# Meeting 8 Exercise
+# Meeting 8.2 Exercise
 
 In this assignment you will
 
