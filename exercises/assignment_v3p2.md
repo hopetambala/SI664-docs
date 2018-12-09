@@ -63,30 +63,3 @@ Adhere to Simon Holywell's [SQL Style Guide](https://www.sqlstyle.guide/) recomm
 ## File Submission
 Name your EER diagram `<uniqname>_unesco_heritage_sites.mwb` (e.g., 
 `arwhyte_unesco_heritage_sites.mwb`).  When submit your file to Canvas.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
