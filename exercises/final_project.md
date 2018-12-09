@@ -51,7 +51,7 @@ In addition to the weekly readings and other online resources, the following exe
 * A. Whyte, ["Setting up a Github Remote Repository"](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/github/github-mac.md) 
 * [Exercise 9.3](./assignment_v9p3.md)
 
-## <a name="github_repo"></a>2.0 Logical data model (100 points)
+## <a name="data_model"></a>2.0 Logical data model (100 points)
 Earn an additional 100 points for completing an *updated* version of the logical data model that defines the 
 entities, their attributes, and the relationships between entities that describe your problem domain. The following requirements apply:
 
@@ -326,7 +326,7 @@ In addition to the weekly readings and other online resources, the following exe
 * Postman [documentation](https://learning.getpostman.com/docs/postman/launching_postman/installation_and_updates/)
 * [Exercise 10.2](./assignment_v10p2.md)
 
-## <a name="extra_credit"></a>7.0 Extra credit opportunities (optional)
+## <a name="extra_credit"></a>6.0 Extra credit opportunities (optional)
 The final project includes opportunities for extra credit:
 
 ### 6.1 Additional set of CRUD web forms (125 points)
