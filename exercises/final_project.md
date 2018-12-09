@@ -2,11 +2,11 @@
 You are responsible for the following final project deliverables:
 
 ## Deliverables
-* 1.0 [Github repo](#github_repo)
-* 2.0 [Logical data model](#data_model)
-* 3.0 [MySQL data base](#mysql_db)
-* 4.0 [Django app](#django_app)
-* 5.0 [Django REST API](#django_rest_api)
+* 1.0 [Github repo](#github_repo) (50 points)
+* 2.0 [Logical data model](#data_model) (100 points)
+* 3.0 [MySQL data base](#mysql_db) (650 points)
+* 4.0 [Django app](#django_app) (700 points)
+* 5.0 [Django REST API](#django_rest_api) (500 points)
 * 6.0 [Extra credit](#extra_credit) (optional)
 * 7.0 [Admin user](#admin_user)
 * 8.0 [Database dump file](#dump_file)
@@ -14,7 +14,7 @@ You are responsible for the following final project deliverables:
 
 :bulb: Feel free to mimic [heritagesites app](https://github.com/UMSI-SI664-2018Fall/heritagesites) capabilities as well as borrow code from it. The repo that houses the code I wrote is now public.
 
-## <a name="github_repo"></a>1.0 Github repo
+## <a name="github_repo"></a>1.0 Github repo (50 points)
 Create a [Github](http://github.com) repo. You are free to name it what you will, although I 
 recommend a name that reflects the theme of your final project. The following requirements apply:  
 
@@ -51,9 +51,9 @@ In addition to the weekly readings and other online resources, the following exe
 * A. Whyte, ["Setting up a Github Remote Repository"](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/github/github-mac.md) 
 * [Exercise 9.3](./assignment_v9p3.md)
 
-## <a name="github_repo"></a>2.0 Logical data model
-Create a logical data model that defines the entities, their attributes, and the relationships 
-between entities that describe your problem domain. The following requirements apply:
+## <a name="github_repo"></a>2.0 Logical data model (100 points)
+Earn an additional 100 points for completing an *updated* version of the logical data model that defines the 
+entities, their attributes, and the relationships between entities that describe your problem domain. The following requirements apply:
 
 ### 2.1 Naming conventions
 Table and property names *must* follow the naming conventions established in Simon Holywell's 
@@ -89,7 +89,7 @@ In addition to the weekly readings and other online resources, the following exe
 * [Exercise 3.2](./assignment_v3p2.md)
 * [Exercise 8.3](./assignment_v8p3.md)
 
-## <a name="mysql_db"></a>3.0 MySQL database
+## <a name="mysql_db"></a>3.0 MySQL database (650 points)
 Write a data import script that transforms your flat file data set into a MySQL relational database. You can embed your SQL statements in a Python script or write a MySQL script (`*.sql`) that creates and populates your database with data. Handle your csv files carefully otherwise file encoding issues or string length mismatches between the original source data and data you extract into new flat files [can occur](https://umich.instructure.com/courses/245664/discussion_topics/628836).
 
 ### 3.1 Foreign Key constraints
@@ -133,7 +133,7 @@ In addition to the weekly readings, MySQL 8.0 [documentation](https://dev.mysql.
 * [Exercise 5.2 (Windows)](./assignment_v5p2_win.md)
 * [Exercise 10.2](./assignment_v10p2.md)
 
-## <a name="django_app"></a>4.0 Django app
+## <a name="django_app"></a>4.0 Django app (700 points)
 Design and implement a Django app that interacts with your MySQL database. This will require you 
 to create and activate a virtual environment, install package dependencies, use Django to start a project and start an app, create models, views, templates, URL routes as well as one or more forms and filters. The following requirements apply:
 
@@ -209,7 +209,7 @@ In addition to the weekly readings, Django project [documentation](https://docs.
 * [Exercise 8.2](./assignment_v8p2.md)
 * [Exercise 9.2](./assignment_v9p2.md)
 
-## <a name="django_rest_api"></a>5.0 Django REST API
+## <a name="django_rest_api"></a>5.0 Django REST API (500 points)
 Create a Django `api` app and implement a *single set* of [OpenAPI](https://swagger.io/docs/specification/about/) complaint 
 REST API GET/POST/PUT/DELETE endpoints for your final project.
 
@@ -228,11 +228,11 @@ packages:
 Configure the newly installed apps in `mysite/settings.py` as described in the exercise.
 
 ### 5.2 api app
-Create a final project Django `api` app. Follow the steps outlined in Exercise 10.2, [section 5.0](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#50-create-a-django-api-app). 
+Create a final project Django `api` app. Follow the steps outlined in [Exercise 10.2, section 5.0](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#50-create-a-django-api-app). 
 
 Base your `api/views.py`, `api/serializers.py` and `api/urls.py` on the `heritagesites` `api` app [code](https://github.com/UMSI-SI664-2018Fall/heritagesites/tree/master/api). 
 
-:warning: Once the `api` app is created and configured don't forget to run a database migration as outlined in Exercise 10.2, [section 5.8](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#58-run-migrations).
+:warning: Once the `api` app is created and configured don't forget to run a database migration as outlined in [Exercise 10.2, section 5.8](https://github.com/arwhyte/SI664-docs/blob/master/exercises/assignment_v10p2.md#58-run-migrations).
 
 ### 5.3 Target entity
 Choose an entity that has a *many-to-many* relationship with your principal entity. You will 
@@ -241,16 +241,14 @@ target this entity with your REST API GET/POST/PUT/DELETE endpoints.
 An example:
 
 * Principal entity: `artwork` (create/update/delete via web form-based CRUD operations)
-* Associative table: `artwork_artist` (many-to-many relationships stored)
+* Associative/junction table: `artwork_artist`
 * Secondary entity: `artist` (create/update/delete via REST API CRUD operations)   
 
 You are free to decide which entity to consider as the principal entity and which to consider as 
-a secondary entity. Let the your data model's problem domain be your guide. 
+a secondary entity. Let your data model's problem domain be your guide. 
 
 *bulb*: In the above example, one might argue that the artist rather than the artwork (which 
-represents the output of an artist's artistic genius) should be considered the principal 
-entity. Yet art museums collect artworks not artists; an observation that determined behind my 
-choice.
+represents the output of an artist's artistic genius) should be considered as the principal entity. Yet art museums collect artworks not artists; an observation that determined my choices.
 
 ### 5.4 Endpoints
 Refer to the `heritagesites` project files when establishing your API-related routes:
@@ -334,7 +332,7 @@ The final project includes opportunities for extra credit:
 ### 6.1 Additional set of CRUD web forms (125 points)
 Choose another entity and implement a second `ListView`/`DetailView` set of views along with 
 accompanying templates and routes together with a set of create/update/delete web forms and earn 
-up to 150 additional points. You can target the secondary entity chosen for your required REST API 
+up to 125 additional points. You can target the secondary entity chosen for your required REST API 
 implementation.  Implement the second set of web forms in a manner similar to that described 
 in section [4.0](#django_app).  
 
@@ -344,7 +342,7 @@ additional 25 per points per filter added (50 points max). Each filter included 
 `HeritageSiteFilter(django_filters.FilterSet)` class for working examples. Implement your additional filters in a manner similar to that described in section [4.0](#django_app).
 
 ### 6.3 Additional set of REST API Endpoints (125 points)
-Choose another entity and implement a *second set* of [OpenAPI](https://swagger.io/docs/specification/about/) complaint REST API GET/POST/PUT/DELETE endpoints for your final project. You can target the principal entity chosen for your required web forms implementation. Implement your extra credit endpoints in a manner similar to that described in section [5.0](#django_rest_api).
+Choose another entity and implement a *second set* of [OpenAPI](https://swagger.io/docs/specification/about/) complaint REST API GET/POST/PUT/DELETE endpoints and earn up to 125 additional points. You can target the principal entity chosen for your required web forms implementation. Implement your extra credit endpoints in a manner similar to that described in section [5.0](#django_rest_api).
  
 ## <a name="admin_user"></a>7.0 Admin user
 Using the Django admin site create a user account with the following attributes:
