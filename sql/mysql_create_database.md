@@ -552,3 +552,92 @@ DROP TEMPORARY TABLE numbers;
 DROP TEMPORARY TABLE temp_game;
 DROP TEMPORARY TABLE temp_game_developer;
 ```
+
+## 5.0 Gotchas
+A number of Windows users and a Mac user have reported file encoding issues (e.g., lost or mangled "special" characters) in string data imported into MySQL.  In each case the user had opened and/or edited the .csv file in Excel prior to importing the data into MySQL.
+
+__Recommendation:__ avoid opening/editing your .csv files in Excel.  Use another editor such as Atom to view/edit the .csv prior to loading the data into your database. That said, I have successfully read in data from an Excel *.xlsx file using Pandas with no resulting encoding issues.  See the SI-664 scripts `met_inspector.py` script:
+
+```python
+source_path = os.path.join('input', 'csv', 'met_cleaned_seroka-orig.xlsx')
+source_data_frame = pd.read_excel(source_path, sheet_name='all_data', header=0)
+source_data_frame_trimmed = trim_columns(source_data_frame)
+```
+
+You can also install the `chardet` package and use it to discover your source file's encoding and then pass the encoding value to the Pandas .read_csv() method in order to ensure that the file is read in with the correct encoding:
+
+```python
+source_path = os.path.join('input', 'csv', 'met_data_seroka-orig.csv')
+encoding = find_encoding(source_path)
+source_data_frame = read_csv(source_path, encoding, '\t')
+```
+
+Note: the above code snippet is currently commented out but it works. 
+
+A number of Windows users have also reported encountering string value mismatches when comparing otherwise matching strings (e.g., "Detroit" = "Detroit") sourced from two or more .csv files.  The mismatches usually occur between string values sourced from a Pandas-generated .csv file versus string values sourced from the original .csv file obtained from Kaggle or some other open data set provider.
+
+The issue manifests itself when attempting to retrieve an entity's foreign key value in one table by matching on the entity's string name in another table, as in the following example:
+
+```mysql
+SELECT c.city_id, th.hospital_name
+   FROM temp_hospital th
+        INNER JOIN city c
+                ON TRIM(th.city_name) = TRIM(c.city_name)
+ORDER BY th.hospital_name;
+```
+
+An empty result set is usually a mismatch in string lengths (as measured in bytes) that is otherwise invisible to the human eye. Using the `TRIM()` function does not resolve the string length mismatch. You can check string lengths using the `LENGTH()` function:
+
+#### Temp table based on original source file
+
+```commandline
+mysql> SELECT DISTINCT th.city_name, LENGTH(th.city_name) AS string_length
+-> FROM temp_hospital th
+-> ORDER BY th.city_name;
++-----------+---------------+
+| city_name | string_length |
++-----------+---------------+
+| ABBEVILLE | 10 |
+| ABERDEEN | 9 |
+| ABILENE | 8 |
+| ABINGDON | 9 |
+| ABINGTON | 9 |
++-----------+---------------+
+5 rows in set (0.01 sec)
+```
+
+#### Table populated from a .csv file containing values extracted from the source file by Pandas 
+
+```commandline
+mysql> SELECT c.city_name, LENGTH(c.city_name) AS string_length
+-> FROM city c
+-> ORDER BY c.city_name;
++-----------+---------------+
+| city_name | string_length |
++-----------+---------------+
+| ABBEVILLE | 9 |
+| ABERDEEN | 8 |
+| ABILENE | 7 |
+| ABINGDON | 8 |
+| ABINGTON | 8 |
++-----------+---------------+
+5 rows in set (0.00 sec)
+```
+
+__Recommendation:__ If you detect a mismatch in string lengths use Pandas to
+
+1. strip() each and every string value in the source .csv file.
+2. write out a new copy of the stripped version of the source .csv for use by MySQL (retain the original source file as is).
+
+By doing this you align your source data set string values with string values extracted by Pandas
+ and written to other .csv files for use by MySQL. Example code is available in the SI664-scripts repo.  See in particular the Python script `video_games_inspector.py`:
+ 
+```python
+source_data_frame_trimmed = trim_columns(source_data_frame)
+
+def trim_columns(data_frame)
+    trim = lambda x: x.strip() if type(x) is str else x
+    return data_frame.applymap(trim)
+``` 
+
+I watched a Windows user download Pandas-generated csv files from the SI-664 scripts repo and then copy the files from one directory to another in preparation for reading the data into MySQL via a `LOAD DATA LOCAL INFILE` operation.  The `LOAD` operation succeeded but the Windows copy operation appears to have changed the string lengths of the copied csv file data resulting in string mismatches in subsequent `SELECT` queries.  We resolved this issue by downloading the csv files directly into the target directory (no prior moves). If you are a Windows user, be very careful in how you handle your csv files.
