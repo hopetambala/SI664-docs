@@ -140,6 +140,24 @@ to create and activate a virtual environment, install package dependencies, use 
 ### 4.1 Models
 Install the `mysqlclient` package and configure your database connection in `mysite/settings.py`.
  Consider using Django's `inspectdb` utility to auto-generate your models as described in Exercise 4, [section 2.6](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises/assignment_v4p2_mac.md#26-auto-generate-unescounsd-models). You will need to review and likely edit the auto-generated `models.py` file but it will save you time.
+ 
+:warning: set each of your model's `Meta` class `managed` property value to `False`:
+
+```python
+class HeritageSiteCategory(models.Model):
+	category_id = models.AutoField(primary_key=True)
+	category_name = models.CharField(unique=True, max_length=25)
+
+	class Meta:
+		managed = False
+		db_table = 'heritage_site_category'
+		ordering = ['category_name']
+		verbose_name = 'UNESCO Heritage Site Category'
+		verbose_name_plural = 'UNESCO Heritage Site Categories'
+
+	def __str__(self):
+		return self.category_name
+```
 
 ### 4.2 Bootstrap 4 styling
 Style your app with [Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/). See the `heritagesites` app `base.html` file for how to add the required Bootstrap 4 CDN `<link>` and JQuery, Popper, and Boostrap `<script>` tags to your `base.html` file. Consider re-purposing your local `heritagesites.css` file for your final project app. Stay with the color palette you chose for your `heritagesites` app or choose 3-5 new colors. See Exercise 6, [section 6.0](https://github.com/UMSI-SI664-2018Fall/SI664-docs/blob/master/exercises/assignment_v6p2_mac.md#60-static-assets) regarding how to set up your app's `/static` directory structure.
