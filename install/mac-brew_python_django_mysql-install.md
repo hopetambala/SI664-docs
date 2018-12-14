@@ -82,6 +82,29 @@ before any other directories referenced in `PATH`.
 export PATH="/usr/local/bin:$PATH"
 ``` 
 
+##### Examples
+```bash
+# Java
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# MySQL
+export MYSQL_HOME="/usr/local/mysql"
+
+# PATH
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$MYSQL_HOME/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+```
+
+```bash
+# Java
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# MySQL
+export MYSQL_HOME="/usr/local/mysql"
+
+# PATH
+export PATH="/usr/local/bin:/usr/local/sbin:$JAVA_HOME/bin:$MYSQL_HOME/bin:$PATH"
+```
+
 Write out the change by holding down the "control" and "o" keys (CTRL - o), then press the return 
 key when "File Name to Write: .bash_profile" is displayed. Then exit nano by holding down the 
 "control" and "x" keys (CTRL - x).
